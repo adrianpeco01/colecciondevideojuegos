@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Colección de Juegos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card-img {
+      width: 130px;
+      height: auto;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+  </style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCb5vmEqe_IIasGYvH7e1g1ja56RwSoTSI",
+    authDomain: "videojuegos-cfdee.firebaseapp.com",
+    projectId: "videojuegos-cfdee",
+    storageBucket: "videojuegos-cfdee.appspot.com",
+    messagingSenderId: "698881133495",
+    appId: "1:698881133495:web:21d918d5c0acddc5f63632"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let games = [];
+  let platforms = ["Playstation 4"];
+  let folders = ["Colección"];
+
+  async function loadData() {
+    const gameSnap = await db.collection('games').get();
+    games = gameSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    const platSnap = await db.collection('platforms').get();
+    if (!platSnap.empty) platforms = platSnap.docs.map(doc => doc.data().name);
+
+    const folderSnap = await db.collection('folders').get();
+    if (!folderSnap.empty) folders = folderSnap.docs.map(doc => doc.data().name);
+
+    renderGames();
+  }
+
+  loadData();
+</script>
+
+</head>
+<body class="bg-green-50 p-4">
+  <div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">Artículos</h1>
+      <div class="flex gap-2">
+  <button id="viewList" class="text-lg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200">📄 Lista</button>
+  <button id="viewGrid" class="text-lg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200">🔲 Cuadrícula</button>
+</div>
+
+      <button id="toggleForm" class="text-blue-600 text-xl" title="Añadir o editar">
+        ✏️
+      </button>
+    </div>
+
+    <!-- Formulario (Oculto al iniciar) -->
+    <form id="gameForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl shadow mb-8 hidden">
+      <input type="file" id="image" accept="image/*" class="border p-2 rounded" />
+      <input type="text" id="title" placeholder="Título" class="border p-2 rounded" required />
+
+      <!-- Plataforma -->
+      <div class="flex gap-2 items-center">
+        <select id="platform" class="border p-2 rounded flex-1"></select>
+        <button type="button" id="addPlatform" class="text-sm text-blue-500 underline">Crear</button>
+      </div>
+
+      <!-- Carpeta -->
+      <div class="flex gap-2 items-center">
+        <select id="folder" class="border p-2 rounded flex-1"></select>
+        <button type="button" id="addFolder" class="text-sm text-blue-500 underline">Crear</button>
+      </div>
+
+      <input type="text" id="condition" placeholder="Condición (ej: CIB)" class="border p-2 rounded" required />
+      <input type="number" id="quantity" placeholder="Cantidad" class="border p-2 rounded" value="1" required />
+      <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="border p-2 rounded" required />
+      <input type="number" id="estimated" placeholder="Estimado (€)" step="0.01" class="border p-2 rounded" />
+      <input type="number" id="cost" placeholder="Costo (€)" step="0.01" class="border p-2 rounded" />
+      <button type="submit" class="col-span-full bg-blue-600 text-white py-2 rounded">Guardar</button>
+    </form>
+
+    <!-- Lista de juegos -->
+    <div id="gameList" class="space-y-4"></div>
+  </div>
+
+  <!-- Modal de detalles -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
+  <div class="bg-white p-6 rounded-xl max-w-md w-full relative">
+    <button onclick="closeModal()" class="absolute top-2 right-3 text-lg font-bold text-red-500">✕</button>
+
+    <!-- Botones editar y borrar -->
+    <div class="absolute top-2 left-3 flex gap-2">
+      <button id="editBtn" title="Editar juego" class="text-blue-600 text-xl">✏️</button>
+      <button id="deleteBtn" title="Borrar juego" class="text-red-600 text-xl">🗑️</button>
+    </div>
+
+    <img id="modalImage" src="" class="w-full h-auto rounded mb-4"/>
+    <div id="modalDetails" class="text-gray-700"></div>
+  </div>
+</div>
+
+
+  <script>
+    const form = document.getElementById('gameForm');
+    const toggleFormBtn = document.getElementById('toggleForm');
+    const gameList = document.getElementById('gameList');
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const modalDetails = document.getElementById('modalDetails');
+    const platformSelect = document.getElementById('platform');
+    const folderSelect = document.getElementById('folder');
+    const addPlatformBtn = document.getElementById('addPlatform');
+    const addFolderBtn = document.getElementById('addFolder');
+
+    
+    function populateSelect(select, items) {
+      select.innerHTML = items.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+    }
+
+addPlatformBtn.onclick = async () => {
+  const newPlat = prompt('Nombre de nueva plataforma:');
+  if (newPlat) {
+    platforms.push(newPlat);
+    await db.collection('platforms').add({ name: newPlat });
+    populateSelect(platformSelect, platforms);
+  }
+};
+
+addFolderBtn.onclick = async () => {
+  const newFolder = prompt('Nombre de nueva carpeta:');
+  if (newFolder) {
+    folders.push(newFolder);
+    await db.collection('folders').add({ name: newFolder });
+    populateSelect(folderSelect, folders);
+  }
+};
+
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const reader = new FileReader();
+  const imageFile = document.getElementById('image').files[0];
+
+  const gameData = {
+    title: document.getElementById('title').value,
+    platform: platformSelect.value,
+    folder: folderSelect.value,
+    condition: document.getElementById('condition').value,
+    quantity: document.getElementById('quantity').value,
+    value: parseFloat(document.getElementById('value').value),
+    estimated: parseFloat(document.getElementById('estimated').value) || 0,
+    cost: parseFloat(document.getElementById('cost').value) || 0,
+    image: ''
+  };
+
+  const saveAndRender = async () => {
+    const docRef = await db.collection('games').add(gameData);
+    gameData.id = docRef.id;
+    games.push(gameData);
+    renderGames();
+    form.reset();
+    form.classList.add('hidden');
+  };
+
+  if (imageFile) {
+    reader.onload = () => {
+      gameData.image = reader.result;
+      saveAndRender();
+    };
+    reader.readAsDataURL(imageFile);
+  } else {
+    saveAndRender();
+  }
+});
+
+
+    let currentView = 'list'; // 'grid' o 'list'
+
+function renderGames() {
+  populateSelect(platformSelect, platforms);
+  populateSelect(folderSelect, folders);
+  gameList.innerHTML = '';
+
+  // Cambia clases del contenedor según vista
+  if (currentView === 'grid') {
+    gameList.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4";
+  } else {
+    gameList.className = "space-y-4";
+  }
+
+  games.forEach((game, index) => {
+    const card = document.createElement('div');
+
+    if (currentView === 'list') {
+      card.className = "flex bg-white rounded-xl shadow-md p-4 items-start";
+      card.innerHTML = `
+        <img src="${game.image || ''}" alt="Carátula" class="card-img mr-4" onclick="openModal(${index})"/>
+        <div class="flex-1 flex flex-col justify-between">
+          <div class="flex justify-between">
+            <div>
+              <h2 class="text-2xl font-bold mb-1">${game.title}</h2>
+              <div class="text-base text-gray-700 mt-1">🎮 ${game.platform}</div>
+              <div class="text-base text-gray-700">📁 ${game.folder}</div>
+            </div>
+            <div class="text-right text-sm font-semibold text-gray-700">
+              VALOR<br><span class="text-lg font-bold text-black">€${game.value.toFixed(2)}</span><br>
+              €${game.estimated.toFixed(2)}<br>
+              <span class="text-xs mt-2 text-gray-600">COSTO</span><br>
+              <span class="text-md font-bold">€${game.cost.toFixed(2)}</span>
+            </div>
+          </div>
+          <div class="text-sm font-semibold mt-8">
+            CONDICIÓN <span class="font-bold">${game.condition}</span> &nbsp; | &nbsp; Cant. ${game.quantity}
+          </div>
+        </div>
+      `;
+    } else {
+      card.className = "bg-white rounded-xl shadow-md p-2 text-center cursor-pointer";
+      card.innerHTML = `
+        <img src="${game.image || ''}" alt="Carátula" class="w-full h-auto rounded mb-2" onclick="openModal(${index})"/>
+        <div class="text-sm font-semibold text-gray-800">€${game.value.toFixed(2)}</div>
+      `;
+    }
+
+    gameList.appendChild(card);
+  });
+}
+
+
+    let editMode = false;
+
+toggleFormBtn.onclick = () => {
+  editMode = !editMode;
+  form.classList.toggle('hidden');
+  document.querySelectorAll('.edit-mode').forEach(el => {
+    el.classList.toggle('hidden', !editMode);
+  });
+};
+
+document.getElementById('viewList').onclick = () => {
+  currentView = 'list';
+  renderGames();
+};
+
+document.getElementById('viewGrid').onclick = () => {
+  currentView = 'grid';
+  renderGames();
+};
+
+
+    function openModal(index) {
+      const game = games[index];
+      modalImage.src = game.image;
+      modalDetails.innerHTML = `
+        <h2 class="text-xl font-bold mb-2">${game.title}</h2>
+        <p><strong>Plataforma:</strong> ${game.platform}</p>
+        <p><strong>Carpeta:</strong> ${game.folder}</p>
+        <p><strong>Condición:</strong> ${game.condition}</p>
+        <p><strong>Cantidad:</strong> ${game.quantity}</p>
+        <p><strong>Valor:</strong> €${game.value.toFixed(2)}</p>
+        <p><strong>Estimado:</strong> €${game.estimated.toFixed(2)}</p>
+        <p><strong>Costo:</strong> €${game.cost.toFixed(2)}</p>
+      `;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+
+  </script>
+</body>
+</html>
