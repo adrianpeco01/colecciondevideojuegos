@@ -1,302 +1,51 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Colección de Juegos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-
-html {
-    zoom: 1; /* 100% por defecto (PC) */
-  }
-
-  @media (max-width: 768px) {
-    html {
-      zoom: 0.9; /* 90% en móviles */
-    }
-  }
-
-    .card-img {
-      width: 130px;
-      height: auto;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-    .login-error input,
-    .login-error button {
-      border-color: red !important;
-      background-color: #fee2e2 !important; /* rojo claro */
-      color: red !important;
-    }
-
-#loginTooltip {
-  position: absolute;
-  top: 100%;
-  right: 48%;           /* Tooltip a la izquierda del botón */
-  margin-top: 0.5rem;
-  margin-right: 0px;    /* espacio entre tooltip y lápiz */
-  padding: 0rem;
-  width: 260px;
-  z-index: 20;
-}
-
-#loginTooltip > div {
-  position: relative;
-  white-space: normal;
-  margin: 0;               /* elimina márgenes */
-  padding: 0.5rem 1rem 0.2rem 1rem; /* arriba, derecha, abajo, izquierda */
-}
-
-#loginTooltip .arrow {
-  position: absolute;
-  top: -6px;
-  right: 10px;           /* Flecha al borde derecho del tooltip */
-  width: 12px;
-  height: 12px;
-  background: #fecaca;
-  border-top: 1px solid #fca5a5;
-  border-right: 1px solid #fca5a5;
-  transform: rotate(-45deg);  /* Flecha apuntando a la derecha */
-  box-shadow: 1px -1px 0 #fca5a5;
-}
-
-/* Clase para desplazar el tooltip hacia la izquierda */
-.tooltip-shift-left {
-  left: auto !important;     /* Quitamos el left fijo */
-  right: 12px !important;    /* Lo pegamos a la derecha con un margen */
-}
-
-.text-button {
-  background: none;
-  border: none;
-  color: gray;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0;
-  margin-top: 0.5rem;
-  text-align: left;
-}
-
-.text-button:hover {
-  color: darkgray;
-}
-
-#modal {
-  display: none; /* oculto por defecto */
-  position: fixed;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 200ms ease;
-}
-
-#modal.show {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#modal > div {
-  background: white;
-  border-radius: 1rem;
-  max-width: 400px;
-  width: 90%;
-  padding: 1.5rem;
-  position: relative;
-  transform: scale(0.7);
-  opacity: 0;
-    transition: transform 200ms ease, opacity 200ms ease;
-  will-change: transform, opacity;
-}
-
-#modal.show > div {
-  transform: scale(1);
-  opacity: 1;
-}
-
-.zoom-image {
-  position: fixed;
-  z-index: 9999;
-  border-radius: 0.5rem;
-  transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease;
-  will-change: transform, top, left, width, height;
-  cursor: default;
-  object-fit: cover;
-}
-#modal.show {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semi-transparente */
-}
-/* Placeholder para option disabled */
-  select option[disabled] {
-    color: #999999;
-  }
-
-  /* Flex para filas Consola y Carpeta */
-  .select-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .select-row select {
-    flex: 1;
-  }
-  .delete-option-btn {
-    cursor: pointer;
-    color: #999999;
-    font-size: 1.25rem;
-    user-select: none;
-  }
-  .delete-option-btn:hover {
-    color: #e74c3c;
-  }
-  /* Para alinear icono y input de fecha */
-  .date-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .date-row span {
-    font-size: 1.5rem; /* icono calendario */
-  }
-  .date-row input[type="date"] {
-    flex: 1;
-  }
-  select option[disabled] {
-  color: #a0a0a0; /* gris claro similar a placeholder */
-}
-select:invalid {
-  color: #a0a0a0;
-}
-select option:not([disabled]) {
-  color: black; /* opciones normales en negro */
-}
-  select:invalid {
-    color: #9ca3af; /* Tailwind gray-400 */
-  }
-
-  /* Cuando el usuario selecciona una opción válida, se cambia a negro */
-  select option {
-    color: #000;
-  }
-
-  /* Solo el placeholder (primera opción deshabilitada) tiene el gris claro */
-  select option[disabled] {
-    color: #9ca3af !important;
-  }
-  /* Fade in para el modal */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-#editModal {
-  position: fixed; /* para que quede encima de todo */
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro y difuminado */
-  display: none; /* oculto por defecto */
-  justify-content: center; /* centrar contenido horizontal */
-  align-items: center; /* centrar contenido vertical */
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1000; /* encima de todo */
-}
-
-/* Cuando está visible */
-#editModal.show {
-  opacity: 1;
-  display: flex; /* para que se vea y pueda centrar */
-}
-
-/* Opcional: para el formulario dentro del modal: */
-#editModal .modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-
-  </style>
-<!-- Firebase SDK -->
+<!-- saved from url=(0058)https://platinumhunt.com/adricollantex?completion=Complete -->
+<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Trophies, games, and stats for user adricollantex."><meta property="og:title" content="adricollantex"><meta property="og:description" content="Trophies, games, and stats for user adricollantex."><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Trophies, games, and stats for user adricollantex."><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="https://platinumhunt.com/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="https://platinumhunt.com/icon.svg?80577b741e8f3888" type="image/svg+xml" sizes="any"><link rel="apple-touch-icon" href="https://platinumhunt.com/apple-icon.png?e0cc9f1912f8dd6a" type="image/png" sizes="180x180"><meta name="next-size-adjust"></head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block __className_9fd9c5">Mi colección de videojuegos</a><a class="ml-2 mr-4 font-bold sm:hidden __className_9fd9c5">Mcdv</a></div><div class="flex items-center gap-2 relative ml-4">
+  <button id="toggleForm" class="text-xl hover:bg-accent hover:text-accent-foreground transition-colors rounded-md p-2" title="Añadir o editar">✏️</button>
+  <div id="loginTooltip" class="absolute hidden z-30">
+    <div class="relative bg-red-100 border border-red-300 text-red-900 rounded-xl shadow px-4 py-3 text-sm">
+      <div class="arrow"></div>
+      <p class="mb-2">Inicia sesión para poder añadir o editar juegos.</p>
+    </div>
+  </div>
+  <button id="authStatus" class="text-xl hover:bg-accent hover:text-accent-foreground transition-colors rounded-md p-2" title="Estado autenticación">🔒</button>
+</div>
+<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button" id="radix-:R9la:" aria-haspopup="menu" aria-expanded="false" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"><path d="M7.5 0C7.77614 0 8 0.223858 8 0.5V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V0.5C7 0.223858 7.22386 0 7.5 0ZM2.1967 2.1967C2.39196 2.00144 2.70854 2.00144 2.90381 2.1967L4.31802 3.61091C4.51328 3.80617 4.51328 4.12276 4.31802 4.31802C4.12276 4.51328 3.80617 4.51328 3.61091 4.31802L2.1967 2.90381C2.00144 2.70854 2.00144 2.39196 2.1967 2.1967ZM0.5 7C0.223858 7 0 7.22386 0 7.5C0 7.77614 0.223858 8 0.5 8H2.5C2.77614 8 3 7.77614 3 7.5C3 7.22386 2.77614 7 2.5 7H0.5ZM2.1967 12.8033C2.00144 12.608 2.00144 12.2915 2.1967 12.0962L3.61091 10.682C3.80617 10.4867 4.12276 10.4867 4.31802 10.682C4.51328 10.8772 4.51328 11.1938 4.31802 11.3891L2.90381 12.8033C2.70854 12.9986 2.39196 12.9986 2.1967 12.8033ZM12.5 7C12.2239 7 12 7.22386 12 7.5C12 7.77614 12.2239 8 12.5 8H14.5C14.7761 8 15 7.77614 15 7.5C15 7.22386 14.7761 7 14.5 7H12.5ZM10.682 4.31802C10.4867 4.12276 10.4867 3.80617 10.682 3.61091L12.0962 2.1967C12.2915 2.00144 12.608 2.00144 12.8033 2.1967C12.9986 2.39196 12.9986 2.70854 12.8033 2.90381L11.3891 4.31802C11.1938 4.51328 10.8772 4.51328 10.682 4.31802ZM8 12.5C8 12.2239 7.77614 12 7.5 12C7.22386 12 7 12.2239 7 12.5V14.5C7 14.7761 7.22386 15 7.5 15C7.77614 15 8 14.7761 8 14.5V12.5ZM10.682 10.682C10.8772 10.4867 11.1938 10.4867 11.3891 10.682L12.8033 12.0962C12.9986 12.2915 12.9986 12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"><path d="M2.89998 0.499976C2.89998 0.279062 2.72089 0.0999756 2.49998 0.0999756C2.27906 0.0999756 2.09998 0.279062 2.09998 0.499976V1.09998H1.49998C1.27906 1.09998 1.09998 1.27906 1.09998 1.49998C1.09998 1.72089 1.27906 1.89998 1.49998 1.89998H2.09998V2.49998C2.09998 2.72089 2.27906 2.89998 2.49998 2.89998C2.72089 2.89998 2.89998 2.72089 2.89998 2.49998V1.89998H3.49998C3.72089 1.89998 3.89998 1.72089 3.89998 1.49998C3.89998 1.27906 3.72089 1.09998 3.49998 1.09998H2.89998V0.499976ZM5.89998 3.49998C5.89998 3.27906 5.72089 3.09998 5.49998 3.09998C5.27906 3.09998 5.09998 3.27906 5.09998 3.49998V4.09998H4.49998C4.27906 4.09998 4.09998 4.27906 4.09998 4.49998C4.09998 4.72089 4.27906 4.89998 4.49998 4.89998H5.09998V5.49998C5.09998 5.72089 5.27906 5.89998 5.49998 5.89998C5.72089 5.89998 5.89998 5.72089 5.89998 5.49998V4.89998H6.49998C6.72089 4.89998 6.89998 4.72089 6.89998 4.49998C6.89998 4.27906 6.72089 4.09998 6.49998 4.09998H5.89998V3.49998ZM1.89998 6.49998C1.89998 6.27906 1.72089 6.09998 1.49998 6.09998C1.27906 6.09998 1.09998 6.27906 1.09998 6.49998V7.09998H0.499976C0.279062 7.09998 0.0999756 7.27906 0.0999756 7.49998C0.0999756 7.72089 0.279062 7.89998 0.499976 7.89998H1.09998V8.49998C1.09998 8.72089 1.27906 8.89997 1.49998 8.89997C1.72089 8.89997 1.89998 8.72089 1.89998 8.49998V7.89998H2.49998C2.72089 7.89998 2.89998 7.72089 2.89998 7.49998C2.89998 7.27906 2.72089 7.09998 2.49998 7.09998H1.89998V6.49998ZM8.54406 0.98184L8.24618 0.941586C8.03275 0.917676 7.90692 1.1655 8.02936 1.34194C8.17013 1.54479 8.29981 1.75592 8.41754 1.97445C8.91878 2.90485 9.20322 3.96932 9.20322 5.10022C9.20322 8.37201 6.82247 11.0878 3.69887 11.6097C3.45736 11.65 3.20988 11.6772 2.96008 11.6906C2.74563 11.702 2.62729 11.9535 2.77721 12.1072C2.84551 12.1773 2.91535 12.2458 2.98667 12.3128L3.05883 12.3795L3.31883 12.6045L3.50684 12.7532L3.62796 12.8433L3.81491 12.9742L3.99079 13.089C4.11175 13.1651 4.23536 13.2375 4.36157 13.3059L4.62496 13.4412L4.88553 13.5607L5.18837 13.6828L5.43169 13.7686C5.56564 13.8128 5.70149 13.8529 5.83857 13.8885C5.94262 13.9155 6.04767 13.9401 6.15405 13.9622C6.27993 13.9883 6.40713 14.0109 6.53544 14.0298L6.85241 14.0685L7.11934 14.0892C7.24637 14.0965 7.37436 14.1002 7.50322 14.1002C11.1483 14.1002 14.1032 11.1453 14.1032 7.50023C14.1032 7.25044 14.0893 7.00389 14.0623 6.76131L14.0255 6.48407C13.991 6.26083 13.9453 6.04129 13.8891 5.82642C13.8213 5.56709 13.7382 5.31398 13.6409 5.06881L13.5279 4.80132L13.4507 4.63542L13.3766 4.48666C13.2178 4.17773 13.0353 3.88295 12.8312 3.60423L12.6782 3.40352L12.4793 3.16432L12.3157 2.98361L12.1961 2.85951L12.0355 2.70246L11.8134 2.50184L11.4925 2.24191L11.2483 2.06498L10.9562 1.87446L10.6346 1.68894L10.3073 1.52378L10.1938 1.47176L9.95488 1.3706L9.67791 1.2669L9.42566 1.1846L9.10075 1.09489L8.83599 1.03486L8.54406 0.98184ZM10.4032 5.30023C10.4032 4.27588 10.2002 3.29829 9.83244 2.40604C11.7623 3.28995 13.1032 5.23862 13.1032 7.50023C13.1032 10.593 10.596 13.1002 7.50322 13.1002C6.63646 13.1002 5.81597 12.9036 5.08355 12.5522C6.5419 12.0941 7.81081 11.2082 8.74322 10.0416C8.87963 10.2284 9.10028 10.3497 9.34928 10.3497C9.76349 10.3497 10.0993 10.0139 10.0993 9.59971C10.0993 9.24256 9.84965 8.94373 9.51535 8.86816C9.57741 8.75165 9.63653 8.63334 9.6926 8.51332C9.88358 8.63163 10.1088 8.69993 10.35 8.69993C11.0403 8.69993 11.6 8.14028 11.6 7.44993C11.6 6.75976 11.0406 6.20024 10.3505 6.19993C10.3853 5.90487 10.4032 5.60464 10.4032 5.30023Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg><span class="sr-only">Toggle theme</span></button></div>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCb5vmEqe_IIasGYvH7e1g1ja56RwSoTSI",
     authDomain: "videojuegos-cfdee.firebaseapp.com",
     projectId: "videojuegos-cfdee",
-    storageBucket: "videojuegos-cfdee.appspot.com",
-    messagingSenderId: "698881133495",
-    appId: "1:698881133495:web:21d918d5c0acddc5f63632"
   };
-
-  
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
   const auth = firebase.auth();
+  const db = firebase.firestore();
 
-  let games = [];
-  let platforms = ["Playstation 4"];
-  let folders = ["Colección"];
+  const gameForm = document.getElementById("gameForm");
+  const toggleForm = document.getElementById("toggleForm");
+  const loginTooltip = document.getElementById("loginTooltip");
 
-  async function loadData() {
-    const gameSnap = await db.collection('games').get();
-    games = gameSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  let user = null;
 
-    const platSnap = await db.collection('platforms').get();
-    if (!platSnap.empty) platforms = platSnap.docs.map(doc => doc.data().name);
+  auth.onAuthStateChanged((u) => {
+    user = u;
+    document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
+  });
 
-    const folderSnap = await db.collection('folders').get();
-    if (!folderSnap.empty) folders = folderSnap.docs.map(doc => doc.data().name);
-
-    renderGames();
-  }
-
-  loadData();
-  
-</script>
-
-</head>
-<body class="bg-white p-1">
-<div class="max-w-5xl mx-auto">
-  <!-- Header -->
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Artículos</h1>
-    <div class="flex gap-2">
-      <button id="viewList" class="text-lg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200">📄 Lista</button>
-      <button id="viewGrid" class="text-lg px-2 py-1 rounded bg-blue-100 hover:bg-blue-200">🔲 Cuadrícula</button>
-    </div>
-
-<div class="flex items-center gap-2 relative">
-  <button id="toggleForm" class="text-blue-600 text-xl" title="Añadir o editar">✏️</button>
-
-<!-- Bocadillo del lápiz -->
-<div id="loginTooltip" class="absolute hidden z-30">
-  <div class="relative bg-red-100 border border-red-300 text-red-900 rounded-xl shadow px-4 py-3 text-sm">
-    <!-- Flecha -->
-    <div class="arrow"></div>
-    <p class="mb-2">Inicia sesión para poder añadir o editar juegos.</p>
-  </div>
-</div>
-
-  <button id="authStatus" class="text-xl" title="Estado autenticación">🔒</button>
-</div>
-</div>
-
-
-    <!-- Formulario (Oculto al iniciar) -->
+  toggleForm.addEventListener("click", () => {
+    if (user) {
+      gameForm.classList.toggle("hidden");
+    } else {
+      loginTooltip.classList.remove("hidden");
+      setTimeout(() => loginTooltip.classList.add("hidden"), 3000);
+    }
+  });
+</script></header><main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Level 267</div><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-24%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">76%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1364<button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div>Total Trophies</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/gold.d6c88f73.png" style="color: transparent;"><span class="text-lg ml-2">179</span></div><div class="flex flex-row items-center"><img alt="Silver trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/silver.e2239c30.png" style="color: transparent;"><span class="text-lg ml-2">333</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze.a58983fd.png" style="color: transparent;"><span class="text-lg ml-2">829</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div><div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
+    
+<!-- Formulario (Oculto al iniciar) -->
 <form id="gameForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl shadow mb-8 hidden">
 
   <!-- URL de imagen -->
@@ -456,717 +205,155 @@ select option:not([disabled]) {
 
 
 
-    <!-- Lista de juegos -->
-    <div id="gameList" class="space-y-4"></div>
-  </div>
-
-<!-- Modal de detalles -->
-<div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-<div class="bg-white p-8 rounded-2xl w-full max-w-[800px] min-w-[400px] relative">
+    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Search for games" autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
 
 
-    <!-- Botón cerrar -->
-    <button onclick="closeModal()" class="absolute top-2 right-3 text-lg font-bold text-red-500">✕</button>
 
-    <!-- Imagen del juego -->
-    <img id="modalImage" src="" class="w-full max-h-[400px] object-contain rounded mb-4" />
+        <!-- Contenedor de los botones -->
+        <div class="flex w-full flex-row space-x-2 lg:w-auto justify-between">
+          
+    <!-- Botón principal de orden (Last Updated) -->
+    <div class="relative inline-block text-left w-full lg:w-auto">
+      <button 
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+        type="button" 
+        id="sort-button" 
+        aria-haspopup="menu" 
+        aria-expanded="false" 
+        data-state="closed"
+        onclick="toggleSortMenu()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down mr-1 h-4">
+          <path d="m21 16-4 4-4-4"></path>
+          <path d="M17 20V4"></path>
+          <path d="m3 8 4-4 4 4"></path>
+          <path d="M7 4v16"></path>
+        </svg>
+        <div class="hidden lg:block" id="sort-button-label">Last Updated</div>
+      </button>
 
-    <!-- Detalles del juego -->
-    <div id="modalDetails" class="text-gray-700"></div>
-
-    <!-- Botones editar y borrar -->
-    <div id="modalButtons" class="flex justify-end gap-4 mt-6 hidden">
-      <button id="editBtn" title="Editar juego" class="text-blue-600 text-xl">✏️</button>
-      <button id="deleteBtn" title="Borrar juego" class="text-red-600 text-xl">🗑️</button>
-    </div>
-
-  </div>
-</div>
-
-<!-- Modal de edición -->
-<div id="editModal" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm opacity-0 pointer-events-none z-60 flex justify-center items-center transition-opacity duration-300">
-  <div class="bg-white p-6 rounded-2xl w-full max-w-[600px] shadow-2xl relative">
-    
-    <!-- Cerrar con X -->
-    <button id="closeEditFormBtn" onclick="closeEditModal()" class="absolute top-2 right-3 text-lg font-bold text-red-500">✕</button>
-
-    <h2 class="text-xl font-bold mb-4">Editar juego</h2>
-    
-    <!-- Formulario Edición -->
-<form id="editForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-xl shadow mb-8">
-
-  <!-- URL de imagen -->
-  <div class="flex items-center gap-2">
-    <span>🖼️</span>
-    <input type="url" id="imageUrl" placeholder="URL de imagen*" class="border p-2 rounded w-full" required />
-  </div>
-
-  <!-- Título -->
-  <div class="flex items-center gap-2">
-    <span>🔠</span>
-    <input type="text" id="title" placeholder="Título*" class="border p-2 rounded w-full" required />
-  </div>
-
-<!-- Plataforma -->
-<div class="flex items-center gap-2">
-  <span>🎮</span>
-  <select id="platform" class="border p-2 rounded w-full text-gray-900" required>
-    <option value="" disabled selected>Plataforma*</option>
-    <!-- opciones dinámicas -->
-  </select>
-  <span class="delete-option-btn" title="Eliminar opción" onclick="removeSelectedOption('platform')">🗑️</span>
-  <button type="button" id="addPlatform" class="text-sm text-blue-500 underline">Crear</button>
-</div>
-
-<!-- Carpeta -->
-<div class="flex items-center gap-2">
-  <span>📂</span>
-  <select id="folder" class="border p-2 rounded w-full text-gray-900" required>
-    <option value="" disabled selected>Carpeta*</option>
-    <!-- opciones dinámicas -->
-  </select>
-  <span class="delete-option-btn" title="Eliminar opción" onclick="removeSelectedOption('folder')">🗑️</span>
-  <button type="button" id="addFolder" class="text-sm text-blue-500 underline">Crear</button>
-</div>
-  <!-- Condición -->
-  <div class="flex items-center gap-2 col-span-full md:col-span-1">
-    <span>📦</span>
-    <select id="condition" class="border p-2 rounded w-full" required>
-      <option value="" disabled selected>Condición*</option>
-      <option value="CIB">CIB</option>
-      <option value="Solo Item">Solo Item</option>
-      <option value="Caja y Manual">Caja y Manual</option>
-      <option value="Manual">Manual</option>
-      <option value="Carátula">Carátula</option>
-    </select>
-  </div>
-
-  <!-- Estado (5 estrellas) -->
-<div class="flex items-center gap-2 border p-2 rounded w-full cursor-pointer select-none" id="estadoStarsContainer" title="Estado*">
-  <span>⭐</span>
-  <div id="estadoStars" class="flex gap-1 text-yellow-400 text-3xl">
-    <span data-star="1">☆</span>
-    <span data-star="2">☆</span>
-    <span data-star="3">☆</span>
-    <span data-star="4">☆</span>
-    <span data-star="5">☆</span>
-  </div>
-</div>
-
- <!-- Fecha de compra -->
-<div class="flex items-center gap-2 w-full">
-  <span class="text-xs">🗓️</span>
-  <div class="relative w-full">
-    <input 
-      type="text" 
-      id="purchaseDate" 
-      onfocus="this.type='date'" 
-      onblur="if(this.value===''){this.type='text'}" 
-      placeholder="Fecha de compra*" 
-      class="border p-2 rounded w-full text-gray-900 placeholder-gray-400"
-      required 
-    />
-  </div>
-</div>
-
-
-<!-- Fecha de lanzamiento -->
-<div class="flex items-center gap-2 w-full">
-  <span class="text-xs">🕑</span>
-  <div class="relative w-full">
-    <input 
-      type="text" 
-      id="releaseDate" 
-      onfocus="this.type='date'" 
-      onblur="if(this.value===''){this.type='text'}" 
-      placeholder="Fecha de lanzamiento" 
-      class="border p-2 rounded w-full text-gray-900 placeholder-gray-400"
-    />
-  </div>
-</div>
-
-  <!-- Costo -->
-  <div class="flex items-center gap-2">
-    <span>💸</span>
-    <input type="number" id="cost" placeholder="Coste (€)*" step="0.01" class="border p-2 rounded w-full" required />
-  </div>
-
-  <!-- Valor -->
-  <div class="flex items-center gap-2">
-    <span>💰</span>
-    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="border p-2 rounded w-full" />
-  </div>
-
-  <!-- Enlaces de marketplaces -->
-  <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="flex items-center gap-2">
-      <img src="https://i.ibb.co/RpbCN10H/217439.png" alt="Wallapop" class="w-6 h-6" />
-      <input type="url" id="wallapopLink" placeholder="Enlace Wallapop" class="border p-2 rounded w-full" />
-    </div>
-    <div class="flex items-center gap-2">
-      <img src="https://i.ibb.co/gY2Tqd5/217438.png" alt="Vinted" class="w-6 h-6" />
-      <input type="url" id="vintedLink" placeholder="Enlace Vinted" class="border p-2 rounded w-full" />
-    </div>
-    <div class="flex items-center gap-2">
-      <img src="https://i.ibb.co/67Mcg0Qd/217436.png" alt="Ebay" class="w-6 h-6" />
-      <input type="url" id="ebayLink" placeholder="Enlace eBay" class="border p-2 rounded w-full" />
-    </div>
-  </div>
-
-  <!-- Cex y enlace Cex -->
-  <div class="flex gap-2 md:col-span-2">
-    <div class="flex items-center gap-2 flex-1">
-      <span>🤑</span>
-      <input type="number" id="cex" placeholder="Cex (€)" step="0.01" class="border p-2 rounded w-full" />
-    </div>
-    <div class="flex items-center gap-2 flex-1">
-      <img src="https://i.ibb.co/kg4KSbJX/217437.png" alt="Cex" class="w-6 h-6" />
-      <input type="url" id="cexLink" placeholder="Enlace Cex" class="border p-2 rounded w-full" />
-    </div>
-  </div>
-
-  <!-- Otros datos -->
-  <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="flex items-center gap-2">
-    <span>📍</span>
-    <input type="text" id="purchaseLocation" placeholder="Lugar de compra" class="border p-2 rounded w-full" />
-  </div>
-    <div class="flex items-center gap-2">
-    <span>🌍</span>
-    <input type="text" id="region" placeholder="Región" class="border p-2 rounded w-full" />
-  </div>
-  <div class="flex items-center gap-2">
-    <span>🎁</span>
-    <input type="text" id="gift" placeholder="Regalo" class="border p-2 rounded w-full" />
-  </div>
-  </div>
-
-  <div class="flex items-center gap-2 md:col-span-2">
-    <span>📄</span>
-    <textarea id="details" placeholder="Detalles" class="border p-2 rounded w-full"></textarea>
-  </div>
-
-  <!-- Botón Guardar -->
-  <button type="submit" class="col-span-full bg-blue-600 text-white py-2 rounded">Guardar</button>
-</form>
-
-  </div>
-</div>
-
-
-  <script>
-    const form = document.getElementById('gameForm');
-    const toggleFormBtn = document.getElementById('toggleForm');
-    const gameList = document.getElementById('gameList');
-    const modal = document.getElementById('modal');
-    const modalImage = document.getElementById('modalImage');
-    const modalDetails = document.getElementById('modalDetails');
-    const platformSelect = document.getElementById('platform');
-    const folderSelect = document.getElementById('folder');
-    const addPlatformBtn = document.getElementById('addPlatform');
-    const addFolderBtn = document.getElementById('addFolder');
-
-
-function populateSelect(select, items) {
-  const placeholder = select.querySelector('option[disabled]');
-  select.innerHTML = ''; // limpiamos todo
-
-  if (placeholder) {
-    select.appendChild(placeholder); // volvemos a agregar el placeholder
-  }
-
-  items.forEach(opt => {
-    const option = document.createElement('option');
-    option.value = opt;
-    option.textContent = opt;
-    select.appendChild(option);
-  });
-}
-
-
-addPlatformBtn.onclick = async () => {
-  const newPlat = prompt('Nombre de nueva plataforma:');
-  if (newPlat) {
-    platforms.push(newPlat);
-    await db.collection('platforms').add({ name: newPlat });
-    populateSelect(platformSelect, platforms);
-  }
-};
-
-addFolderBtn.onclick = async () => {
-  const newFolder = prompt('Nombre de nueva carpeta:');
-  if (newFolder) {
-    folders.push(newFolder);
-    await db.collection('folders').add({ name: newFolder });
-    populateSelect(folderSelect, folders);
-  }
-};
-
- // Función para eliminar opción seleccionada de un select dado su id
-  function removeSelectedOption(selectId) {
-    const select = document.getElementById(selectId);
-    const selectedValue = select.value;
-    if (!selectedValue) return alert('Selecciona una opción para eliminar.');
-    // Confirmar eliminación
-    if (confirm(`¿Eliminar la opción "${selectedValue}"? Esta acción es irreversible.`)) {
-      // Eliminar la opción
-      const optionToRemove = Array.from(select.options).find(opt => opt.value === selectedValue);
-      if (optionToRemove) {
-        optionToRemove.remove();
-        // Reiniciar selección
-        select.value = '';
-      }
-    }
-  }
-
-  // Ajustar max fecha para España (sin restar horas)
-  function getTodaySpain() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-  const todaySpain = getTodaySpain();
-  document.getElementById('purchaseDate').max = todaySpain;
-  document.getElementById('releaseDate').max = todaySpain;
-
-
- const estadoStars = document.getElementById('estadoStars');
-  const stars = estadoStars.querySelectorAll('span');
-  let estadoValue = 0; // valor guardado
-
-  function pintarEstrellas(count) {
-    stars.forEach(star => {
-      const starVal = parseInt(star.dataset.star);
-      if (starVal <= count) {
-        star.textContent = '★'; // rellena
-      } else {
-        star.textContent = '☆'; // vacía
-      }
-    });
-  }
-
-  stars.forEach(star => {
-    star.addEventListener('mouseenter', () => {
-      const val = parseInt(star.dataset.star);
-      pintarEstrellas(val);
-    });
-    star.addEventListener('mouseleave', () => {
-      pintarEstrellas(estadoValue);
-    });
-    star.addEventListener('click', () => {
-      estadoValue = parseInt(star.dataset.star);
-      pintarEstrellas(estadoValue);
-      console.log('Estado seleccionado:', estadoValue);
-    });
-  });
-
-  pintarEstrellas(estadoValue);
-
-
-function getFormData() {
-  return {
-    image: document.getElementById('imageUrl').value.trim(),
-    title: document.getElementById('title').value.trim(),
-    platform: platformSelect.value,
-    folder: folderSelect.value,
-    condition: document.getElementById('condition').value,
-    estado: estadoValue,  // guardamos el estado de estrellas
-    purchaseDate: document.getElementById('purchaseDate').value || null,
-    releaseDate: document.getElementById('releaseDate').value || null,
-    cost: parseFloat(document.getElementById('cost').value) || 0,
-    value: parseFloat(document.getElementById('value').value) || 0,
-    // quantity y estimated no están en tu formulario, si quieres añádelos con input y lee aquí
-    wallapopLink: document.getElementById('wallapopLink').value.trim() || null,
-    vintedLink: document.getElementById('vintedLink').value.trim() || null,
-    ebayLink: document.getElementById('ebayLink').value.trim() || null,
-    cex: parseFloat(document.getElementById('cex').value) || 0,
-    cexLink: document.getElementById('cexLink').value.trim() || null,
-    purchaseLocation: document.getElementById('purchaseLocation').value.trim() || null,
-    region: document.getElementById('region').value.trim() || null,
-    gift: document.getElementById('gift').value.trim() || null,
-    details: document.getElementById('details').value.trim() || null,
-  };
-}
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  try {
-    const gameData = getFormData();
-
-    // Validaciones adicionales aquí si quieres
-    if (!gameData.title || !gameData.platform || !gameData.folder || !gameData.condition || !gameData.cost) {
-      alert('Por favor rellena todos los campos obligatorios');
-      return;
-    }
-
-    const editingId = form.dataset.editing;
-
-if (editingId) {
-  // Modo edición: actualiza en Firebase y local
-  await db.collection('games').doc(editingId).update(gameData);
-  gameData.id = editingId;
-  const index = parseInt(form.dataset.index);
-  games[index] = gameData;
-  alert('Juego actualizado correctamente');
-} else {
-  // Modo nuevo: crea
-  const docRef = await db.collection('games').add(gameData);
-  gameData.id = docRef.id;
-  games.push(gameData);
-  alert('Juego añadido correctamente');
-}
-
-    renderGames();
-    form.reset();
-    estadoValue = 0;
-    pintarEstrellas(estadoValue);
-    form.classList.add('hidden');
-  } catch (error) {
-    console.error('Error guardando el juego:', error);
-    alert('Error al guardar el juego. Revisa la consola.');
-  }
-});
-
-form.reset();
-form.classList.add('hidden');
-estadoValue = 0;
-pintarEstrellas(estadoValue);
-form.removeAttribute('data-editing');
-form.removeAttribute('data-index');
-
-    let currentView = 'list'; // 'grid' o 'list'
-
-function renderGames() {
-  populateSelect(platformSelect, platforms);
-  populateSelect(folderSelect, folders);
-  gameList.innerHTML = '';
-  // Ajusta clases según el tipo de vista
-if (currentView === 'list') {
-  gameList.className = 'flex flex-col gap-4';
-} else {
-  gameList.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-6 bg-white p-4 justify-center';
-}
-
-  games.forEach((game, index) => {
-    const card = document.createElement('div');
-
-    if (currentView === 'list') {
-      card.className = "flex bg-white rounded-xl shadow-md p-4 items-start";
-      card.innerHTML = `
-        <img src="${game.image || ''}" alt="Carátula" class="card-img mr-4" onclick="openModal(${index})"/>
-        <div class="flex-1 flex flex-col justify-between">
-          <div class="flex justify-between">
-            <div>
-              <h2 class="text-2xl font-bold mb-1">${game.title}</h2>
-              <div class="text-base text-gray-700 mt-1">🎮 ${game.platform}</div>
-              <div class="text-base text-gray-700">📁 ${game.folder}</div>
-            </div>
-            <div class="text-right text-sm font-semibold text-gray-700">
-              VALOR<br><span class="text-lg font-bold text-black">€${(game.value ?? 0).toFixed(2)}</span><br>
-              €${(game.estimated ?? 0).toFixed(2)}<br>
-              <span class="text-xs mt-2 text-gray-600">COSTO</span><br>
-              <span class="text-md font-bold">€${(game.cost ?? 0).toFixed(2)}</span>
-            </div>
-          </div>
-          <div class="text-sm font-semibold mt-8">
-            CONDICIÓN <span class="font-bold">${game.condition}</span> &nbsp; | &nbsp; Cant. ${game.quantity}
-          </div>
+      <!-- Menú desplegable que sale debajo -->
+      <div id="sort-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+        <div class="py-1">
+          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Last Updated</div>
+          <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alphabetical</div>
         </div>
-      `;
-    } else {
-  card.className = `
-  bg-white border border-gray-300 rounded-xl shadow-md 
-  w-[140px] h-[220px] 
-  flex flex-col justify-between 
-  cursor-pointer transition duration-200 ease-in-out p-2 hover:bg-gray-100
-`;
-
-  card.innerHTML = `
-    <div class="w-full h-[160px] overflow-hidden flex items-center justify-center">
-      <img src="${game.image || ''}" 
-     alt="Carátula" 
-     class="h-full object-contain rounded" 
-     onclick="openModal(${index})" />
     </div>
-    <div class="flex justify-center mt-2">
-      <div class="bg-blue-200 text-white text-xs px-2 py-1 rounded-full font-semibold">
-        ${(game.value ?? 0).toFixed(2)} €
-      </div>
     </div>
-  `;
-}
 
+  <!-- Botón 2: All -->
+  <div class="relative inline-block text-left w-full lg:w-auto">
+  <button 
+    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+    type="button"
+    id="all-button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    onclick="toggleAllMenu()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter mr-1 h-4">
+      <path d="M3 6h18"></path>
+      <path d="M7 12h10"></path>
+      <path d="M10 18h4"></path>
+    </svg>
+    <div class="hidden lg:block" id="all-button-label">All</div>
+  </button>
 
-    gameList.appendChild(card);
-  });
-}
-
-document.getElementById('viewList').onclick = () => {
-  currentView = 'list';
-  renderGames();
-};
-
-document.getElementById('viewGrid').onclick = () => {
-  currentView = 'grid';
-  renderGames();
-};
-
-let originalGameData = null;
-
-function openModal(index) {
-  const game = games[index];
-  const modalButtons = document.getElementById('modalButtons');
-  const user = firebase.auth().currentUser;
-
-  if (user) {
-    modalButtons.classList.remove('hidden');
-  } else {
-    modalButtons.classList.add('hidden');
-  }
-
-document.getElementById("editBtn").onclick = () => {
-  closeModal(); // cerrar el modal de vista
-  openEditModal(game); // abrir el editModal
-};
-
-  modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('show'), 10);
-
-  modalImage.src = game.image;
-
-  const formatMoney = (value) =>
-    value && parseFloat(value) !== 0 ? `€${parseFloat(value).toFixed(2)}` : null;
-  const formatText = (text) => (text ? text : null);
-
-  // Condición y Estado juntos
-const conditionAndState = (game.condition || game.estado)
-  ? `<div class="mb-2 flex items-center gap-4">
-       ${game.condition ? `<span title="Condición">📦 ${game.condition}</span>` : ''}
-       ${game.estado ? `<span title="Estado">⭐ ${game.estado}</span>` : ''}
-     </div>`
-  : '';
-
-
-
-  // Imagen ampliada con lupa
-  const imageLink = game.image
-    ? `<span class="cursor-pointer text-lg" title="Ampliar imagen" onclick="zoomImage('${game.image}')">🔍</span>`
-    : '';
-
-  const detailsTooltip = game.details
-  ? `<span class="cursor-pointer text-lg" title="Detalles" onclick="showTooltip(event, \`${game.details.replace(/`/g, '\\`')}\`)">📄</span>`
-  : '';
-
-  const column1 = [
-    game.platform && { icon: '🎮', label: game.platform, title: 'Plataforma' },
-    game.region && { icon: '🌍', label: game.region, title: 'Región' },
-    game.folder && { icon: '📂', label: game.folder, title: 'Carpeta' },
-    'CONDICION_ESTADO_PLACEHOLDER',
-    game.purchaseLocation && { icon: '📍', label: game.purchaseLocation, title: 'Lugar de compra' },
-    game.gift && { icon: '🎁', label: game.gift, title: 'Regalo' },
-  ];
-
-  const column2 = [
-    game.purchaseDate && { icon: '🗓️', label: game.purchaseDate, title: 'Fecha de compra' },
-    game.releaseDate && { icon: '🕑', label: game.releaseDate, title: 'Fecha de lanzamiento' },
-    formatMoney(game.value) && { icon: '💰', label: formatMoney(game.value), title: 'Valor (€)' },
-    formatMoney(game.cost) && { icon: '💸', label: formatMoney(game.cost), title: 'Coste (€)' },
-    (game.cexLink || formatMoney(game.cex)) && {
-      icon: `<img src="https://i.ibb.co/kg4KSbJX/217437.png" alt="Cex" class="w-5 h-5 inline" />`,
-      label: formatMoney(game.cex),
-      title: 'Cex (€)',
-      link: game.cexLink
-    },
-    game.wallapopLink && {
-      icon: `<img src="https://i.ibb.co/RpbCN10H/217439.png" alt="Wallapop" class="w-5 h-5 inline" />`,
-      label: 'Wallapop',
-      link: game.wallapopLink
-    },
-    game.vintedLink && {
-      icon: `<img src="https://i.ibb.co/gY2Tqd5/217438.png" alt="Vinted" class="w-5 h-5 inline" />`,
-      label: 'Vinted',
-      link: game.vintedLink
-    },
-    game.ebayLink && {
-      icon: `<img src="https://i.ibb.co/67Mcg0Qd/217436.png" alt="eBay" class="w-5 h-5 inline" />`,
-      label: 'eBay',
-      link: game.ebayLink
-    },
-  ];
-
-  const renderColumn = (items) =>
-    items
-      .filter(Boolean)
-      .map((item) => {
-        if (item === 'CONDICION_ESTADO_PLACEHOLDER') {
-          return conditionAndState;
-        }
-        if (item.link) {
-          return `
-            <div class="mb-2 flex items-center gap-2">
-              <a href="${item.link}" target="_blank" class="flex items-center gap-1">
-                ${item.icon}
-                <span class="underline">${item.label}</span>
-              </a>
-            </div>`;
-        }
-        return `
-          <div class="mb-2 flex items-center gap-2">
-            <span title="${item.title || ''}">${item.icon}</span>
-            <span>${item.label}</span>
-          </div>`;
-      })
-      .join('');
-
-  modalDetails.innerHTML = `
-      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-    ${game.title} ${imageLink} ${detailsTooltip}
-  </h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-      <div>${renderColumn(column1)}</div>
-      <div>${renderColumn(column2)}</div>
+  <!-- Menú desplegable que sale debajo para All -->
+  <div id="all-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+    <div class="py-1">
+  <div id="option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+    <div id="option-platinum" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Platinum</div>
+    <div id="option-100" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">100%</div>
     </div>
-  `;
-}
-
-function showTooltip(event, text) {
-  const tooltip = document.getElementById('tooltipDetails');
-  tooltip.innerText = text;
-  tooltip.style.left = `${event.pageX + 10}px`;
-  tooltip.style.top = `${event.pageY + 10}px`;
-  tooltip.classList.remove('hidden');
-}
-
-document.addEventListener('click', (e) => {
-  const tooltip = document.getElementById('tooltipDetails');
-  if (!tooltip.contains(e.target) && !e.target.closest('[onclick^="showTooltip"]')) {
-    tooltip.classList.add('hidden');
-  }
-});
-
-function closeModal() {
-  // Quitar la clase que activa la opacidad
-  modal.classList.remove('show');
-
-  // Esperar a que termine la transición antes de ocultar completamente el modal
-  setTimeout(() => {
-    modal.style.display = 'none';
-    modalImage.src = '';
-    modalDetails.innerHTML = '';
-  }, 200); // ajusta este valor para que coincida con la duración de tu transición en CSS
-}
-
-// Cerrar modal al hacer click fuera del contenido
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
-});
+  </div>
+  </div>
 
 
-// Logout (opcional: puedes poner un botón)
-function logout() {
-  auth.signOut().then(() => {
-    alert("Sesión cerrada");
-    location.reload();
-  });
-}
+<!-- Botón de plataforma actualizado -->
+<div class="relative inline-block text-left w-full lg:w-auto">
+  <button id="platform-button"
+    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+    type="button"
+    id="all-button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    onclick="toggleAllMenu()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad2 mr-1 h-4">
+        <line x1="6" x2="10" y1="11" y2="11"></line>
+        <line x1="8" x2="8" y1="9" y2="13"></line>
+        <line x1="15" x2="15.01" y1="12" y2="12"></line>
+        <line x1="18" x2="18.01" y1="10" y2="10"></line>
+        <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path>
+      </svg>
+    <div class="hidden lg:block" id="platform-button-label">All</div>
+  </button>
 
-window.addEventListener('beforeunload', () => {
-  firebase.auth().signOut();
-});
+  <!-- Menú desplegable que sale debajo para All -->
+  <div id="platform-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+    <div class="py-1">
+      <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+      <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS3</div>
+      <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS4</div>
+      <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS5</div>
+      <div id="platform-option-vita" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Vita</div>
+      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PC</div>
+    </div>
+  </div>
+  </div>
+
+</div>
+          
+          
+        
+        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid">
+          </div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
+<script>
 
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleFormBtn = document.getElementById('toggleForm');
-  const authStatus = document.getElementById('authStatus');
-  const form = document.getElementById('gameForm');
+  const authStatusBtn = document.getElementById('authStatus');
   const loginModal = document.getElementById('loginModal');
   const loginEmail = document.getElementById('loginEmail');
   const loginPassword = document.getElementById('loginPassword');
   const loginSubmit = document.getElementById('loginSubmit');
-
-  
-loginEmail.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();  // evita que el formulario se envíe automáticamente
-    loginSubmit.click();
-  }
-});
-
-loginPassword.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    loginSubmit.click();
-  }
-});
+  const logoutButton = document.getElementById('logoutButton');
+  const gamesContainer = document.getElementById('games-container'); // ✅ asegúrate que esto exista
 
   let isAuthenticated = false;
 
-  // Actualiza icono según estado
-  function updateAuthIcon(user) {
+  function updateAuthStatusIcon(user) {
     if (user) {
       isAuthenticated = true;
-      authStatus.textContent = "🔓";
-      authStatus.title = "Autenticado como " + user.email;
+      authStatusBtn.textContent = '🔓';
+      authStatusBtn.title = `Autenticado como: ${user.email}`;
     } else {
       isAuthenticated = false;
-      authStatus.textContent = "🔒";
-      authStatus.title = "No autenticado";
-      form.classList.add('hidden'); // Oculta formulario si no autenticado
+      authStatusBtn.textContent = '🔒';
+      authStatusBtn.title = 'No autenticado';
     }
   }
 
-  // Observa cambios en autenticación
   auth.onAuthStateChanged(user => {
-    updateAuthIcon(user);
+    updateAuthStatusIcon(user);
+    if (!user && typeof form !== 'undefined') {
+      form.classList.add('hidden');
+    }
+
+    // ✅ Llama aquí a renderGamesFromFirebase para asegurar que se ejecuta tras autenticar o no
+    renderGamesFromFirebase();
   });
 
-  // Al pulsar el lápiz
-  toggleFormBtn.onclick = () => {
-    const user = auth.currentUser;
-    const tooltip = document.getElementById('loginTooltip');
-
-    if (user) {
-      // Si está logueado, alterna el formulario como antes
-      tooltip.classList.add('hidden');
-      form.classList.toggle('hidden');
+  authStatusBtn.onclick = () => {
+    if (isAuthenticated) {
+      auth.signOut().then(() => alert('Sesión cerrada'));
     } else {
-      // Si el tooltip ya está visible, ocultarlo
-      if (!tooltip.classList.contains('hidden')) {
-        tooltip.classList.add('hidden');
-        return;
-      }
-
-      // Mostrar tooltip y ajustar si se sale de la ventana
-      tooltip.classList.remove('hidden');
-
-      const tooltipRect = tooltip.getBoundingClientRect();
-      const windowWidth = window.innerWidth;
-
-      if (tooltipRect.right > windowWidth - 20) {
-        tooltip.classList.add('tooltip-shift-left');
-      } else {
-        tooltip.classList.remove('tooltip-shift-left');
-      }
+      loginModal.classList.remove('hidden');
     }
   };
 
-  // Pulsar en icono 🔒 o 🔓 para cerrar sesión si está autenticado
-authStatus.onclick = () => {
-  if (isAuthenticated) {
-    auth.signOut();
-    alert('Sesión cerrada');
-  } else {
-    document.getElementById('loginModal').classList.remove('hidden');
-  }
-};
-
-
-  // Botón login
   loginSubmit.onclick = () => {
     const email = loginEmail.value.trim();
     const password = loginPassword.value.trim();
@@ -1179,200 +366,464 @@ authStatus.onclick = () => {
     auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         loginModal.classList.add('hidden');
-        form.classList.remove('hidden');
         loginModal.classList.remove('login-error');
+        if (typeof form !== 'undefined') {
+          form.classList.remove('hidden');
+        }
       })
       .catch(() => {
-        // Poner modal en rojo si error
         loginModal.classList.add('login-error');
       });
   };
 
-  // También cerrar modal login si se clica fuera (opcional)
+  logoutButton.onclick = () => {
+    loginModal.classList.add('hidden');
+    loginModal.classList.remove('login-error');
+  };
+
   loginModal.onclick = (e) => {
     if (e.target === loginModal) {
       loginModal.classList.add('hidden');
       loginModal.classList.remove('login-error');
     }
   };
-});
 
-const authStatusBtn = document.getElementById('authStatus');
+  async function loadGames() {
+  const snap = await db.collection("games").get();
+  const gamesContainer = document.getElementById("games-container");
+  gamesContainer.innerHTML = ""; // Limpia antes de insertar
 
-function updateAuthStatusIcon(user) {
-  if (user) {
-    authStatusBtn.textContent = '🔓'; // Desbloqueado
-    authStatusBtn.title = `Autenticado como: ${user.email}`;
-  } else {
-    authStatusBtn.textContent = '🔒'; // Bloqueado
-    authStatusBtn.title = 'No autenticado';
-  }
+  snap.forEach(doc => {
+    const game = doc.data();
+    const card = document.createElement("a");
+    card.className = "mx-auto my-1 w-[176px]";
+    card.href = "#";
+    card.target = "_blank";
+
+    card.innerHTML = `
+      <div class="text-card-foreground rounded-xl border shadow-md p-2 duration-200 ease-in-out bg-platinum hover:bg-platinum/50">
+        <div class="flex flex-col space-y-1.5 p-0">
+          <div class="flex flex-col">
+            <div class="grid h-[158px]">
+              <div class="col-start-1 row-start-1 w-full self-center" style="height: 158px;">
+                <img alt="${game.title}" class="rounded-md text-center bg-primary/10 object-cover w-full h-full" src="${game.imageUrl}" style="color: transparent;" />
+              </div>
+            </div>
+            <div class="mt-2 truncate text-sm font-medium text-center" title="${game.title}">${game.title}</div>
+          </div>
+        </div>
+        <div class="pt-1">
+          <div class="flex justify-center items-center bg-black text-white text-xs font-medium rounded-full h-4">
+            <span class="px-2">${game.cost ? game.cost + " €" : "—"}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    gamesContainer.appendChild(card);
+  });
 }
 
-// Observa cambios en la autenticación y actualiza el icono
-auth.onAuthStateChanged(user => {
-  updateAuthStatusIcon(user);
-  if (!user) {
-    form.classList.add('hidden'); // Oculta el formulario si no autenticado
-  }
+
+
+
+  let selectedTypes = new Set();  // Añadir al principio del script
+  // --- Búsqueda ---
+ const searchInput = document.querySelector('input[placeholder="Search for games"]');
+ const gameCardsContainer = document.getElementById('games-container');
+ const gameCards = () => gameCardsContainer.querySelectorAll('a.mx-auto');
+ let originalCardsOrder = []; // Nuevo: para guardar las cartas originales
+ 
+ document.addEventListener('DOMContentLoaded', function() {
+   originalCardsOrder = Array.from(gameCards()); // Guardarlas cuando la página cargue
+ 
+   searchInput.addEventListener('input', function() {
+     const filter = searchInput.value.toLowerCase();
+ 
+     gameCards().forEach(card => {
+       const img = card.querySelector('img');
+       const altText = img ? img.alt.toLowerCase() : '';
+ 
+       if (altText.includes(filter)) {
+         card.style.display = 'block';
+       } else {
+         card.style.display = 'none';
+       }
+     });
+   });
+ 
+   // --- Ordenación ---
+   const sortButton = document.getElementById('sort-button');
+   const sortMenu = document.getElementById('sort-menu');
+   const sortButtonLabel = document.getElementById('sort-button-label');
+   const optionAlphabetical = document.getElementById('option-alphabetical');
+   const optionLastUpdated = document.getElementById('option-lastupdated');
+ 
+   sortButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sortMenu.classList.toggle('hidden');
+  allMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
 });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('logoutButton').addEventListener('click', () => {
-      document.getElementById('loginModal').classList.add('hidden');
+ 
+   optionAlphabetical.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Alphabetical';
+     sortMenu.classList.add('hidden');
+     sortGamesAlphabetically();
+     selectOption('sort-menu', 'option-alphabetical');
+   });
+ 
+   optionLastUpdated.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Last Updated';
+     sortMenu.classList.add('hidden');
+     restoreOriginalOrder(); // Ahora restauramos el orden original sin recargar la página
+     selectOption('sort-menu', 'option-lastupdated');
+   });
+ 
+   document.addEventListener('click', (e) => {
+     if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
+       sortMenu.classList.add('hidden');
+     }
+   });
+ 
+   function sortGamesAlphabetically() {
+     const cardsArray = Array.from(gameCards());
+ 
+     cardsArray.sort((a, b) => {
+       const imgA = a.querySelector('img');
+       const imgB = b.querySelector('img');
+       const altA = imgA ? imgA.alt.toLowerCase() : '';
+       const altB = imgB ? imgB.alt.toLowerCase() : '';
+       return altA.localeCompare(altB);
+     });
+ 
+     gameCardsContainer.innerHTML = '';
+     cardsArray.forEach(card => gameCardsContainer.appendChild(card));
+   }
+ 
+   // Función para restaurar el orden original sin recargar la página
+   function restoreOriginalOrder() {
+     gameCardsContainer.innerHTML = '';  // Borrar el contenedor
+     originalCardsOrder.forEach(card => gameCardsContainer.appendChild(card)); // Volver a poner las cartas en el orden original
+   }
+ 
+    // --- Filtro por All, Limited, Full ---
+    const allButton = document.getElementById('all-button');
+    const allMenu = document.getElementById('all-menu');
+    const allButtonLabel = document.getElementById('all-button-label');
+    const optionAll = document.getElementById('option-all');
+    const optionLimited = document.getElementById('option-100');
+    const optionFull = document.getElementById('option-platinum');
+
+    allButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  allMenu.classList.toggle('hidden');
+  sortMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
+});
+
+
+    optionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();  
+  setActiveOption(optionAll, 'All');
+  allMenu.classList.add('hidden');
+  showAllGames();
+});
+
+optionLimited.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('100%'); // Filtra solo los juegos con id="100%"
+  setActiveOption(optionLimited, '100%');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+optionFull.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('Platinum'); // Filtra solo los juegos con id="Platinum"
+  setActiveOption(optionFull, 'Platinum');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+
+    document.addEventListener('click', (e) => {
+      if (!allButton.contains(e.target) && !allMenu.contains(e.target)) {
+        allMenu.classList.add('hidden');
+      }
     });
+
+    function showAllGames() {
+  // Asegurarse de que se muestran todos los juegos, pero respetando la plataforma seleccionada
+  gameCards().forEach(card => {
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(card.querySelectorAll('svg')).some(svg => selectedPlatforms.has(svg.id));
+    card.style.display = matchesPlatform ? 'block' : 'none';
+  });
+}
+
+function applyCombinedFilters() {
+  gameCards().forEach(card => {
+    // Filtrar por tipo
+    const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+    // Filtrar por plataforma
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(card.querySelectorAll('svg')).some(svg => selectedPlatforms.has(svg.id));
+    
+    // Mostrar el juego solo si cumple ambos filtros
+    card.style.display = (matchesType && matchesPlatform) ? 'block' : 'none';
+  });
+}
+
+
+
+ 
+   // --- Sistema de selección del punto ---
+   function clearSelections(menuId) {
+     const options = document.querySelectorAll(`#${menuId} .block`);
+     
+     options.forEach(option => {
+       option.innerHTML = option.textContent.trim().replace(/^·\s*/, ''); // Quitar el punto
+       option.style.fontWeight = 'normal'; // Normalizar la fuente
+     });
+   }
+ 
+   function selectOption(menuId, optionId) {
+     clearSelections(menuId); // Limpiar solo las opciones del menú indicado
+ 
+     const selectedOption = document.getElementById(optionId);
+     if (selectedOption) {
+       selectedOption.innerHTML = `<strong>·</strong> ${selectedOption.textContent.trim().replace(/^·\s*/, '')}`; // Poner el · en negrita
+     }
+   }
+
+   function setActiveOption(activeElement, labelText) {
+  [optionAll, optionLimited, optionFull].forEach(opt => {
+    opt.innerHTML = opt.textContent.trim().replace(/^·\s*/, '');  // Limpiar el punto
   });
 
-  document.addEventListener('click', (event) => {
-  const tooltip = document.getElementById('loginTooltip');
-  const pencilBtn = document.getElementById('toggleForm'); // botón del lápiz
-  // Si el tooltip está visible y el click no es ni dentro del tooltip ni sobre el lápiz, ocultamos el tooltip
-  if (
-    !tooltip.classList.contains('hidden') && 
-    !tooltip.contains(event.target) && 
-    event.target !== pencilBtn
-  ) {
-    tooltip.classList.add('hidden');
+  activeElement.innerHTML = `<strong>·</strong> ${labelText}`;
+  allButtonLabel.textContent = labelText;
+}
+
+
+const platformButton = document.getElementById('platform-button');
+const platformMenu = document.getElementById('platform-menu');
+const platformButtonLabel = document.getElementById('platform-button-label');
+const platformOptionAll = document.getElementById('platform-option-all');
+const platformOptionPS3 = document.getElementById('platform-option-ps3');
+const platformOptionPS4 = document.getElementById('platform-option-ps4');
+const platformOptionPS5 = document.getElementById('platform-option-ps5');
+const platformOptionVita = document.getElementById('platform-option-vita');
+const platformOptionPC = document.getElementById('platform-option-pc');
+
+
+let selectedPlatforms = new Set();
+
+platformButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeMenusExcept('platform-menu');
+  platformMenu.classList.toggle('hidden');
+  if (!platformMenu.classList.contains('hidden')) {
+    adjustPlatformMenuPosition(); // ← AÑADE ESTA LÍNEA
   }
 });
 
-function zoomImage(src) {
-  const overlay = document.getElementById('zoomOverlay');
-  const zoomedImg = document.getElementById('zoomedImage');
-  zoomedImg.src = src;
-  overlay.classList.remove('hidden');
+// Ajustar posición del menú si se desborda
+function adjustPlatformMenuPosition() {
+  const menu = platformMenu;
+  const rect = menu.getBoundingClientRect();
+  const overflowRight = rect.right > window.innerWidth;
+
+  if (overflowRight) {
+    menu.style.right = '0';     // pega al borde derecho de la ventana
+    menu.style.left = 'auto';   // evita conflicto si estaba a la derecha del botón
+  } else {
+    menu.style.right = '';      // resetear si no hay overflow
+    menu.style.left = '';       // resetear si no hay overflow
+  }
 }
 
-document.getElementById('zoomOverlay').addEventListener('click', () => {
-  document.getElementById('zoomOverlay').classList.add('hidden');
+function closeMenusExcept(openId) {
+  ['sort-menu', 'all-menu', 'platform-menu'].forEach(id => {
+    const menu = document.getElementById(id);
+    if (id !== openId) {
+      menu.classList.add('hidden'); // Cerrar menús no seleccionados
+      // Restablecer la posición del menú de plataformas
+      if (id === 'platform-menu') {
+        menu.style.right = '';
+        menu.style.left = '';
+      }
+    } else {
+      if (id === 'platform-menu') {
+        adjustPlatformMenuPosition(); // Ajustar la posición si está abierto
+      }
+    }
+  });
+}
+
+
+platformOptionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  if (selectedPlatforms.size === 0) {
+    // Si ya está en modo "All", al volver a pulsar, seleccionamos todas las plataformas
+    selectedPlatforms = new Set(['PS3', 'PS4', 'PS5', 'Vita', 'PC']);
+  } else {
+    // Si hay alguna seleccionada, entonces vaciamos el set (modo All original)
+    selectedPlatforms.clear();
+  }
+
+  updatePlatformSelectionUI();
+  applyCombinedFilters();
 });
 
-function openEditModal(game) {
-  const editForm = document.getElementById('editForm');
 
-  // Rellenar campos
-  editForm.querySelector('#imageUrl').value = game.imageUrl || '';
-  editForm.querySelector('#title').value = game.title || '';
-  editForm.querySelector('#platform').value = game.platform || '';
-  editForm.querySelector('#folder').value = game.folder || '';
-  editForm.querySelector('#condition').value = game.condition || '';
-  editForm.querySelector('#cost').value = game.cost || '';
-  editForm.querySelector('#value').value = game.value || '';
-  editForm.querySelector('#purchaseDate').value = game.purchaseDate || '';
-  editForm.querySelector('#releaseDate').value = game.releaseDate || '';
-  editForm.querySelector('#region').value = game.region || '';
-  editForm.querySelector('#purchaseLocation').value = game.purchaseLocation || '';
-  editForm.querySelector('#gift').value = game.gift || '';
-  editForm.querySelector('#details').value = game.details || '';
-  editForm.querySelector('#wallapopLink').value = game.wallapopLink || '';
-  editForm.querySelector('#vintedLink').value = game.vintedLink || '';
-  editForm.querySelector('#ebayLink').value = game.ebayLink || '';
-  editForm.querySelector('#cex').value = game.cex || '';
-  editForm.querySelector('#cexLink').value = game.cexLink || '';
 
-  // Estrellas
-  const stars = editForm.querySelectorAll('#estadoStars span');
-  stars.forEach((star, index) => {
-    star.textContent = index < (game.estado || 0) ? '★' : '☆';
+[
+  { id: 'PS3', element: platformOptionPS3 },
+  { id: 'PS4', element: platformOptionPS4 },
+  { id: 'PS5', element: platformOptionPS5 },
+  { id: 'Vita', element: platformOptionVita },
+  { id: 'PC', element: platformOptionPC },
+].forEach(({ id, element }) => {
+  element.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (selectedPlatforms.has(id)) {
+      selectedPlatforms.delete(id);
+    } else {
+      selectedPlatforms.add(id);
+    }
+    updatePlatformSelectionUI();
+    filterGamesByPlatform();
+  });
+});
+
+
+
+function updatePlatformSelectionUI() {
+  [platformOptionAll, platformOptionPS3, platformOptionPS4, platformOptionPS5, platformOptionVita, platformOptionPC].forEach(opt => {
+    opt.innerHTML = opt.textContent.trim().replace(/^✓\s*/, '');
   });
 
-  // Mostrar modal
-  const editModal = document.getElementById("editModal");
-  editModal.classList.remove("hidden", "opacity-0", "pointer-events-none");
-  void editModal.offsetWidth;
-  editModal.classList.add("show");
-
-  // Guardar ID
-  editModal.dataset.gameId = game.id;
-
-  // Submit
-  editForm.onsubmit = function (e) {
-    e.preventDefault();
-    saveEditedGame(game.id);
-  };
-}
-
-function closeEditModal() {
-  const editModal = document.getElementById("editModal");
-  editModal.classList.add("opacity-0", "pointer-events-none");
-  editModal.classList.remove("show");
-}
-
-const editModal = document.getElementById("editModal");
-editModal.addEventListener("click", (e) => {
-  if (e.target === editModal) {
-    closeEditModal();
-  }
-});
-
-
-async function saveEditedGame(gameId) {
-  const editForm = document.getElementById('editForm');
-
-  const updatedGame = {
-    title: editForm.querySelector('#title').value,
-    image: editForm.querySelector('#imageUrl').value,
-    platform: editForm.querySelector('#platform').value,
-    folder: editForm.querySelector('#folder').value,
-    condition: editForm.querySelector('#condition').value,
-    cost: parseFloat(editForm.querySelector('#cost').value) || 0,
-    value: parseFloat(editForm.querySelector('#value').value) || 0,
-    purchaseDate: editForm.querySelector('#purchaseDate').value,
-    releaseDate: editForm.querySelector('#releaseDate').value,
-    region: editForm.querySelector('#region').value,
-    purchaseLocation: editForm.querySelector('#purchaseLocation').value,
-    gift: editForm.querySelector('#gift').value,
-    details: editForm.querySelector('#details').value,
-    wallapopLink: editForm.querySelector('#wallapopLink').value,
-    vintedLink: editForm.querySelector('#vintedLink').value,
-    ebayLink: editForm.querySelector('#ebayLink').value,
-    cex: parseFloat(editForm.querySelector('#cex').value) || 0,
-    cexLink: editForm.querySelector('#cexLink').value,
-    estado: getSelectedStars(editForm)
-  };
-
-  try {
-    await db.collection("games").doc(gameId).update(updatedGame);
-    closeEditModal();
-    loadData(); // Recargar
-  } catch (error) {
-    console.error("Error al guardar el juego:", error);
-    alert("Hubo un error al guardar los cambios.");
+  if (selectedPlatforms.size === 0) {
+    platformOptionAll.innerHTML = `<strong>✓</strong> All`;
+    platformButtonLabel.textContent = 'All';
+  } else {
+    if (selectedPlatforms.has('PS3')) platformOptionPS3.innerHTML = `<strong>✓</strong> PS3`;
+    if (selectedPlatforms.has('PS4')) platformOptionPS4.innerHTML = `<strong>✓</strong> PS4`;
+    if (selectedPlatforms.has('PS5')) platformOptionPS5.innerHTML = `<strong>✓</strong> PS5`;
+    if (selectedPlatforms.has('Vita')) platformOptionVita.innerHTML = `<strong>✓</strong> Vita`;
+    if (selectedPlatforms.has('PC')) platformOptionPC.innerHTML = `<strong>✓</strong> PC`;
+    platformButtonLabel.textContent = Array.from(selectedPlatforms).join(', ');
   }
 }
 
 
-function getSelectedStars(form) {
-  const stars = form.querySelectorAll('#estadoStars span');
-  let selected = 0;
-  stars.forEach((star, index) => {
-    if (star.textContent === '★') selected = index + 1;
+
+function filterGamesByPlatform() {
+  gameCards().forEach(card => {
+    // Buscar todos los <svg> dentro de la tarjeta
+    const svgsInCard = card.querySelectorAll('svg');
+
+    // Si no hay ninguna plataforma seleccionada, mostramos todos los juegos
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(svgsInCard).some(svg => selectedPlatforms.has(svg.id));
+    
+    // Verificar que el juego también coincida con el tipo seleccionado
+    const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+
+    // Mostrar el juego solo si cumple con los filtros de plataforma y tipo
+    const shouldShow = (matchesPlatform && matchesType);
+    card.style.display = shouldShow ? 'block' : 'none';
   });
-  return selected;
 }
 
 
-document.getElementById('closeEditFormBtn').addEventListener('click', () => {
-  const currentData = getFormData();
 
-  // Comparar como JSON para simplicidad (puedes mejorar esto con comparación profunda si hace falta)
-  if (JSON.stringify(currentData) !== JSON.stringify(originalGameData)) {
-    const confirmExit = confirm("Tienes cambios sin guardar. ¿Seguro que quieres cerrar el formulario?");
-    if (!confirmExit) return;
+   // --- MARCAR por defecto ---
+   selectOption('sort-menu', 'option-lastupdated');
+   selectOption('all-menu', 'option-all');
+   selectedPlatforms.clear();  // Vaciar selección al cargar
+updatePlatformSelectionUI();  // Refrescar UI
+applyCombinedFilters();      // Aplicar filtros (mostrar todos los juegos)
+
+ }); // Aquí cerramos el 'DOMContentLoaded'
+ 
+
+
+   // ✅ FUNCIÓN PARA CARGAR JUEGOS
+  function renderGamesFromFirebase() {
+    gamesContainer.innerHTML = "";
+
+    db.collection('games').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const platform = data.platform || "";
+        const { title, image, value, link } = data;
+        const imageSrc = image && image.trim() !== "" 
+          ? image 
+          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
+
+        const imgStyle = platform === "Nintendo DS" 
+          ? "color: transparent; height: 130px; width: auto;" 
+          : "color: transparent; height: 154px; width: auto;";
+
+        const html = `
+          <a id="Platinum" class="mx-auto my-1 w-[176px]" href="${link || '#'}" target="_blank" style="display: block;">
+            <div 
+              class="text-card-foreground rounded-xl border shadow-md p-2 duration-200 ease-in-out" 
+              style="background-color: rgba(242, 249, 255, 1);" 
+              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';" 
+              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
+            >
+              <div class="flex flex-col space-y-1.5 p-0">
+                <div class="flex flex-col">
+                  <div class="grid h-[158px]">
+                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                      <img 
+                        alt="${title}" 
+                        loading="lazy" 
+                        height="${platform === "Nintendo DS" ? 130 : 154}" 
+                        decoding="async" 
+                        class="rounded-md text-center bg-primary/10" 
+                        src="${imageSrc}" 
+                        style="${imgStyle}"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-0">
+                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+                <div>
+                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <span class="text-xs font-medium text-white mix-blend-difference">${(Number(value) || 0).toFixed(2)}€</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        `;
+
+        gamesContainer.innerHTML += html;
+      });
+    });
   }
 
-  form.reset();
-  estadoValue = 0;
-  pintarEstrellas(estadoValue);
-  form.classList.add('hidden');
-  form.removeAttribute('data-editing');
-  form.removeAttribute('data-index');
-  originalGameData = null;
 });
+ </script>
 
-  </script>
-
-  <!-- Modal login -->
+ <!-- Modal de login -->
 <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex justify-center items-center z-50">
   <div class="bg-white p-6 rounded-xl max-w-sm w-full relative shadow">
     <h2 class="text-xl font-bold mb-4">Iniciar sesión</h2>
@@ -1380,23 +831,7 @@ document.getElementById('closeEditFormBtn').addEventListener('click', () => {
     <input id="loginPassword" type="password" placeholder="Contraseña" class="w-full mb-4 border p-2 rounded" />
     <button id="loginSubmit" class="w-full bg-blue-600 text-white py-2 rounded">Acceder</button>
     <button id="logoutButton" class="text-gray-500 hover:text-gray-700 text-sm px-2 py-1 mt-2 mx-auto block">Salir</button>
-
   </div>
 </div>
 
-<!-- Imagen ampliada -->
-<div id="fullscreenImage" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm hidden justify-center items-center z-[60]">
-  <img id="fullscreenImageTag" src="" class="max-w-full max-h-full rounded-lg shadow-xl">
-</div>
-
-<!-- Bocadillo de detalles -->
-<div id="tooltipDetails" class="hidden absolute bg-white text-black text-sm p-4 rounded shadow-lg max-w-md z-[70]"></div>
-
-<!-- Overlay para zoom de imagen -->
-<div id="zoomOverlay" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50">
-  <img id="zoomedImage" class="max-w-full max-h-full rounded shadow-lg" />
-</div>
-
-
-</body>
-</html>
+</body></html>
