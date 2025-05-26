@@ -388,6 +388,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+const loginBox = document.getElementById("loginBox");
+
+// Mostrar modal con animación
+function showLoginModal() {
+  showLoginModal();
+
+  requestAnimationFrame(() => {
+    loginModal.classList.add("opacity-100");
+    loginBox.classList.remove("opacity-0", "scale-95");
+    loginBox.classList.add("opacity-100", "scale-100");
+  });
+}
+
+// Ocultar modal con animación
+function hideLoginModal() {
+  loginModal.classList.remove("opacity-100");
+  loginBox.classList.remove("opacity-100", "scale-100");
+  loginBox.classList.add("opacity-0", "scale-95");
+
+  setTimeout(() => {
+    hideLoginModal();
+  }, 300);
+}
+
   async function loadGames() {
   const snap = await db.collection("games").get();
   const gamesContainer = document.getElementById("games-container");
@@ -823,9 +847,9 @@ applyCombinedFilters();      // Aplicar filtros (mostrar todos los juegos)
 });
  </script>
 
- <!-- Modal de login -->
-<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex justify-center items-center z-50">
-  <div class="bg-white p-6 rounded-xl max-w-sm w-full relative shadow">
+ <!-- Modal login -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden flex justify-center items-center z-50 transition-opacity duration-300">
+  <div class="bg-white p-6 rounded-xl max-w-sm w-full relative shadow-lg transform scale-95 opacity-0 transition-all duration-300" id="loginBox">
     <h2 class="text-xl font-bold mb-4">Iniciar sesión</h2>
     <input id="loginEmail" type="email" placeholder="Correo" class="w-full mb-2 border p-2 rounded" />
     <input id="loginPassword" type="password" placeholder="Contraseña" class="w-full mb-4 border p-2 rounded" />
