@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Mi colección de videojuegos"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
 <style>
+
+  @font-face {
+    font-family: 'Monofonto';
+    src: url('./adricollantex • Platinum Hunt MARZO 2025_files/Coolvetica Rg.otf') format('truetype'); /* Ajusta la ruta y el formato según tu archivo */
+    /* Puedes añadir más bloques @font-face para diferentes pesos (bold, italic, etc.) si la fuente los tiene */
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  h1 {
+  font-family: 'Monofonto', monospace; /* 'monospace' como fuente de respaldo */
+}
+
   #loginModal {
   position: fixed;
   inset: 0;
@@ -330,7 +343,7 @@ select#edition option:not(:first-of-type) {
   z-index: 50;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms ease;
+  transition: opacity 300ms ease-in-out;
 }
 
 #modal.flex { /* Usamos .flex en lugar de .show para la visibilidad */
@@ -342,20 +355,45 @@ select#edition option:not(:first-of-type) {
 #modal > div {
   background: white;
   border-radius: 1rem;
-  max-width: 800px; /* Ajustado al max-width de tu HTML */
-  min-width: 400px; /* Ajustado al min-width de tu HTML */
-  width: 90%;
+  max-width: 600px; /* Ajustado al max-width de tu HTML */
+  min-width: 300px; /* Ajustado al min-width de tu HTML */
+  width: 80%;
   padding: 1.5rem;
   position: relative;
-  transform: scale(0.7);
+  transform: scale(0.95);
   opacity: 0;
-  transition: transform 200ms ease, opacity 200ms ease;
+  transition: transform 300ms ease, opacity 300ms ease;
   will-change: transform, opacity;
+  max-height: 90vh;         /* No sobrepasar el 90% de la ventana */
+  overflow-y: auto; /* Habilita scroll si el contenido es muy alto */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+#modal > div::-webkit-scrollbar {
+  width: 8px;
+}
+
+#modal > div::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 1rem;
+}
+
+#modal > div::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 1rem;
 }
 
 #modal.flex > div { /* Usamos .flex aquí también */
   transform: scale(1);
   opacity: 1;
+}
+
+@media (max-width: 480px) {
+  #modal > div {
+    width: 95%;
+    max-height: 85vh;
+  }
 }
 
 .zoom-image {
@@ -608,11 +646,11 @@ select#edition option:not(:first-of-type) {
 
 <!-- Modal de detalles -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-<div class="bg-white p-8 rounded-2xl w-full max-w-[800px] min-w-[400px] relative">
+<div class="bg-white p-8 rounded-2xl w-full max-w-[640px] min-w-[360px] relative">
 
 
     <!-- Botón cerrar -->
-    <button onclick="closeModal()" class="absolute top-2 right-3 text-lg font-bold text-red-500">✕</button>
+    <button id="closeModalBtn" class="absolute top-2 right-3 text-lg font-bold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
 
     <!-- Imagen del juego -->
     <img id="modalImage" src="" class="w-full max-h-[400px] object-contain rounded mb-4" />
@@ -749,6 +787,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const purchaseDateInput = document.getElementById('purchaseDate');
   const releaseDateInput = document.getElementById('releaseDate');
   const modal = document.getElementById('modal');
+  
 
   let isAuthenticated = false;
 
@@ -764,6 +803,115 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+let games = [];
+
+// ✅ FUNCIÓN PARA CARGAR JUEGOS
+  function renderGamesFromFirebase() {
+    gamesContainer.innerHTML = "";
+    games = [];
+
+
+    db.collection('games').get().then(snapshot => {
+      snapshot.forEach((doc, firebaseIndex) => {
+        const data = doc.data();
+        const platform = data.platform || "";
+        const { title, value, link } = data;
+        // Usamos data.ImagenURL
+        const imageSrc = (data.imageURL || "").trim() !== ""
+          ? data.imageURL
+          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
+
+        const imageHeight = (platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" || platform === "Nintendo 3DS")
+          ? 130
+          : 154;
+
+        const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
+
+        const gameData = {
+          id: doc.id,
+          title,
+          value,
+          link,
+          image: imageSrc,
+          platform,
+          folder: data.folder,
+          condition: data.condition,
+          rating: data.rating,
+          purchaseDate: data.purchaseDate,
+          releaseDate: data.releaseDate,
+          purchaseLocation: data.purchaseLocation,
+          region: data.region,
+          gift: data.gift,
+          cost: data.cost,
+          edition: data.edition,
+          wallapopLink: data.wallapopLink,
+          vintedLink: data.vintedLink,
+          ebayLink: data.ebayLink,
+          cex: data.cex,
+          cexLink: data.cexLink,
+          estado: data.estado,
+          details: data.details,
+        };
+        games.push(gameData);
+
+
+        const card = document.createElement("a");
+          card.className = "mx-auto my-1 w-[176px]";
+          card.href = "#";
+          card.id = "Platinum";
+          card.style.display = "block";
+
+        card.innerHTML = `
+            <div
+              class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
+              style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
+              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
+            >
+              <div class="flex flex-col space-y-1.5 p-0">
+                <div class="flex flex-col">
+                  <div class="grid h-[158px]">
+                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                      <img
+                        alt="${title}"
+                        loading="lazy"
+                        height="${platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" ? 130 : 154}"
+                        decoding="async"
+                        class="rounded-sm text-center bg-primary/10"
+                        src="${imageSrc}"
+                        style="${imgStyle}"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-0">
+                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+                <div>
+                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <span class="text-xs font-medium text-white mix-blend-difference">${(Number(value) || 0).toFixed(2)}€</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        `;
+
+         const currentGameIndex = games.length - 1;
+      card.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(currentGameIndex); // 👈 MODIFICACIÓN: Usamos currentGameIndex
+      });
+        
+        gamesContainer.appendChild(card);
+      });
+    });
+  }
+
+
   auth.onAuthStateChanged(user => {
     updateAuthStatusIcon(user);
     if (!user && typeof form !== 'undefined') {
@@ -774,13 +922,149 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGamesFromFirebase();
   });
 
+function openModal(index) {
+  console.log("Valor de games al abrir el modal:", games); // Añade esta línea
+  const game = games[index];
+  const newUrl = `<span class="math-inline">\{window\.location\.origin\}</span>{window.location.pathname}?gameId=${game.id}`;
+  window.history.pushState({ gameId: game.id }, '', newUrl);
+  const modal = document.getElementById("modal");
+  const modalImage = document.getElementById("modalImage");
+  const modalDetails = document.getElementById("modalDetails");
+  const modalButtons = document.getElementById('modalButtons');
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+    modalButtons.classList.remove('hidden');
+  } else {
+    modalButtons.classList.add('hidden');
+  }
+
+  document.getElementById("editBtn").onclick = () => {
+    closeModal();
+    openEditModal(game); // asegúrate de tener esta función
+  };
+
+modalImage.src = game.image;
+
+  // ✅ Nuevo bloque para ajustar el tamaño y centrado de la imagen
+  let imageHeightModal = 450; // Valor por defecto
+  if (game.platform === "Nintendo DS" || game.platform === "Nintendo 3DS" || game.platform === "PlayStation" || game.platform === "Game Boy Advance") {
+    imageHeightModal = 390;
+  }
+  modalImage.style.height = `${imageHeightModal}px`;
+  modalImage.style.width = 'auto'; // Mantiene la proporción
+  modalImage.style.display = 'block'; // Para poder usar margin auto
+  modalImage.style.marginLeft = 'auto';
+  modalImage.style.marginRight = 'auto';
+  modalImage.style.marginBottom = '1rem'; // Añade un poco de espacio debajo de la imagen
+  modalImage.style.objectFit = 'contain'; // Asegura que la imagen se ajuste sin recortar
+
+
+  const formatMoney = (value) =>
+    value && parseFloat(value) !== 0 ? `€${parseFloat(value).toFixed(2)}` : null;
+
+  const conditionAndState = (game.condition || game.estado)
+    ? `<div class="mb-2 flex items-center gap-4">
+         ${game.condition ? `<span title="Condición">📦 ${game.condition}</span>` : ''}
+         ${game.estado ? `<span title="Estado">⭐ ${game.estado}</span>` : ''}
+       </div>` : '';
+
+  const column1 = [
+    game.platform && { icon: '🎮', label: game.platform, title: 'Plataforma' },
+    game.region && { icon: '🌍', label: game.region, title: 'Región' },
+    game.folder && { icon: '📂', label: game.folder, title: 'Carpeta' },
+    'CONDICION_ESTADO_PLACEHOLDER',
+    game.purchaseLocation && { icon: '📍', label: game.purchaseLocation, title: 'Lugar de compra' },
+    game.gift && { icon: '🎁', label: game.gift, title: 'Regalo' },
+  ];
+
+  const column2 = [
+    game.purchaseDate && { icon: '🗓️', label: game.purchaseDate, title: 'Fecha de compra' },
+    game.releaseDate && { icon: '🕑', label: game.releaseDate, title: 'Fecha de lanzamiento' },
+    formatMoney(game.value) && { icon: '💰', label: formatMoney(game.value), title: 'Valor (€)' },
+    formatMoney(game.cost) && { icon: '💸', label: formatMoney(game.cost), title: 'Coste (€)' },
+    (game.cexLink || formatMoney(game.cex)) && {
+      icon: `<img src="https://i.ibb.co/kg4KSbJX/217437.png" class="w-5 h-5 inline" />`,
+      label: formatMoney(game.cex),
+      title: 'Cex (€)',
+      link: game.cexLink
+    },
+    game.wallapopLink && {
+      icon: `<img src="https://i.ibb.co/RpbCN10H/217439.png" class="w-5 h-5 inline" />`,
+      label: 'Wallapop',
+      link: game.wallapopLink
+    },
+    game.vintedLink && {
+      icon: `<img src="https://i.ibb.co/gY2Tqd5/217438.png" class="w-5 h-5 inline" />`,
+      label: 'Vinted',
+      link: game.vintedLink
+    },
+    game.ebayLink && {
+      icon: `<img src="https://i.ibb.co/67Mcg0Qd/217436.png" class="w-5 h-5 inline" />`,
+      label: 'eBay',
+      link: game.ebayLink
+    },
+  ];
+
+  const renderColumn = (items) =>
+    items.filter(Boolean).map((item) => {
+      if (item === 'CONDICION_ESTADO_PLACEHOLDER') return conditionAndState;
+      if (item.link) {
+        return `<div class="mb-2 flex items-center gap-2">
+          <a href="${item.link}" target="_blank" class="flex items-center gap-1">${item.icon}<span class="underline">${item.label}</span></a>
+        </div>`;
+      }
+      return `<div class="mb-2 flex items-center gap-2">
+        <span title="${item.title || ''}">${item.icon}</span><span>${item.label}</span>
+      </div>`;
+    }).join('');
+
+modalDetails.innerHTML = `
+    <div class="flex flex-col items-center mb-4">
+      <h2 class="text-gray-800 text-center text-sm" style="font-weight: bold;">${game.title}</h2>
+      <div class="bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
+    </div>
+    <div class="mt-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
+        <div>${renderColumn(column1)}</div>
+        <div>${renderColumn(column2)}</div>
+      </div>
+    </div>
+  `;
+
+modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('flex');
+    setTimeout(() => {
+      modal.style.display = 'none'; // Opcional: ocultar completamente después de la transición
+    }, 200); // Coincide con la duración de la transición del modal
+
+    // ✅ Añadido: Restablecer la URL
+    window.history.pushState({}, '', window.location.pathname);
+  }
+
+  const closeModalButton = document.getElementById('closeModalBtn');
+    if (closeModalButton) {
+      closeModalButton.onclick = closeModal;
+    }
+
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('flex'), 10);
+}
+
   authStatusBtn.onclick = () => {
   if (isAuthenticated) {
     auth.signOut().then(() => alert('Sesión cerrada'));
   } else {
     showLoginModal(); // ✅ Usa tu función animada
   }
-};
+  };
 
   loginSubmit.onclick = () => {
     const email = loginEmail.value.trim();
@@ -969,7 +1253,7 @@ const minDate = '1970-01-01';
        }
      });
    });
- 
+}); 
    // --- Ordenación ---
    const sortButton = document.getElementById('sort-button');
    const sortMenu = document.getElementById('sort-menu');
@@ -1277,72 +1561,9 @@ applyCombinedFilters();      // Aplicar filtros (mostrar todos los juegos)
  
 
 
-// ✅ FUNCIÓN PARA CARGAR JUEGOS
-  function renderGamesFromFirebase() {
-    gamesContainer.innerHTML = "";
 
-    db.collection('games').get().then(snapshot => {
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const platform = data.platform || "";
-        const { title, value, link } = data;
-        // Usamos data.ImagenURL
-        const imageSrc = (data.imageURL || "").trim() !== ""
-          ? data.imageURL
-          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
 
-        const imageHeight = (platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" || platform === "Nintendo 3DS")
-          ? 130
-          : 154;
 
-        const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
-
-        const html = `
-          <a id="Platinum" class="mx-auto my-1 w-[176px]" href="${link || '#'}" target="_blank" style="display: block; ">
-            <div
-              class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-              style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
-              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
-              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
-            >
-              <div class="flex flex-col space-y-1.5 p-0">
-                <div class="flex flex-col">
-                  <div class="grid h-[158px]">
-                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                      <img
-                        alt="${title}"
-                        loading="lazy"
-                        height="${platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" ? 130 : 154}"
-                        decoding="async"
-                        class="rounded-sm text-center bg-primary/10"
-                        src="${imageSrc}"
-                        style="${imgStyle}"
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="p-0">
-                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
-                <div>
-                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
-                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                      <span class="text-xs font-medium text-white mix-blend-difference">${(Number(value) || 0).toFixed(2)}€</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        `;
-
-        gamesContainer.innerHTML += html;
-      });
-    });
-  }
-
-});
 
 const plusBtn = document.getElementById("plus");
 const toggleFormBtn = document.getElementById("toggleForm");
@@ -1637,6 +1858,20 @@ starsContainer.addEventListener('click', (e) => {
 if (selectedRating > 0) {
   highlightStars(selectedRating - 1);
 }
+
+// ✅ Verificar si hay un gameId en la URL al cargar la página
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('gameId');
+
+    if (gameId) {
+        // Buscar el índice del juego con ese ID y abrir el modal
+        const indexToOpen = games.findIndex(game => game.id === gameId);
+        if (indexToOpen !== -1) {
+            openModal(indexToOpen);
+        }
+    }
+};
 
  </script>
 </body></html>
