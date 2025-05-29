@@ -925,8 +925,6 @@ let games = [];
 function openModal(index) {
   console.log("Valor de games al abrir el modal:", games); // Añade esta línea
   const game = games[index];
-  const newUrl = `<span class="math-inline">\{window\.location\.origin\}</span>{window.location.pathname}?gameId=${game.id}`;
-  window.history.pushState({ gameId: game.id }, '', newUrl);
   const modal = document.getElementById("modal");
   const modalImage = document.getElementById("modalImage");
   const modalDetails = document.getElementById("modalDetails");
@@ -1044,9 +1042,6 @@ modal.addEventListener('click', (event) => {
     setTimeout(() => {
       modal.style.display = 'none'; // Opcional: ocultar completamente después de la transición
     }, 200); // Coincide con la duración de la transición del modal
-
-    // ✅ Añadido: Restablecer la URL
-    window.history.pushState({}, '', window.location.pathname);
   }
 
   const closeModalButton = document.getElementById('closeModalBtn');
@@ -1858,20 +1853,6 @@ starsContainer.addEventListener('click', (e) => {
 if (selectedRating > 0) {
   highlightStars(selectedRating - 1);
 }
-
-// ✅ Verificar si hay un gameId en la URL al cargar la página
-window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const gameId = urlParams.get('gameId');
-
-    if (gameId) {
-        // Buscar el índice del juego con ese ID y abrir el modal
-        const indexToOpen = games.findIndex(game => game.id === gameId);
-        if (indexToOpen !== -1) {
-            openModal(indexToOpen);
-        }
-    }
-};
 
  </script>
 </body></html>
