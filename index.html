@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Mi colección de videojuegos"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
+<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Mi colección de videojuegos"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
+
 <style>
 
   @font-face {
@@ -10,8 +11,9 @@
     font-style: normal;
   }
 
-  h1 {
-  font-family: 'Monofonto', monospace; /* 'monospace' como fuente de respaldo */
+
+#modal, #modal * {
+  font-family: 'Inter', sans-serif;
 }
 
   #loginModal {
@@ -355,7 +357,7 @@ select#edition option:not(:first-of-type) {
 #modal > div {
   background: white;
   border-radius: 1rem;
-  max-width: 600px; /* Ajustado al max-width de tu HTML */
+  max-width: 520px; /* Ajustado al max-width de tu HTML */
   min-width: 300px; /* Ajustado al min-width de tu HTML */
   width: 80%;
   padding: 1.5rem;
@@ -396,6 +398,11 @@ select#edition option:not(:first-of-type) {
   }
 }
 
+#modal h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .zoom-image {
   position: fixed;
   z-index: 9999;
@@ -405,6 +412,98 @@ select#edition option:not(:first-of-type) {
   cursor: default;
   object-fit: cover;
 }
+
+#closeModalBtn {
+    position: absolute;
+    top: 2px; /* Ajusta según sea necesario */
+    right: 3px; /* Ajusta según sea necesario */
+    z-index: 100; /* Asegura que esté por encima del contenido del modal */
+    /* ... (tus otros estilos) ... */
+}
+
+/* Estilos personalizados para el modal */
+.custom-bg-gray { background-color: #f9fafa; }
+.custom-bg-blue-50 { background-color: #eff6ff; }
+.custom-text-gray-500 { color: #6b7280; }
+.custom-text-gray-700 { color: #5d636e; }
+.custom-text-gray-800 { color: #323233; }
+.custom-text-green-600 { color: #47b46f; }
+.custom-text-green-700 { color: #16a34a; }
+.custom-text-blue-800 { color: #1e40af; }
+.custom-text-red-500 { color: #bb1212; }
+.custom-text-blue-500 { color: #814646; }
+
+.custom-p-6 { padding: 1.5rem; }
+.custom-p-4 { padding: 1rem; }
+.custom-mt-6 { margin-top: 1.5rem; }
+.custom-mb-4 { margin-bottom: 1rem; }
+.custom-mb-6 { margin-bottom: 1.5rem; }
+.custom-mt-2 { margin-top: 0.5rem; }
+
+.custom-rounded-lg { border-radius: 0.5rem; }
+.custom-shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
+
+.custom-flex { display: flex; }
+.custom-flex-col { flex-direction: column; }
+.custom-items-center { align-items: center; }
+.custom-items-start { align-items: flex-start; }
+.custom-justify-center { justify-content: center; }
+.custom-w-full { width: 100%; }
+.custom-gap-4 { gap: 1rem; }
+.custom-flex-wrap { flex-wrap: wrap; }
+
+.custom-text-2xl { font-size: 1.5rem; }
+.custom-text-xl { font-size: 1.25rem; }
+.custom-text-lg { font-size: 1.125rem; }
+.custom-text-sm { font-size: 0.875rem; }
+.custom-font-bold { font-weight: 700; }
+.custom-font-semibold { font-weight: 600; }
+.custom-leading-relaxed { line-height: 1.625; }
+.custom-text-center { text-align: center; }
+
+/* Estilos para la rejilla de detalles */
+.custom-grid-md-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .custom-grid-md-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.custom-pr-4 {
+  padding-right: 1rem;
+}
+
+.condition-span {
+  white-space: nowrap; /* Evita el salto de línea */
+}
+
+.estado-span {
+  margin-left: 0.25em; /* Espacio antes del estado */
+  white-space: nowrap; /* Evita el salto de línea */
+}
+
+.custom-text-gray-800 {
+  color: #273242; /* Equivalente al text-gray-800 de Tailwind */
+}
+
+.custom-icon-shadow {
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
+#svg-hablando {
+  position: relative;
+  left: 7px;  /* desplaza a la derecha 10px */
+  top: -3px;    /* desplaza hacia abajo 5px */
+}
+
+
+
 
 </style>
 </head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block __className_9fd9c5">Mi colección de videojuegos</a><a class="ml-2 mr-4 font-bold sm:hidden __className_9fd9c5">Mi colección</a></div><div class="flex items-center gap-3 relative ml-4">
@@ -425,6 +524,7 @@ select#edition option:not(:first-of-type) {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCb5vmEqe_IIasGYvH7e1g1ja56RwSoTSI",
@@ -445,6 +545,16 @@ select#edition option:not(:first-of-type) {
     user = u;
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
+
+    tailwind.config = {
+    safelist: [
+      'bg-gray-50',
+      'bg-blue-50',
+      'text-blue-800',
+      'text-green-600',
+      'text-gray-500'
+    ]
+  }
 </script></header><main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Level 267</div><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-24%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">76%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1364<button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div>Total Trophies</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/gold.d6c88f73.png" style="color: transparent;"><span class="text-lg ml-2">179</span></div><div class="flex flex-row items-center"><img alt="Silver trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/silver.e2239c30.png" style="color: transparent;"><span class="text-lg ml-2">333</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze.a58983fd.png" style="color: transparent;"><span class="text-lg ml-2">829</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div><div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
     
 <!-- Modal login -->
@@ -554,11 +664,11 @@ select#edition option:not(:first-of-type) {
 
   <div class="form-row-2">
     <div class="form-item">
-      <div class="form-emoji">🗓️</div>
+      <div class="form-emoji">🛒</div>
       <input type="text" id="purchaseDate" onfocus="this.type='date'" onblur="if(this.value===''){this.type='text'}" placeholder="Fecha de compra*" class="form-input" required />
     </div>
     <div class="form-item">
-      <div class="form-emoji">🕑</div>
+      <div class="form-emoji">🆕</div>
       <input type="text" id="releaseDate" onfocus="this.type='date'" onblur="if(this.value===''){this.type='text'}" placeholder="Fecha de lanzamiento" class="form-input" />
     </div>
   </div>
@@ -646,24 +756,21 @@ select#edition option:not(:first-of-type) {
 
 <!-- Modal de detalles -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-<div class="bg-white p-8 rounded-2xl w-full max-w-[640px] min-w-[360px] relative">
-
-
-    <!-- Botón cerrar -->
+  <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-3xl overflow-hidden relative custom-scroll">
     <button id="closeModalBtn" class="absolute top-2 right-3 text-lg font-bold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
 
-    <!-- Imagen del juego -->
+    <div id="modalHeader" class="flex flex-col items-center mb-4">
+      </div>
+
     <img id="modalImage" src="" class="w-full max-h-[400px] object-contain rounded mb-4" />
 
-    <!-- Detalles del juego -->
-    <div id="modalDetails" class="text-gray-700"></div>
+    <div id="modalDetails" class="text-gray-700">
+      </div>
 
-    <!-- Botones editar y borrar -->
     <div id="modalButtons" class="flex justify-end gap-4 mt-6 hidden">
       <button id="editBtn" title="Editar juego" class="text-blue-600 text-xl">✏️</button>
       <button id="deleteBtn" title="Borrar juego" class="text-red-600 text-xl">🗑️</button>
     </div>
-
   </div>
 </div>
 
@@ -891,7 +998,12 @@ let games = [];
                   <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
                     <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
                     <div class="absolute inset-0 flex items-center justify-center">
-                      <span class="text-xs font-medium text-white mix-blend-difference">${(Number(value) || 0).toFixed(2)}€</span>
+                      <span class="text-xs font-medium text-white mix-blend-difference">${(() => {
+                                                                                                  const num = Number(value) || 0;
+                                                                                                  const [intPart, decimals] = num.toFixed(2).split('.');
+                                                                                                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
+                                                                                                })()}
+                         </span>
                     </div>
                   </div>
                 </div>
@@ -942,93 +1054,261 @@ function openModal(index) {
     openEditModal(game); // asegúrate de tener esta función
   };
 
+const modalHeader = document.getElementById('modalHeader');
+  modalHeader.innerHTML = `
+    <h2 class="text-gray-800 text-center" style="font-weight: bold; font-size: 1.1rem;">${game.title}</h2>
+  `;
+
 modalImage.src = game.image;
 
   // ✅ Nuevo bloque para ajustar el tamaño y centrado de la imagen
-  let imageHeightModal = 450; // Valor por defecto
+  let imageHeightModal = 430; // Valor por defecto
   if (game.platform === "Nintendo DS" || game.platform === "Nintendo 3DS" || game.platform === "PlayStation" || game.platform === "Game Boy Advance") {
-    imageHeightModal = 390;
+    imageHeightModal = 330;
   }
   modalImage.style.height = `${imageHeightModal}px`;
   modalImage.style.width = 'auto'; // Mantiene la proporción
   modalImage.style.display = 'block'; // Para poder usar margin auto
   modalImage.style.marginLeft = 'auto';
   modalImage.style.marginRight = 'auto';
-  modalImage.style.marginBottom = '1rem'; // Añade un poco de espacio debajo de la imagen
+  modalImage.style.marginBottom = '2rem'; // Añade un poco de espacio debajo de la imagen
   modalImage.style.objectFit = 'contain'; // Asegura que la imagen se ajuste sin recortar
 
+  function formatMoney(value) {
+  const num = Number(value) || 0;
+  const [intPart, decimals] = num.toFixed(2).split('.');
+  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
+}
 
-  const formatMoney = (value) =>
-    value && parseFloat(value) !== 0 ? `€${parseFloat(value).toFixed(2)}` : null;
 
-  const conditionAndState = (game.condition || game.estado)
-    ? `<div class="mb-2 flex items-center gap-4">
-         ${game.condition ? `<span title="Condición">📦 ${game.condition}</span>` : ''}
-         ${game.estado ? `<span title="Estado">⭐ ${game.estado}</span>` : ''}
-       </div>` : '';
+const formatDate = (dateString) => {
+  if (!dateString) return ''; // Or you might want to return a default string like '--'
 
-  const column1 = [
-    game.platform && { icon: '🎮', label: game.platform, title: 'Plataforma' },
-    game.region && { icon: '🌍', label: game.region, title: 'Región' },
-    game.folder && { icon: '📂', label: game.folder, title: 'Carpeta' },
-    'CONDICION_ESTADO_PLACEHOLDER',
-    game.purchaseLocation && { icon: '📍', label: game.purchaseLocation, title: 'Lugar de compra' },
-    game.gift && { icon: '🎁', label: game.gift, title: 'Regalo' },
-  ];
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = date.getFullYear();
 
-  const column2 = [
-    game.purchaseDate && { icon: '🗓️', label: game.purchaseDate, title: 'Fecha de compra' },
-    game.releaseDate && { icon: '🕑', label: game.releaseDate, title: 'Fecha de lanzamiento' },
-    formatMoney(game.value) && { icon: '💰', label: formatMoney(game.value), title: 'Valor (€)' },
-    formatMoney(game.cost) && { icon: '💸', label: formatMoney(game.cost), title: 'Coste (€)' },
-    (game.cexLink || formatMoney(game.cex)) && {
-      icon: `<img src="https://i.ibb.co/kg4KSbJX/217437.png" class="w-5 h-5 inline" />`,
-      label: formatMoney(game.cex),
-      title: 'Cex (€)',
-      link: game.cexLink
-    },
-    game.wallapopLink && {
-      icon: `<img src="https://i.ibb.co/RpbCN10H/217439.png" class="w-5 h-5 inline" />`,
-      label: 'Wallapop',
-      link: game.wallapopLink
-    },
-    game.vintedLink && {
-      icon: `<img src="https://i.ibb.co/gY2Tqd5/217438.png" class="w-5 h-5 inline" />`,
-      label: 'Vinted',
-      link: game.vintedLink
-    },
-    game.ebayLink && {
-      icon: `<img src="https://i.ibb.co/67Mcg0Qd/217436.png" class="w-5 h-5 inline" />`,
-      label: 'eBay',
-      link: game.ebayLink
-    },
-  ];
+  return `${day}-${month}-${year}`;
+};
+
+const conditionAndState = (game.condition || game.estado)
+  ? `<div class="mb-2 flex items-center gap-2">
+      ${game.condition ? `<span title="Condición" class="condition-span custom-text-gray-800">📦&nbsp;<span class="custom-text-gray-800" style="margin-left: 0.28em; display: inline-block;">${game.condition}</span></span>` : ''}
+      ${game.estado ? `<span class="estado-span custom-text-gray-800" style="margin-left: 0.3em; display: inline-block;">(${'★'.repeat(parseInt(game.estado))}&nbsp;<span class="custom-text-gray-800">${parseInt(game.estado)}/5)</span></span>` : ''}
+    </div>`
+  : '';
+
+const column1 = [];
+const column2 = [];
+
+// Elementos fijos
+if (game.platform) column1.push({ icon: '🎮', label: game.platform, title: 'Plataforma' });
+if (game.region) column1.push({ icon: '🌍', label: game.region, title: 'Región' });
+column1.push('CONDICION_ESTADO_PLACEHOLDER');
+if (game.purchaseDate) column2.push({ icon: '🛒', label: formatDate(game.purchaseDate), title: 'Fecha de compra' });
+if (game.releaseDate) column2.push({ icon: '🆕', label: formatDate(game.releaseDate), title: 'Fecha de lanzamiento' });
+if (game.folder) column2.push({ icon: '📂', label: game.folder, title: 'Carpeta' });
+
+// Elementos condicionales
+if (game.gift) {
+    column2.push({ icon: '🎁', label: game.gift, title: 'Regalo' });
+
+    if (game.purchaseLocation) {
+        column1.push({ icon: '📍', label: game.purchaseLocation, title: 'Lugar de compra' });
+    }
+    if (game.edition) {
+        const editionLabel = game.edition === 'Reedición (Platinum, etc)' ? 'Reedición' : game.edition;
+        column1.push({ icon: '🗃️', label: editionLabel, title: 'Edición' });
+
+    }
+    
+} else {
+    if (game.edition) {
+        const editionLabel = game.edition === 'Reedición (Platinum, etc)' ? 'Reedición' : game.edition;
+        column1.push({ icon: '🗃️', label: editionLabel, title: 'Edición' });
+
+    }
+
+    if (game.purchaseLocation) {
+        column2.push({ icon: '📍', label: game.purchaseLocation, title: 'Lugar de compra' });
+    }
+}
+
+
+// ... (Las funciones formatDate, renderColumn, etc. permanecen igual)
 
   const renderColumn = (items) =>
-    items.filter(Boolean).map((item) => {
-      if (item === 'CONDICION_ESTADO_PLACEHOLDER') return conditionAndState;
-      if (item.link) {
-        return `<div class="mb-2 flex items-center gap-2">
-          <a href="${item.link}" target="_blank" class="flex items-center gap-1">${item.icon}<span class="underline">${item.label}</span></a>
-        </div>`;
-      }
+      items.filter(Boolean).map((item) => {
+    if (item === 'CONDICION_ESTADO_PLACEHOLDER') {
+      return conditionAndState;
+    }
+    if (item.link) {
       return `<div class="mb-2 flex items-center gap-2">
-        <span title="${item.title || ''}">${item.icon}</span><span>${item.label}</span>
+        <a href="${item.link}" target="_blank" class="flex items-center gap-1"><span style="margin-right: 0.3em;">${item.icon}</span><span class="underline custom-text-gray-800">${item.label}</span></a>
       </div>`;
+    }
+    return `<div class="mb-2 flex items-center gap-2">
+      <span title="${item.title || ''}" style="margin-right: 0.3em;">${item.icon}</span><span style="margin-left: 0.3em;" class="custom-text-gray-800">${item.label}</span>
+    </div>`;
     }).join('');
 
 modalDetails.innerHTML = `
-    <div class="flex flex-col items-center mb-4">
-      <h2 class="text-gray-800 text-center text-sm" style="font-weight: bold;">${game.title}</h2>
-      <div class="bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
+  <div class="mt-6 mb-6 bg-gray-300 h-[1px] w-full mt-2 rounded" style="background-color: #D1D5DB !important; height: 1px !important;"></div>
+  <div class="custom-grid-md-2 custom-gap-6 custom-mb-6">
+    <div class="custom-pr-4">
+      ${renderColumn(column1)}
     </div>
-    <div class="mt-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-        <div>${renderColumn(column1)}</div>
-        <div>${renderColumn(column2)}</div>
-      </div>
+    <div class="custom-pr-4">
+      ${renderColumn(column2)}
     </div>
+  </div>
+
+  <div class="custom-bg-gray custom-p-6 custom-rounded-lg custom-shadow-inner custom-mt-6 custom-flex custom-flex-col items-center">
+  <h3 class="text-gray-800 text-2xl font-bold mb-4 text-center">Precios</h3>
+  <div class="flex flex-col items-center w-full mb-4">
+
+    <p class="${Number(game.value) > Number(game.cost) ? 'custom-text-green-600' : 'custom-text-red-500'} text-2xl font-bold">
+      VALOR: <span id="modal-value">${formatMoney(game.value)}</span>
+    </p>
+    <p class="custom-text-gray-700" text-lg">
+      COSTO: <span id="modal-cost" class="custom-text-gray-700">${formatMoney(game.cost)}</span>
+    </p>
+    <p class="custom-text-gray-700" text-lg">
+      CEX: <span id="modal-cex">${formatMoney(game.cex)}</span>
+    </p>
+
+  </div>
+
+  <div class="mt-4 flex justify-center gap-x-4 flex-wrap">
+  ${game.wallapopLink ? `
+    <a id="modal-wallapop-link" href="${game.wallapopLink}" target="_blank" class="flex items-center px-2 hover:underline">
+      <img src="https://i.ibb.co/RpbCN10H/217439.png" alt="Wallapop" class="custom-icon-shadow" style="width: 32px; height: 32px;">
+    </a>` : ''}
+  ${game.vintedLink ? `
+    <a id="modal-vinted-link" href="${game.vintedLink}" target="_blank" class="flex items-center px-2 hover:underline">
+      <img src="https://i.ibb.co/gY2Tqd5/217438.png" alt="Vinted" class="custom-icon-shadow" style="width: 32px; height: 32px;">
+    </a>` : ''}
+  ${game.ebayLink ? `
+    <a id="modal-ebay-link" href="${game.ebayLink}" target="_blank" class="flex items-center px-2 hover:underline">
+      <img src="https://i.ibb.co/67Mcg0Qd/217436.png" alt="eBay" class="custom-icon-shadow" style="width: 32px; height: 32px;">
+    </a>` : ''}
+  ${game.cexLink ? `
+    <a id="modal-cex-link" href="${game.cexLink}" target="_blank" class="flex items-center px-2 hover:underline">
+      <img src="https://i.ibb.co/kg4KSbJX/217437.png" alt="Cex" class="custom-icon-shadow" style="width: 32px; height: 32px;">
+    </a>` : ''}
+</div>
+</div>
+
+
+
+  ${game.details ? `
+      <div class="custom-mt-6 custom-p-4 custom-bg-blue-50 custom-rounded-lg">
+    <div class="custom-flex custom-items-center custom-justify-between">
+      <h3 class="custom-text-blue-800 custom-text-xl custom-font-semibold custom-mb-2">
+        Detalles adicionales
+      </h3>
+      <button id="read-details-btn" aria-label="Leer detalles en voz alta">
+        <div id="read-details-icon" style="width:15px; height:15px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 16 35 75" width="17" height="17" class="custom-text-blue-800" overflow="visible">
+            <path d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z" 
+                  style="stroke:currentColor;stroke-width:5;stroke-linejoin:round;fill:currentColor;" />
+            <path d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6" 
+                  style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round" />
+          </svg>
+        </div>
+      </button>
+    </div>
+    <p id="modal-details" class="custom-text-blue-800 custom-text-sm custom-leading-relaxed">${game.details}</p>
+  </div>
+  ` : ''}
+`;
+
+function svgOriginal() {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 16 35 75" width="17" height="17" class="custom-text-blue-800" overflow="visible">
+      <path d="M39.389,13.769 L22.235,28.606 L6,28.606 L6,47.699 L21.989,47.699 L39.389,62.75 L39.389,13.769z" 
+            style="stroke:currentColor;stroke-width:5;stroke-linejoin:round;fill:currentColor;" />
+      <path d="M48,27.6a19.5,19.5 0 0 1 0,21.4M55.1,20.5a30,30 0 0 1 0,35.6M61.6,14a38.8,38.8 0 0 1 0,48.6" 
+            style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round" />
+    </svg>
   `;
+}
+
+const btnLeer = document.getElementById('read-details-btn');
+const icono = document.getElementById('read-details-icon');
+
+let hablando = false;
+let mensajeActual = null;
+
+if (btnLeer && icono) {
+  btnLeer.addEventListener('click', () => {
+    if (hablando) {
+      speechSynthesis.cancel();
+      icono.innerHTML = svgOriginal();
+      hablando = false;
+      return;
+    }
+
+    const texto = document.getElementById('modal-details')?.innerText;
+    if (!texto) return;
+
+    mensajeActual = new SpeechSynthesisUtterance(texto);
+    mensajeActual.lang = 'es-AR';
+    mensajeActual.rate = 1.5;
+
+    const voces = speechSynthesis.getVoices();
+    const vozAmigable = voces.find(v => v.name === "Microsoft Elena Online (Natural) - Spanish (Argentina)");
+    if (vozAmigable) mensajeActual.voice = vozAmigable;
+
+    mensajeActual.onstart = () => {
+      hablando = true;
+      icono.innerHTML = `
+  <svg 
+    id="svg-hablando"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="8 4 74 32" 
+    width="15" 
+    height="15" 
+    class="custom-text-blue-800" 
+    style="overflow: visible; background-color: transparent; display: block;"
+  >
+    <circle cx="20" cy="20" r="12" fill="#1e40af" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0s"/>
+      <animate attributeName="r" values="12;16;12" dur="1.5s" repeatCount="indefinite" begin="0s"/>
+    </circle>
+    <circle cx="50" cy="20" r="12" fill="#1e40af" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>
+      <animate attributeName="r" values="12;16;12" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    <circle cx="80" cy="20" r="12" fill="#1e40af" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="r" values="12;16;12" dur="1.5s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+  </svg>
+`;
+
+
+    };
+
+    mensajeActual.onend = () => {
+      hablando = false;
+      icono.innerHTML = svgOriginal();
+    };
+
+    mensajeActual.onerror = () => {
+      hablando = false;
+      icono.innerHTML = svgOriginal();
+    };
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(mensajeActual);
+  });
+}
+
+
+
+
 
 modal.addEventListener('click', (event) => {
     if (event.target === modal) {
@@ -1855,4 +2135,10 @@ if (selectedRating > 0) {
 }
 
  </script>
+
+<!-- 👻 Esto asegura que Tailwind las incluya en el CSS final -->
+<div class="hidden">
+  bg-blue-50 bg-gray-50 text-blue-800 text-green-600 text-gray-500
+</div>
+
 </body></html>
