@@ -1238,6 +1238,24 @@ function svgOriginal() {
 const btnLeer = document.getElementById('read-details-btn');
 const icono = document.getElementById('read-details-icon');
 
+// Ocultar botón si no hay soporte de voz
+if (
+  !window.speechSynthesis || 
+  typeof SpeechSynthesisUtterance === 'undefined'
+) {
+  if (btnLeer) btnLeer.style.display = 'none';
+} else {
+  const vocesDisponibles = speechSynthesis.getVoices();
+  if (vocesDisponibles.length === 0) {
+    // Si las voces aún no están cargadas, esperar evento
+    speechSynthesis.addEventListener('voiceschanged', () => {
+      if (speechSynthesis.getVoices().length === 0 && btnLeer) {
+        btnLeer.style.display = 'none';
+      }
+    }, { once: true });
+  }
+}
+
 let hablando = false;
 let mensajeActual = null;
 
