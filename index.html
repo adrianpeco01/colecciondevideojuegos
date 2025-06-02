@@ -1168,7 +1168,7 @@ modalDetails.innerHTML = `
   <h3 class="text-gray-800 text-2xl font-bold mb-4 text-center">Precios</h3>
   <div class="flex flex-col items-center w-full mb-4">
 
-    <p class="${Number(game.value) > Number(game.cost) ? 'custom-text-green-600' : 'custom-text-red-500'} text-2xl font-bold">
+    <p class="${Number(game.value) > Number(game.cost) ? 'custom-text-green-700' : 'custom-text-red-500'} text-2xl font-bold">
       VALOR: <span id="modal-value">${formatMoney(game.value)}</span>
     </p>
     <p class="custom-text-gray-700" text-lg">
@@ -1257,9 +1257,31 @@ if (btnLeer && icono) {
     mensajeActual.lang = 'es-AR';
     mensajeActual.rate = 1.5;
 
-    const voces = speechSynthesis.getVoices();
-    const vozAmigable = voces.find(v => v.name === "Microsoft Elena Online (Natural) - Spanish (Argentina)");
-    if (vozAmigable) mensajeActual.voice = vozAmigable;
+    const establecerVoz = () => {
+  const voces = speechSynthesis.getVoices();
+  // Buscar la voz específica de Windows
+  let vozSeleccionada = voces.find(v => v.name === "Microsoft Elena Online (Natural) - Spanish (Argentina)");
+
+  // Si no está disponible, buscar la primera voz femenina en español
+  if (!vozSeleccionada) {
+    vozSeleccionada = voces.find(v =>
+      v.lang.startsWith('es') &&
+      (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('mujer'))
+    );
+
+    // Si aún no se encuentra, tomar la primera voz en español disponible
+    if (!vozSeleccionada) {
+      vozSeleccionada = voces.find(v => v.lang.startsWith('es'));
+    }
+  }
+
+  if (vozSeleccionada) {
+    mensajeActual.voice = vozSeleccionada;
+  }
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(mensajeActual);
+};
 
     mensajeActual.onstart = () => {
       hablando = true;
@@ -1301,8 +1323,12 @@ if (btnLeer && icono) {
       icono.innerHTML = svgOriginal();
     };
 
-    speechSynthesis.cancel();
-    speechSynthesis.speak(mensajeActual);
+    if (speechSynthesis.getVoices().length === 0) {
+  speechSynthesis.addEventListener('voiceschanged', establecerVoz, { once: true });
+} else {
+  establecerVoz();
+}
+
   });
 }
 
