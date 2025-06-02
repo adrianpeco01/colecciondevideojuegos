@@ -1239,7 +1239,8 @@ const btnLeer = document.getElementById('read-details-btn');
 const icono = document.getElementById('read-details-icon');
 
 // Detectar iOS
-const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+(navigator.userAgent.includes("Macintosh") && 'ontouchend' in document);
 
 // Ocultar botón si no hay soporte de voz o si es iOS
 if (
