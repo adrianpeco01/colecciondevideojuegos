@@ -1238,10 +1238,14 @@ function svgOriginal() {
 const btnLeer = document.getElementById('read-details-btn');
 const icono = document.getElementById('read-details-icon');
 
-// Ocultar botón si no hay soporte de voz
+// Detectar iOS
+const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+// Ocultar botón si no hay soporte de voz o si es iOS
 if (
-  !window.speechSynthesis || 
-  typeof SpeechSynthesisUtterance === 'undefined'
+  !window.speechSynthesis ||
+  typeof SpeechSynthesisUtterance === 'undefined' ||
+  esIOS
 ) {
   if (btnLeer) btnLeer.style.display = 'none';
 } else {
@@ -1255,6 +1259,7 @@ if (
     }, { once: true });
   }
 }
+
 
 let hablando = false;
 let mensajeActual = null;
