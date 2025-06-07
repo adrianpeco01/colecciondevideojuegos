@@ -372,6 +372,30 @@ select#edition option:not(:first-of-type) {
   scrollbar-color: #ccc transparent;
 }
 
+/* Ya lo tienes: oculta extremos con capas */
+#modal > div::before,
+#modal > div::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 8px;
+  height: 40px;
+  background: white;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#modal > div::before {
+  top: 0;
+  border-top-right-radius: 1rem;
+}
+
+#modal > div::after {
+  bottom: 0;
+  border-bottom-right-radius: 1rem;
+}
+
+/* Scrollbar estilos comunes */
 #modal > div::-webkit-scrollbar {
   width: 8px;
 }
@@ -393,10 +417,33 @@ select#edition option:not(:first-of-type) {
 
 @media (max-width: 480px) {
   #modal > div {
-    width: 95%;
-    max-height: 85vh;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior: contain; /* <-- evita que el scroll salga del modal */
+  }
+
+  #modal > div::-webkit-scrollbar {
+    display: none;
   }
 }
+
+
+
+
+.body-no-scroll {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+  /* Evita el scroll en el modal por fallback */
+  body.body-no-scroll,
+  html.body-no-scroll {
+    touch-action: none;
+    overscroll-behavior: none;
+  }
 
 #modal h3 {
   font-size: 1rem;
@@ -503,6 +550,9 @@ select#edition option:not(:first-of-type) {
 }
 
 
+html {
+  overflow-y: scroll;
+}
 
 
 </style>
@@ -689,15 +739,7 @@ select#edition option:not(:first-of-type) {
   </div>
 
   <div class="form-row-3 md:col-span-2">
-  <div class="form-item">
-    <div class="form-emoji">💸</div>
-    <input type="number" id="cost" placeholder="Coste (€)" step="0.01" class="form-input"/>
-  </div>
-  <div class="form-item">
-    <div class="form-emoji">💰</div>
-    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="form-input" />
-  </div>
-  <div class="form-item">
+    <div class="form-item">
   <div class="form-emoji">🗃️</div>
   <select id="edition" class="form-input" required>
     <option value="" disabled selected>Edición*</option>
@@ -706,6 +748,14 @@ select#edition option:not(:first-of-type) {
     <option value="Especial">Especial</option>
   </select>
 </div>
+  <div class="form-item">
+    <div class="form-emoji">💸</div>
+    <input type="number" id="cost" placeholder="Coste (€)" step="0.01" class="form-input"/>
+  </div>
+  <div class="form-item">
+    <div class="form-emoji">💰</div>
+    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="form-input" />
+  </div>
 </div>
 
   <div class="form-row-3">
@@ -895,6 +945,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const releaseDateInput = document.getElementById('releaseDate');
   const modal = document.getElementById('modal');
   
+  const modalContent = document.querySelector('#modal > div');
+
+  modalContent.addEventListener('wheel', (e) => {
+    const delta = e.deltaY;
+    const scrollTop = modalContent.scrollTop;
+    const scrollHeight = modalContent.scrollHeight;
+    const clientHeight = modalContent.clientHeight;
+
+    if (
+      (delta < 0 && scrollTop === 0) || // scroll up cuando ya estás arriba
+      (delta > 0 && scrollTop + clientHeight >= scrollHeight) // scroll down cuando ya estás abajo
+    ) {
+      e.preventDefault(); // evita que se propague el scroll
+    }
+  }, { passive: false });
 
   let isAuthenticated = false;
 
@@ -1261,7 +1326,6 @@ if (
   }
 }
 
-
 let hablando = false;
 let mensajeActual = null;
 
@@ -1367,12 +1431,14 @@ modal.addEventListener('click', (event) => {
   });
 
   function closeModal() {
-    const modal = document.getElementById('modal');
-    modal.classList.remove('flex');
-    setTimeout(() => {
-      modal.style.display = 'none'; // Opcional: ocultar completamente después de la transición
-    }, 200); // Coincide con la duración de la transición del modal
-  }
+  const modal = document.getElementById('modal');
+  modal.classList.remove('flex');
+  document.body.classList.remove('body-no-scroll'); // ⬅️ Esta línea restaura el scroll del fondo
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 200);
+}
+
 
   const closeModalButton = document.getElementById('closeModalBtn');
     if (closeModalButton) {
@@ -1380,6 +1446,7 @@ modal.addEventListener('click', (event) => {
     }
 
   modal.style.display = 'flex';
+  document.body.classList.add('body-no-scroll'); // ⬅️ Esta línea evita que se mueva el fondo
   setTimeout(() => modal.classList.add('flex'), 10);
 }
 
@@ -1434,6 +1501,7 @@ function showLoginModal() {
   loginModal.classList.remove('hidden');
   setTimeout(() => {
     loginModal.classList.add('opacity-100');
+    document.body.classList.add("body-no-scroll");
     loginBox.classList.remove('scale-95', 'opacity-0');
     loginBox.classList.add('scale-100', 'opacity-100');
   }, 10);
@@ -1442,6 +1510,7 @@ function showLoginModal() {
 // Ocultar modal con animación
 function hideLoginModal() {
   loginModal.classList.remove('opacity-100'); // ✅ AÑADE ESTO
+  document.body.classList.remove("body-no-scroll");
   loginBox.classList.remove('scale-100', 'opacity-100');
   loginBox.classList.add('scale-95', 'opacity-0');
   setTimeout(() => {
@@ -1993,7 +2062,9 @@ function clearForm() {
 
 function closeFormModal() {
   modalOverlay.classList.remove('flex', 'opacity-100', 'pointer-events-auto');
+  document.body.classList.remove("body-no-scroll");
   modalOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+  document.body.classList.add("body-no-scroll");
   formElement.classList.remove('opacity-100', 'scale-100');
   formElement.classList.add('opacity-0', 'scale-95');
 }
