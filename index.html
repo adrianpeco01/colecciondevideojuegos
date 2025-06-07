@@ -368,10 +368,35 @@ select#edition option:not(:first-of-type) {
   will-change: transform, opacity;
   max-height: 90vh;         /* No sobrepasar el 90% de la ventana */
   overflow-y: auto; /* Habilita scroll si el contenido es muy alto */
+  overscroll-behavior: contain; /* ¡Añade esta línea! */
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
 }
 
+/* Ya lo tienes: oculta extremos con capas */
+#modal > div::before,
+#modal > div::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 8px;
+  height: 40px;
+  background: white;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#modal > div::before {
+  top: 0;
+  border-top-right-radius: 1rem;
+}
+
+#modal > div::after {
+  bottom: 0;
+  border-bottom-right-radius: 1rem;
+}
+
+/* Scrollbar estilos comunes */
 #modal > div::-webkit-scrollbar {
   width: 8px;
 }
@@ -393,10 +418,49 @@ select#edition option:not(:first-of-type) {
 
 @media (max-width: 480px) {
   #modal > div {
-    width: 95%;
-    max-height: 85vh;
+    width: 95%; /* Haz que ocupe el 95% del ancho de la pantalla */
+    max-width: unset; /* Elimina la limitación de 520px para que 'width: 95%' sea efectivo */
+    /* Puedes incluso poner un min-width si lo necesitas, pero 95% ya es bastante */
+    /* min-width: 95%; */ /* Esto podría ser redundante si ya tienes width: 95% */
+
+    max-height: 85vh; /* Esto ya lo tenías, y está bien */
+
+    /* Tus reglas para el scrollbar (si las mantienes) */
+    scrollbar-gutter: stable both-edges;
+    padding-right: calc(1.5rem + 8px);
+  }
+
+  #modal > div::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  #modal > div::-webkit-scrollbar-thumb {
+    background: transparent !important;
   }
 }
+
+
+.custom-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* necesario para iOS */
+}
+
+
+.body-no-scroll {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+  /* Evita el scroll en el modal por fallback */
+  body.body-no-scroll,
+  html.body-no-scroll {
+    touch-action: none;
+    overscroll-behavior: none;
+  }
 
 #modal h3 {
   font-size: 1rem;
@@ -414,12 +478,23 @@ select#edition option:not(:first-of-type) {
 }
 
 #closeModalBtn {
-    position: absolute;
-    top: 2px; /* Ajusta según sea necesario */
-    right: 3px; /* Ajusta según sea necesario */
-    z-index: 100; /* Asegura que esté por encima del contenido del modal */
-    /* ... (tus otros estilos) ... */
+  position: absolute;
+  top: 0.5rem;         /* 8px */
+  right: 0.75rem;      /* 12px */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;
+  color: #a4a6aa;
+  z-index: 100;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 200ms ease;
 }
+
+#closeModalBtn:hover {
+  color: #5d636e;
+}
+
 
 /* Estilos personalizados para el modal */
 .custom-bg-gray { background-color: #f9fafa; }
@@ -503,6 +578,9 @@ select#edition option:not(:first-of-type) {
 }
 
 
+html {
+  overflow-y: scroll;
+}
 
 
 </style>
@@ -689,15 +767,7 @@ select#edition option:not(:first-of-type) {
   </div>
 
   <div class="form-row-3 md:col-span-2">
-  <div class="form-item">
-    <div class="form-emoji">💸</div>
-    <input type="number" id="cost" placeholder="Coste (€)" step="0.01" class="form-input"/>
-  </div>
-  <div class="form-item">
-    <div class="form-emoji">💰</div>
-    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="form-input" />
-  </div>
-  <div class="form-item">
+    <div class="form-item">
   <div class="form-emoji">🗃️</div>
   <select id="edition" class="form-input" required>
     <option value="" disabled selected>Edición*</option>
@@ -706,6 +776,14 @@ select#edition option:not(:first-of-type) {
     <option value="Especial">Especial</option>
   </select>
 </div>
+  <div class="form-item">
+    <div class="form-emoji">💸</div>
+    <input type="number" id="cost" placeholder="Coste (€)" step="0.01" class="form-input"/>
+  </div>
+  <div class="form-item">
+    <div class="form-emoji">💰</div>
+    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="form-input" />
+  </div>
 </div>
 
   <div class="form-row-3">
@@ -757,7 +835,7 @@ select#edition option:not(:first-of-type) {
 <!-- Modal de detalles -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
   <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-3xl overflow-hidden relative custom-scroll">
-    <button id="closeModalBtn" class="absolute top-2 right-3 text-lg font-bold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
+    <button id="closeModalBtn" class="absolute top-2 right-3 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
 
     <div id="modalHeader" class="flex flex-col items-center mb-4">
       </div>
@@ -895,6 +973,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const releaseDateInput = document.getElementById('releaseDate');
   const modal = document.getElementById('modal');
   
+  const modalContent = document.querySelector('#modal > div');
+
+  modalContent.addEventListener('wheel', (e) => {
+    const delta = e.deltaY;
+    const scrollTop = modalContent.scrollTop;
+    const scrollHeight = modalContent.scrollHeight;
+    const clientHeight = modalContent.clientHeight;
+
+    if (
+      (delta < 0 && scrollTop === 0) || // scroll up cuando ya estás arriba
+      (delta > 0 && scrollTop + clientHeight >= scrollHeight) // scroll down cuando ya estás abajo
+    ) {
+      e.preventDefault(); // evita que se propague el scroll
+    }
+  }, { passive: false });
+
+const scrollable = document.querySelector('.custom-scroll');
+
+  scrollable.addEventListener('touchstart', function (e) {
+    this.startY = e.touches[0].clientY;
+  }, { passive: false });
+
+  scrollable.addEventListener('touchmove', function (e) {
+    const currentY = e.touches[0].clientY;
+    const scrollTop = this.scrollTop;
+    const scrollHeight = this.scrollHeight;
+    const clientHeight = this.clientHeight;
+    const isScrollingUp = currentY > this.startY;
+    const isScrollingDown = currentY < this.startY;
+
+    const atTop = scrollTop === 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight;
+
+    if ((atTop && isScrollingUp) || (atBottom && isScrollingDown)) {
+      e.preventDefault(); // bloquea el scroll del fondo
+    }
+  }, { passive: false });
 
   let isAuthenticated = false;
 
@@ -1261,7 +1376,6 @@ if (
   }
 }
 
-
 let hablando = false;
 let mensajeActual = null;
 
@@ -1367,12 +1481,14 @@ modal.addEventListener('click', (event) => {
   });
 
   function closeModal() {
-    const modal = document.getElementById('modal');
-    modal.classList.remove('flex');
-    setTimeout(() => {
-      modal.style.display = 'none'; // Opcional: ocultar completamente después de la transición
-    }, 200); // Coincide con la duración de la transición del modal
-  }
+  const modal = document.getElementById('modal');
+  modal.classList.remove('flex');
+  document.body.classList.remove('body-no-scroll'); // ⬅️ Esta línea restaura el scroll del fondo
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 200);
+}
+
 
   const closeModalButton = document.getElementById('closeModalBtn');
     if (closeModalButton) {
@@ -1380,6 +1496,7 @@ modal.addEventListener('click', (event) => {
     }
 
   modal.style.display = 'flex';
+  document.body.classList.add('body-no-scroll'); // ⬅️ Esta línea evita que se mueva el fondo
   setTimeout(() => modal.classList.add('flex'), 10);
 }
 
@@ -1434,6 +1551,7 @@ function showLoginModal() {
   loginModal.classList.remove('hidden');
   setTimeout(() => {
     loginModal.classList.add('opacity-100');
+    document.body.classList.add("body-no-scroll");
     loginBox.classList.remove('scale-95', 'opacity-0');
     loginBox.classList.add('scale-100', 'opacity-100');
   }, 10);
@@ -1442,6 +1560,7 @@ function showLoginModal() {
 // Ocultar modal con animación
 function hideLoginModal() {
   loginModal.classList.remove('opacity-100'); // ✅ AÑADE ESTO
+  document.body.classList.remove("body-no-scroll");
   loginBox.classList.remove('scale-100', 'opacity-100');
   loginBox.classList.add('scale-95', 'opacity-0');
   setTimeout(() => {
@@ -1993,7 +2112,9 @@ function clearForm() {
 
 function closeFormModal() {
   modalOverlay.classList.remove('flex', 'opacity-100', 'pointer-events-auto');
+  document.body.classList.remove("body-no-scroll");
   modalOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+  document.body.classList.add("body-no-scroll");
   formElement.classList.remove('opacity-100', 'scale-100');
   formElement.classList.add('opacity-0', 'scale-95');
 }
