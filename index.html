@@ -417,17 +417,26 @@ select#edition option:not(:first-of-type) {
 
 @media (max-width: 480px) {
   #modal > div {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    overscroll-behavior: contain; /* <-- evita que el scroll salga del modal */
+    scrollbar-gutter: stable both-edges; /* Evita que se reserve espacio para la barra */
+    padding-right: calc(1.5rem + 8px);   /* Compensa el scrollbar escondido */
   }
 
-  #modal > div::-webkit-scrollbar {
-    display: none;
+  #modal > div::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  #modal > div::-webkit-scrollbar-thumb {
+    background: transparent !important;
   }
 }
 
 
+
+.custom-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* necesario para iOS */
+}
 
 
 .body-no-scroll {
@@ -461,12 +470,23 @@ select#edition option:not(:first-of-type) {
 }
 
 #closeModalBtn {
-    position: absolute;
-    top: 2px; /* Ajusta según sea necesario */
-    right: 3px; /* Ajusta según sea necesario */
-    z-index: 100; /* Asegura que esté por encima del contenido del modal */
-    /* ... (tus otros estilos) ... */
+  position: absolute;
+  top: 0.5rem;         /* 8px */
+  right: 0.75rem;      /* 12px */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;
+  color: #a4a6aa;
+  z-index: 100;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 200ms ease;
 }
+
+#closeModalBtn:hover {
+  color: #5d636e;
+}
+
 
 /* Estilos personalizados para el modal */
 .custom-bg-gray { background-color: #f9fafa; }
@@ -807,7 +827,7 @@ html {
 <!-- Modal de detalles -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
   <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-3xl overflow-hidden relative custom-scroll">
-    <button id="closeModalBtn" class="absolute top-2 right-3 text-lg font-bold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
+    <button id="closeModalBtn" class="absolute top-2 right-3 text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors duration-200">✕</button>
 
     <div id="modalHeader" class="flex flex-col items-center mb-4">
       </div>
@@ -958,6 +978,28 @@ document.addEventListener('DOMContentLoaded', () => {
       (delta > 0 && scrollTop + clientHeight >= scrollHeight) // scroll down cuando ya estás abajo
     ) {
       e.preventDefault(); // evita que se propague el scroll
+    }
+  }, { passive: false });
+
+const scrollable = document.querySelector('.custom-scroll');
+
+  scrollable.addEventListener('touchstart', function (e) {
+    this.startY = e.touches[0].clientY;
+  }, { passive: false });
+
+  scrollable.addEventListener('touchmove', function (e) {
+    const currentY = e.touches[0].clientY;
+    const scrollTop = this.scrollTop;
+    const scrollHeight = this.scrollHeight;
+    const clientHeight = this.clientHeight;
+    const isScrollingUp = currentY > this.startY;
+    const isScrollingDown = currentY < this.startY;
+
+    const atTop = scrollTop === 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight;
+
+    if ((atTop && isScrollingUp) || (atBottom && isScrollingDown)) {
+      e.preventDefault(); // bloquea el scroll del fondo
     }
   }, { passive: false });
 
