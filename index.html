@@ -554,47 +554,50 @@ html {
 /* Estilos para el overlay de la imagen en pantalla completa */
 .fullscreen-image-modal {
   /* Propiedades para el estado oculto inicial */
-  display: none; /* Oculto por defecto. Se cambiará a 'flex' cuando esté activo. */
+  display: flex; /* Mantenemos 'flex' para que las animaciones funcionen */
+  visibility: hidden; /* Oculto visualmente por defecto */
   opacity: 0; /* Opacidad inicial para la animación de entrada */
   pointer-events: none; /* Evita que bloquee clics cuando está oculto */
-  transition: opacity 300ms ease-in-out; /* Transición suave para la opacidad */
+  transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out; /* Transiciones suaves para opacidad y visibilidad */
 
-  /* Propiedades fijas del modal (siempre presentes) */
+  /* Propiedades fijas del modal (siempre presentes, afectando el contenedor) */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+  justify-content: center; /* Centra horizontalmente la imagen */
+  align-items: center; /* Centra verticalmente la imagen */
   z-index: 100; /* Asegúrate de que esté por encima de tu modal principal */
 }
 
 /* Estado activo del modal (cuando se muestra) */
 .fullscreen-image-modal.active {
-  display: flex; /* Cambia a flexbox para mostrar y centrar el contenido */
-  justify-content: center; /* Centra horizontalmente la imagen */
-  align-items: center; /* Centra verticalmente la imagen */
+  visibility: visible; /* Hace el modal visible */
   opacity: 1; /* Opacidad final para mostrar */
   pointer-events: auto; /* Permite clics cuando está visible */
 }
 
 /* Estilos para la imagen dentro del overlay */
 .fullscreen-image {
-  max-height: 90vh; /* Permite que la imagen no exceda el 90% del alto del viewport, pero se ajuste si es necesario */
+  /* ¡CAMBIO CRÍTICO AQUÍ! */
+  max-height: 90vh; /* Permite que la imagen NO exceda el 90% del alto del viewport, pero se ajuste si es necesario */
   height: auto; /* Asegura que la altura se ajuste automáticamente para mantener la relación de aspecto */
+  
   width: auto; /* Mantiene la relación de aspecto del ancho */
   max-width: 90%; /* Asegura que no desborde horizontalmente si el ancho ajustado es demasiado grande */
   object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
-  border-radius: 0.3rem; /* El redondez específico. Si se "quita", verifica posibles overrides CSS. */
-
-  /* Propiedades de animación para el zoom-in */
-  transform: scale(0.8); /* Estado inicial: la imagen es un poco más pequeña */
-  transition: transform 300ms ease-out; /* Transición suave para la transformación */
+  border-radius: 0.3rem; /* El redondez específico de 0.3rem. Ahora debería ser visible. */
+  
+  /* Propiedades de animación */
+  transform: scale(0.8); /* Estado inicial para el zoom-in */
+  transition: transform 300ms ease-out; /* Animación de transformación a 300ms */
 }
 
 /* Estado de la imagen cuando el modal está activo (para el zoom-in) */
 .fullscreen-image-modal.active .fullscreen-image {
-  transform: scale(1); /* Estado final: la imagen vuelve a su tamaño normal */
+  transform: scale(1); /* Estado final para el zoom-in */
 }
 
 </style>
