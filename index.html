@@ -581,8 +581,9 @@ html {
 
 /* Estilos para la imagen dentro del overlay */
 .fullscreen-image {
-  /* ¡Como solicitaste: fuerza la altura al 90% del alto del viewport! */
-  height: 90vh; 
+  /* ¡CAMBIO CRÍTICO AQUÍ! */
+  max-height: 90vh; /* Permite que la imagen NO exceda el 90% del alto del viewport, pero se ajuste si es necesario */
+  height: auto; /* Asegura que la altura se ajuste automáticamente para mantener la relación de aspecto */
   
   width: auto; /* Mantiene la relación de aspecto del ancho */
   max-width: 90%; /* Asegura que no desborde horizontalmente si el ancho ajustado es demasiado grande */
