@@ -452,7 +452,7 @@ select#edition option:not(:first-of-type) {
   right: 0.75rem;      /* 12px */
   font-size: 0.875rem; /* text-sm */
   font-weight: 600;
-  color: #a4a6aa;
+  color: #e8e9eb;
   z-index: 100;
   background: transparent;
   border: none;
@@ -461,7 +461,7 @@ select#edition option:not(:first-of-type) {
 }
 
 #closeModalBtn:hover {
-  color: #5d636e;
+  color: #b2b4b6;
 }
 
 
@@ -551,6 +551,51 @@ html {
   overflow-y: scroll;
 }
 
+/* Estilos para el overlay de la imagen en pantalla completa */
+.fullscreen-image-modal {
+  /* Propiedades para el estado oculto inicial */
+  display: none; /* Oculto por defecto. Se cambiará a 'flex' cuando esté activo. */
+  opacity: 0; /* Opacidad inicial para la animación de entrada */
+  pointer-events: none; /* Evita que bloquee clics cuando está oculto */
+  transition: opacity 300ms ease-in-out; /* Transición suave para la opacidad */
+
+  /* Propiedades fijas del modal (siempre presentes) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+  z-index: 100; /* Asegúrate de que esté por encima de tu modal principal */
+}
+
+/* Estado activo del modal (cuando se muestra) */
+.fullscreen-image-modal.active {
+  display: flex; /* Cambia a flexbox para mostrar y centrar el contenido */
+  justify-content: center; /* Centra horizontalmente la imagen */
+  align-items: center; /* Centra verticalmente la imagen */
+  opacity: 1; /* Opacidad final para mostrar */
+  pointer-events: auto; /* Permite clics cuando está visible */
+}
+
+/* Estilos para la imagen dentro del overlay */
+.fullscreen-image {
+  max-height: 90vh; /* Permite que la imagen no exceda el 90% del alto del viewport, pero se ajuste si es necesario */
+  height: auto; /* Asegura que la altura se ajuste automáticamente para mantener la relación de aspecto */
+  width: auto; /* Mantiene la relación de aspecto del ancho */
+  max-width: 90%; /* Asegura que no desborde horizontalmente si el ancho ajustado es demasiado grande */
+  object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
+  border-radius: 0.3rem; /* El redondez específico. Si se "quita", verifica posibles overrides CSS. */
+
+  /* Propiedades de animación para el zoom-in */
+  transform: scale(0.8); /* Estado inicial: la imagen es un poco más pequeña */
+  transition: transform 300ms ease-out; /* Transición suave para la transformación */
+}
+
+/* Estado de la imagen cuando el modal está activo (para el zoom-in) */
+.fullscreen-image-modal.active .fullscreen-image {
+  transform: scale(1); /* Estado final: la imagen vuelve a su tamaño normal */
+}
 
 </style>
 </head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block __className_9fd9c5">Mi colección de videojuegos</a><a class="ml-2 mr-4 font-bold sm:hidden __className_9fd9c5">Mi colección</a></div><div class="flex items-center gap-3 relative ml-4">
@@ -814,11 +859,15 @@ html {
     <div id="modalDetails" class="text-gray-700">
       </div>
 
-    <div id="modalButtons" class="flex justify-end gap-4 mt-6 hidden">
+    <div id="modalButtons" class="flex justify-center gap-4 mt-6 hidden">
       <button id="editBtn" title="Editar juego" class="text-blue-600 text-xl">✏️</button>
       <button id="deleteBtn" title="Borrar juego" class="text-red-600 text-xl">🗑️</button>
     </div>
   </div>
+</div>
+
+<div id="fullscreenImageModal" class="fullscreen-image-modal">
+  <img id="fullscreenImageView" src="" alt="Carátula en pantalla completa" class="fullscreen-image">
 </div>
 
     <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Search for games" autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
@@ -941,6 +990,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const purchaseDateInput = document.getElementById('purchaseDate');
   const releaseDateInput = document.getElementById('releaseDate');
   const modal = document.getElementById('modal');
+  const fullscreenImageModal = document.getElementById('fullscreenImageModal');
+  const fullscreenImageView = document.getElementById('fullscreenImageView');
   
   const modalContent = document.querySelector('#modal > div');
 
@@ -995,6 +1046,7 @@ const scrollable = document.querySelector('.custom-scroll');
   }
 
 let games = [];
+let editingGameId = null;
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
   function renderGamesFromFirebase() {
@@ -1118,6 +1170,23 @@ let games = [];
     renderGamesFromFirebase();
   });
 
+function showFullscreenImage(imageUrl) {
+  fullscreenImageView.src = imageUrl;
+  fullscreenImageModal.classList.add('active'); // Muestra el overlay y activa la animación
+  
+  // Bloquear el scroll de la página de fondo cuando la imagen está en pantalla completa
+  document.body.classList.add('body-no-scroll');
+  document.documentElement.classList.add('body-no-scroll');
+}
+
+function hideFullscreenImage() {
+  fullscreenImageModal.classList.remove('active'); // Oculta el overlay y activa la animación inversa
+  
+  // Quitar el bloqueo de scroll
+  document.body.classList.remove('body-no-scroll');
+  document.documentElement.classList.remove('body-no-scroll');
+}
+
 function openModal(index) {
   console.log("Valor de games al abrir el modal:", games); // Añade esta línea
   const game = games[index];
@@ -1157,6 +1226,16 @@ modalImage.src = game.image;
   modalImage.style.marginRight = 'auto';
   modalImage.style.marginBottom = '2rem'; // Añade un poco de espacio debajo de la imagen
   modalImage.style.objectFit = 'contain'; // Asegura que la imagen se ajuste sin recortar
+
+  // 3. Evento clic en la carátula dentro del modal principal (dentro de openModal)
+  if (modalImage) { // Comprobación por si modalImage no existe aún
+    modalImage.onclick = () => { // Usamos onclick directamente para evitar múltiples listeners
+      const imageUrl = modalImage.src; 
+      if (imageUrl) {
+        showFullscreenImage(imageUrl);
+      }
+    };
+  }
 
   function formatMoney(value) {
   const num = Number(value) || 0;
@@ -1468,6 +1547,22 @@ modal.addEventListener('click', (event) => {
   document.body.classList.add('body-no-scroll'); // ⬅️ Esta línea evita que se mueva el fondo
   setTimeout(() => modal.classList.add('flex'), 10);
 }
+
+// 4. Eventos globales para el modal de imagen en pantalla completa (fuera de openModal, dentro de DOMContentLoaded)
+if (fullscreenImageModal) {
+  fullscreenImageModal.addEventListener('click', (event) => {
+    if (event.target === fullscreenImageModal) {
+      hideFullscreenImage();
+    }
+  });
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && fullscreenImageModal.classList.contains('active')) {
+    hideFullscreenImage();
+  }
+});
+// --- FIN DEL CÓDIGO A AÑADIR ---
 
   authStatusBtn.onclick = () => {
   if (isAuthenticated) {
