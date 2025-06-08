@@ -204,7 +204,7 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
-  z-index: 50;
+  z-index: 999;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-in-out;
@@ -213,6 +213,7 @@
 #modalOverlay.visible {
   opacity: 1;
   pointer-events: auto;
+  display: flex;  /* necesario para que se muestre */
 }
 .form-grid {
   display: grid;
@@ -408,6 +409,12 @@ select#edition option:not(:first-of-type) {
   }
 }
 
+body.modal-open { /* Usa la clase que apliques al body cuando el modal está activo */
+  overflow: hidden; /* Mantén esto para evitar el scroll */
+  position: fixed; /* Fija el body en la ventana */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  /* El 'top' se establecerá con JavaScript */
+}
 
 .custom-scroll {
   max-height: 80vh;
@@ -425,11 +432,13 @@ select#edition option:not(:first-of-type) {
 }
 
   /* Evita el scroll en el modal por fallback */
-  body.body-no-scroll,
-  html.body-no-scroll {
-    touch-action: none;
-    overscroll-behavior: none;
-  }
+html.no-scroll,
+body.no-scroll {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
 
 #modal h3 {
   font-size: 1rem;
@@ -998,6 +1007,20 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const modalContent = document.querySelector('#modal > div');
 
+const editBtn = document.getElementById("editBtn");
+
+editBtn.addEventListener("click", () => {
+  const modal = document.getElementById("modal");
+  const index = parseInt(modal.dataset.currentIndex);
+
+  if (!isNaN(index) && games[index]) {
+    modal.classList.add("hidden"); // Oculta el modal principal
+    openEditModal(games[index]);   // Abre el modalOverlay con formulario relleno
+  }
+});
+
+
+
   modalContent.addEventListener('wheel', (e) => {
     const delta = e.deltaY;
     const scrollTop = modalContent.scrollTop;
@@ -1049,7 +1072,6 @@ const scrollable = document.querySelector('.custom-scroll');
   }
 
 let games = [];
-let editingGameId = null;
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
   function renderGamesFromFirebase() {
@@ -1176,19 +1198,138 @@ let editingGameId = null;
 function showFullscreenImage(imageUrl) {
   fullscreenImageView.src = imageUrl;
   fullscreenImageModal.classList.add('active'); // Muestra el overlay y activa la animación
-  
-  // Bloquear el scroll de la página de fondo cuando la imagen está en pantalla completa
-  document.body.classList.add('body-no-scroll');
-  document.documentElement.classList.add('body-no-scroll');
+
+  // Bloquear el scroll del fondo de manera segura
+  document.documentElement.classList.add('no-scroll');
 }
 
 function hideFullscreenImage() {
   fullscreenImageModal.classList.remove('active'); // Oculta el overlay y activa la animación inversa
-  
-  // Quitar el bloqueo de scroll
-  document.body.classList.remove('body-no-scroll');
-  document.documentElement.classList.remove('body-no-scroll');
+
+  // Restaurar el scroll del fondo
+  document.documentElement.classList.remove('no-scroll');
 }
+
+
+function openEditModal(game) {
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('gameForm');
+  const editBtn = document.getElementById("editBtn");
+
+  
+  document.getElementById('guardarSubmit').textContent = 'Actualizar';
+
+  // Mostrar modal
+  overlay.classList.add('visible');
+  overlay.classList.remove('hidden');
+  form.classList.add('visible');
+  form.classList.remove('opacity-0');
+
+  // Rellenar los campos del formulario con los datos del juego
+  document.getElementById('imageUrl').value = game.image || '';
+  document.getElementById('title').value = game.title || '';
+  document.getElementById('platform').value = game.platform || '';
+  document.getElementById('folder').value = game.folder || '';
+  document.getElementById('condition').value = game.condition || '';
+  document.getElementById('purchaseDate').value = game.purchaseDate || '';
+  document.getElementById('releaseDate').value = game.releaseDate || '';
+  document.getElementById('purchaseLocation').value = game.purchaseLocation || '';
+  document.getElementById('region').value = game.region || '';
+  document.getElementById('gift').value = game.gift || '';
+  document.getElementById('cost').value = game.cost || '';
+  document.getElementById('edition').value = game.edition || '';
+  document.getElementById('value').value = game.value || '';
+  document.getElementById('wallapopLink').value = game.wallapopLink || '';
+  document.getElementById('vintedLink').value = game.vintedLink || '';
+  document.getElementById('ebayLink').value = game.ebayLink || '';
+  document.getElementById('cex').value = game.cex || '';
+  document.getElementById('cexLink').value = game.cexLink || '';
+  document.getElementById('details').value = game.details || '';
+
+  // ⭐ Rellenar las estrellas
+  const stars = document.querySelectorAll('#estadoStars span');
+  stars.forEach(star => {
+    const starValue = parseInt(star.getAttribute('data-star'));
+    star.classList.toggle('active', starValue <= (parseInt(game.estado) || 0));
+  });
+
+  // **IMPORTANTE: Guardar el ID del juego para actualizarlo luego**
+  form.dataset.gameId = game.id;
+}
+
+document.getElementById('gameForm').onsubmit = function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const gameId = form.dataset.gameId;
+
+  const updatedGame = {
+    imageURL: document.getElementById('imageUrl').value,
+    title: document.getElementById('title').value,
+    platform: document.getElementById('platform').value,
+    folder: document.getElementById('folder').value,
+    condition: document.getElementById('condition').value,
+    purchaseDate: document.getElementById('purchaseDate').value,
+    releaseDate: document.getElementById('releaseDate').value,
+    purchaseLocation: document.getElementById('purchaseLocation').value,
+    region: document.getElementById('region').value,
+    gift: document.getElementById('gift').value,
+    cost: parseFloat(document.getElementById('cost').value) || 0,
+    edition: document.getElementById('edition').value,
+    value: parseFloat(document.getElementById('value').value) || 0,
+    wallapopLink: document.getElementById('wallapopLink').value,
+    vintedLink: document.getElementById('vintedLink').value,
+    ebayLink: document.getElementById('ebayLink').value,
+    cex: parseFloat(document.getElementById('cex').value) || 0,
+    cexLink: document.getElementById('cexLink').value,
+    estado: document.querySelectorAll('#estadoStars span.active').length,
+    details: document.getElementById('details').value,
+  };
+
+  if (gameId) {
+    // Actualizar documento existente
+    db.collection('games').doc(gameId).update(updatedGame)
+      .then(() => {
+        alert("Juego actualizado correctamente");
+        document.getElementById('modalOverlay').classList.remove('visible');
+        renderGamesFromFirebase();
+      })
+      .catch(error => {
+        console.error("Error al actualizar el juego:", error);
+        alert("Error al guardar los cambios.");
+      });
+  } else {
+    // Añadir nuevo documento
+    db.collection('games').add(updatedGame)
+      .then(() => {
+        alert("Juego añadido correctamente");
+        document.getElementById('modalOverlay').classList.remove('visible');
+        renderGamesFromFirebase();
+      })
+      .catch(error => {
+        console.error("Error al añadir el juego:", error);
+        alert("Error al guardar los cambios.");
+      });
+  }
+}
+
+
+function openAddModal() {
+  const overlay = document.getElementById('modalOverlay');
+  const form = document.getElementById('gameForm');
+
+  form.reset();                  // Limpia todos los campos del formulario
+  delete form.dataset.gameId;    // Elimina el gameId para indicar que es un juego nuevo (no editar)
+
+  document.getElementById('guardarSubmit').textContent = 'Guardar';
+
+  overlay.classList.add('visible');
+  overlay.classList.remove('hidden');
+  form.classList.add('visible');
+  form.classList.remove('opacity-0');
+}
+
+let scrollPosition = 0; // Variable para almacenar la posición de scroll
 
 function openModal(index) {
   console.log("Valor de games al abrir el modal:", games); // Añade esta línea
@@ -1199,16 +1340,15 @@ function openModal(index) {
   const modalButtons = document.getElementById('modalButtons');
   const user = firebase.auth().currentUser;
 
+
+  
+  modal.dataset.currentIndex = index; // 👈 Esto es clave
+
   if (user) {
     modalButtons.classList.remove('hidden');
   } else {
     modalButtons.classList.add('hidden');
   }
-
-  document.getElementById("editBtn").onclick = () => {
-    closeModal();
-    openEditModal(game); // asegúrate de tener esta función
-  };
 
 const modalHeader = document.getElementById('modalHeader');
   modalHeader.innerHTML = `
@@ -1534,7 +1674,7 @@ modal.addEventListener('click', (event) => {
   function closeModal() {
   const modal = document.getElementById('modal');
   modal.classList.remove('flex');
-  document.body.classList.remove('body-no-scroll'); // ⬅️ Esta línea restaura el scroll del fondo
+  document.documentElement.classList.remove('no-scroll');  // ⬅️ Esta línea restaura el scroll del fondo
   setTimeout(() => {
     modal.style.display = 'none';
   }, 200);
@@ -1547,7 +1687,7 @@ modal.addEventListener('click', (event) => {
     }
 
   modal.style.display = 'flex';
-  document.body.classList.add('body-no-scroll'); // ⬅️ Esta línea evita que se mueva el fondo
+  document.documentElement.classList.add('no-scroll'); // ⬅️ Esta línea evita que se mueva el fondo
   setTimeout(() => modal.classList.add('flex'), 10);
 }
 
