@@ -555,6 +555,17 @@ body.no-scroll {
   top: -3px;    /* desplaza hacia abajo 5px */
 }
 
+/* 👇 Clase que bloquea el scroll sin romper sticky */
+.scroll-lock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
 
 html {
   overflow-y: scroll;
@@ -882,7 +893,7 @@ html {
   <img id="fullscreenImageView" src="" alt="Carátula en pantalla completa" class="fullscreen-image">
 </div>
 
-    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Search for games" autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
+    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Buscar videojuegos..." autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
 
 
 
@@ -906,13 +917,13 @@ html {
           <path d="m3 8 4-4 4 4"></path>
           <path d="M7 4v16"></path>
         </svg>
-        <div class="hidden lg:block" id="sort-button-label">Last Updated</div>
+        <div class="hidden lg:block" id="sort-button-label">Últimas compras</div>
       </button>
 
       <!-- Menú desplegable que sale debajo -->
       <div id="sort-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
         <div class="py-1">
-          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Last Updated</div>
+          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Últimas compras</div>
           <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alphabetical</div>
         </div>
     </div>
@@ -934,7 +945,7 @@ html {
       <path d="M7 12h10"></path>
       <path d="M10 18h4"></path>
     </svg>
-    <div class="hidden lg:block" id="all-button-label">All</div>
+    <div class="hidden lg:block" id="all-button-label">Todo</div>
   </button>
 
   <!-- Menú desplegable que sale debajo para All -->
@@ -966,13 +977,13 @@ html {
         <line x1="18" x2="18.01" y1="10" y2="10"></line>
         <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path>
       </svg>
-    <div class="hidden lg:block" id="platform-button-label">All</div>
+    <div class="hidden lg:block" id="platform-button-label">Todo</div>
   </button>
 
   <!-- Menú desplegable que sale debajo para All -->
   <div id="platform-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
     <div class="py-1">
-      <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+      <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Todo</div>
       <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS3</div>
       <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS4</div>
       <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS5</div>
@@ -1756,24 +1767,24 @@ document.addEventListener('keydown', (event) => {
 // Mostrar modal con animación
 function showLoginModal() {
   loginModal.classList.remove('hidden');
+
   setTimeout(() => {
     loginModal.classList.add('opacity-100');
-    document.body.classList.add("body-no-scroll");
     loginBox.classList.remove('scale-95', 'opacity-0');
     loginBox.classList.add('scale-100', 'opacity-100');
   }, 10);
 }
 
-// Ocultar modal con animación
 function hideLoginModal() {
-  loginModal.classList.remove('opacity-100'); // ✅ AÑADE ESTO
-  document.body.classList.remove("body-no-scroll");
+  loginModal.classList.remove('opacity-100');
   loginBox.classList.remove('scale-100', 'opacity-100');
   loginBox.classList.add('scale-95', 'opacity-0');
+
   setTimeout(() => {
     loginModal.classList.add('hidden');
   }, 300);
 }
+
 
 
 // Pulsar Enter en email o password → hace login
@@ -2319,9 +2330,9 @@ function clearForm() {
 
 function closeFormModal() {
   modalOverlay.classList.remove('flex', 'opacity-100', 'pointer-events-auto');
-  document.body.classList.remove("body-no-scroll");
+  document.body.classList.remove("no-scroll");
   modalOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-  document.body.classList.add("body-no-scroll");
+  document.body.classList.add("no-scroll");
   formElement.classList.remove('opacity-100', 'scale-100');
   formElement.classList.add('opacity-0', 'scale-95');
 }
