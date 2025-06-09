@@ -1239,11 +1239,16 @@ function openEditModal(game) {
   document.getElementById('guardarSubmit').textContent = 'Actualizar';
 
   
-  // Mostrar modal
-  overlay.classList.add('visible');
-  overlay.classList.remove('hidden');
-  form.classList.add('visible');
-  form.classList.remove('opacity-0');
+// Mostrar modal con animación garantizada
+overlay.classList.remove('hidden'); // Hace el elemento "visible" para el navegador
+overlay.style.display = 'flex';    // Forza el display antes de animar
+
+setTimeout(() => { // Da un respiro mínimo al navegador para que procese el cambio
+    overlay.classList.add('visible');
+    form.classList.add('visible');
+}, 10); // 10 milisegundos es suficiente
+
+
 
   // Rellenar los campos del formulario con los datos del juego
   document.getElementById('imageUrl').value = game.image || '';
@@ -1279,6 +1284,45 @@ function openEditModal(game) {
 
 const form = document.getElementById('gameForm');
 
+const closeForm = (resetGameId = true, forceReload = false) => {
+    const overlay = document.getElementById('modalOverlay');
+    const form = document.getElementById('gameForm');
+
+    // 1. Inicia la animación de salida quitando clases
+    form.classList.remove('visible');
+    form.classList.remove('opacity-100');
+    overlay.classList.remove('visible');
+    overlay.classList.remove('opacity-100');
+
+    // 2. Después de la animación, oculta y resetea todo
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('flex');
+
+        form.reset();
+
+        // ✅ Reactiva el botón de guardar
+        form.querySelector('#guardarSubmit').disabled = false;
+
+        // ✅ Usa el parámetro correctamente
+        if (resetGameId) {
+            delete form.dataset.gameId;
+            form.querySelector('#guardarSubmit').textContent = 'Guardar';
+        }
+
+        if (forceReload) {
+            renderGamesFromFirebase(); // ✅ Esto sí se ejecutará ahora
+        }
+    }, 300);
+};
+const modalOverlay = document.getElementById('modalOverlay');
+
+modalOverlay.addEventListener('click', (event) => {
+  if (event.target === modalOverlay) {
+    closeForm(false, false); // ❌ no recarga al cerrar con clic fuera
+  }
+});
+
 form.addEventListener('submit', async function handleSubmit(e) {
   e.preventDefault();
   
@@ -1309,24 +1353,16 @@ form.addEventListener('submit', async function handleSubmit(e) {
     details: form.details.value,
   };
 
-  const closeForm = () => {
-    document.getElementById('modalOverlay').classList.remove('visible');
-    form.reset();
-    delete form.dataset.gameId;
-    form.querySelector('#guardarSubmit').textContent = 'Guardar';
-    form.querySelector('#guardarSubmit').disabled = false;
-    renderGamesFromFirebase();
-  };
-
   try {
-    if (gameId) {
-      await db.collection('games').doc(gameId).update(updatedGame);
-      alert("Juego actualizado correctamente");
-    } else {
-      await db.collection('games').add(updatedGame);
-      alert("Juego añadido correctamente");
-    }
-    closeForm();
+if (gameId) {
+  await db.collection('games').doc(gameId).update(updatedGame);
+  alert("Juego actualizado correctamente");
+  closeForm(true, true); // ✅ Esto debe estar dentro del if
+} else {
+  await db.collection('games').add(updatedGame);
+  alert("Juego añadido correctamente");
+  closeForm(true, true); // ✅ También aquí
+}
   } catch (error) {
     console.error("Error guardando el juego:", error);
     alert("Error al guardar los cambios.");
@@ -1362,6 +1398,9 @@ document.getElementById('deleteBtn').addEventListener('click', () => {
 function openAddModal() {
   const overlay = document.getElementById('modalOverlay');
   const form = document.getElementById('gameForm');
+  
+  if (overlay.classList.contains('visible')) return; // Evita reabrir si ya está abierto
+
 
   form.reset();                  // Limpia todos los campos del formulario
   delete form.dataset.gameId;    // Elimina el gameId para indicar que es un juego nuevo (no editar)
@@ -1372,6 +1411,9 @@ function openAddModal() {
   overlay.classList.remove('hidden');
   form.classList.add('visible');
   form.classList.remove('opacity-0');
+
+  document.body.classList.add("no-scroll"); // Bloquear scroll
+
 }
 
 let scrollPosition = 0; // Variable para almacenar la posición de scroll
@@ -1732,6 +1774,8 @@ modal.addEventListener('click', (event) => {
   document.documentElement.classList.remove('no-scroll');  // ⬅️ Esta línea restaura el scroll del fondo
   setTimeout(() => {
     modal.style.display = 'none';
+        // Limpia el formulario y borra gameId para que se reinicie al abrir
+    closeForm(true);
   }, 200);
 }
 
@@ -2371,17 +2415,6 @@ function clearForm() {
   document.getElementById('cexLink').value = '';
   document.getElementById('details').value = '';
 }
-
-function closeFormModal() {
-  modalOverlay.classList.remove('flex', 'opacity-100', 'pointer-events-auto');
-  document.body.classList.remove("no-scroll");
-  modalOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-  document.body.classList.add("no-scroll");
-  formElement.classList.remove('opacity-100', 'scale-100');
-  formElement.classList.add('opacity-0', 'scale-95');
-}
-
-
 
 toggleButton.addEventListener('click', (e) => {
   e.stopPropagation();
