@@ -1100,9 +1100,16 @@ let games = [];
           ? data.imageURL
           : "https://via.placeholder.com/158x158?text=Sin+Imagen";
 
-        const imageHeight = (platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" || platform === "Nintendo 3DS")
-          ? 130
-          : 154;
+        const imageHeight = 
+          (title === "Little Nightmares II [Edición TV]") 
+          ? 110 // Altura específica para "Little Nightmares II [Edición TV]"
+          : (title === "Bonus Demo 8 (You) + Network Access Disc" || 
+            platform === "Nintendo DS" || 
+            platform === "Nintendo 3DS" || 
+            platform === "PlayStation" || 
+            platform === "Game Boy Advance")
+            ? 130 // Altura para "Bonus Demo 8" y otras plataformas específicas
+            : 154; // Altura por defecto para el resto
 
         const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
 
@@ -1154,7 +1161,7 @@ let games = [];
                       <img
                         alt="${title}"
                         loading="lazy"
-                        height="${platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" ? 130 : 154}"
+                         height="${imageHeight}"
                         decoding="async"
                         class="rounded-sm text-center bg-primary/10"
                         src="${imageSrc}"
@@ -1397,9 +1404,19 @@ modalImage.src = game.image;
 
   // ✅ Nuevo bloque para ajustar el tamaño y centrado de la imagen
   let imageHeightModal = 430; // Valor por defecto
-  if (game.platform === "Nintendo DS" || game.platform === "Nintendo 3DS" || game.platform === "PlayStation" || game.platform === "Game Boy Advance") {
-    imageHeightModal = 330;
-  }
+
+if (game.title === "Little Nightmares II [Edición TV]") {
+  imageHeightModal = 330; // Altura específica para Little Nightmares II
+} else if (
+  game.title === "Bonus Demo 8 (You) + Network Access Disc" ||
+  game.platform === "Nintendo DS" ||
+  game.platform === "Nintendo 3DS" ||
+  game.platform === "PlayStation" ||
+  game.platform === "Game Boy Advance"
+) {
+  imageHeightModal = 330; // Altura para Bonus Demo 8 y otras plataformas específicas
+}
+// Si no coincide con ninguna de las condiciones anteriores, se mantendrá en 430 (el valor por defecto)
   modalImage.style.height = `${imageHeightModal}px`;
   modalImage.style.width = 'auto'; // Mantiene la proporción
   modalImage.style.display = 'block'; // Para poder usar margin auto
