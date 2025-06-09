@@ -1145,11 +1145,22 @@ function renderGamesPage(page) {
     card.href = "#";
     card.style.display = "block";
 
-    const imageHeight =
-      game.title === "Little Nightmares II [Edición TV]" ? 110 :
-      ["Bonus Demo 8 (You) + Network Access Disc", "Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"].includes(game.platform)
-        ? 130
-        : 154;
+    let imageHeight = 154; // Valor por defecto
+
+    // Títulos específicos con altura especial
+    const specialTitleHeights = {
+      "Little Nightmares II [Edición TV]": 110,
+      "Bonus Demo 8 (You) + Network Access Disc": 130,
+    };
+
+    // Plataformas con altura especial
+    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
+
+    if (specialTitleHeights[game.title]) {
+      imageHeight = specialTitleHeights[game.title];
+    } else if (specialPlatformHeights.includes(game.platform)) {
+      imageHeight = 130;
+    }
 
     const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
 
@@ -1247,22 +1258,23 @@ function renderPagination() {
       const selectedPage = parseInt(a.dataset.page);
       if (selectedPage !== currentPage) {
         currentPage = selectedPage;
+        history.pushState(null, "", `/colecciondevideojuegos/${currentPage}`);
         localStorage.setItem('currentPage', currentPage);
         renderGamesPage(currentPage);
         renderPagination();
-
-        // ✅ Cambiar URL sin recargar
-        history.pushState(null, '', `/${currentPage}`);
       }
     });
   });
 }
 
 // Leer número de página de la URL (ej: /3)
-const pageMatch = window.location.pathname.match(/^\/(\d+)$/);
+const pageMatch = window.location.pathname.match(/\/colecciondevideojuegos\/(\d+)/);
 if (pageMatch) {
   currentPage = parseInt(pageMatch[1]) || 1;
+} else {
+  currentPage = 1;
 }
+
 
 
   auth.onAuthStateChanged(user => {
