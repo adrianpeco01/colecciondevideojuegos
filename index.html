@@ -893,7 +893,7 @@ html {
   <img id="fullscreenImageView" src="" alt="Carátula en pantalla completa" class="fullscreen-image">
 </div>
 
-    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Buscar videojuegos..." autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
+    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input id="searchInput" class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Buscar videojuegos..." autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
 
 
 
@@ -1131,6 +1131,101 @@ function renderGamesFromFirebase() {
     renderPagination();
   });
 }
+
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', function () {
+  const filter = searchInput.value.trim().toLowerCase();
+
+  if (filter === "") {
+    // Si la búsqueda está vacía, mostrar la página actual con paginación
+    currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
+    renderGamesPage(currentPage);
+    renderPagination();
+    return;
+  }
+
+  // Filtrar juegos cuyo título incluye el texto buscado
+  const filteredGames = games.filter(game => game.title.toLowerCase().includes(filter));
+
+  // Mostrar solo página única
+  currentPage = 1;
+  renderFilteredGames(filteredGames);
+  
+  // Ocultar paginación
+  const pagination = document.getElementById('pagination');
+  pagination.innerHTML = "";
+});
+
+function renderFilteredGames(filteredGames) {
+  gamesContainer.innerHTML = "";
+
+  filteredGames.forEach(game => {
+    const card = document.createElement("a");
+    card.className = "mx-auto my-1 w-[176px]";
+    card.href = "#";
+    card.style.display = "block";
+
+    let imageHeight = 154;
+
+    const specialTitleHeights = {
+      "Little Nightmares II [Edición TV]": 110,
+      "Bonus Demo 8 (You) + Network Access Disc": 130,
+    };
+
+    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
+
+    if (specialTitleHeights[game.title]) {
+      imageHeight = specialTitleHeights[game.title];
+    } else if (specialPlatformHeights.includes(game.platform)) {
+      imageHeight = 130;
+    }
+
+    const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
+
+    card.innerHTML = `
+      <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
+        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+        onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
+        onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
+        <div class="flex flex-col space-y-1.5 p-0">
+          <div class="flex flex-col">
+            <div class="grid h-[158px]">
+              <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                <img alt="${game.title}" loading="lazy" decoding="async"
+                  height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
+                  style="${imgStyle}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-0">
+          <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+          <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+            <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-xs font-medium text-white mix-blend-difference">
+                ${(() => {
+                  const num = Number(game.value) || 0;
+                  const [intPart, decimals] = num.toFixed(2).split('.');
+                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
+                })()}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal(games.indexOf(game)); // Abrir modal con índice real
+    });
+
+    gamesContainer.appendChild(card);
+  });
+}
+
 
 function renderGamesPage(page) {
   gamesContainer.innerHTML = "";
@@ -2066,30 +2161,7 @@ const minDate = '1970-01-01';
   });
 
   let selectedTypes = new Set();  // Añadir al principio del script
-  // --- Búsqueda ---
- const searchInput = document.querySelector('input[placeholder="Search for games"]');
- const gameCardsContainer = document.getElementById('games-container');
- const gameCards = () => gameCardsContainer.querySelectorAll('a.mx-auto');
- let originalCardsOrder = []; // Nuevo: para guardar las cartas originales
- 
- document.addEventListener('DOMContentLoaded', function() {
-   originalCardsOrder = Array.from(gameCards()); // Guardarlas cuando la página cargue
- 
-   searchInput.addEventListener('input', function() {
-     const filter = searchInput.value.toLowerCase();
- 
-     gameCards().forEach(card => {
-       const img = card.querySelector('img');
-       const altText = img ? img.alt.toLowerCase() : '';
- 
-       if (altText.includes(filter)) {
-         card.style.display = 'block';
-       } else {
-         card.style.display = 'none';
-       }
-     });
-   });
-}); 
+
    // --- Ordenación ---
    const sortButton = document.getElementById('sort-button');
    const sortMenu = document.getElementById('sort-menu');
