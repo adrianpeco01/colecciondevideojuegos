@@ -1085,7 +1085,7 @@ const scrollable = document.querySelector('.custom-scroll');
 let games = [];
 
 let currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
-const gamesPerPage = 6;
+const gamesPerPage = 72;
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
 function renderGamesFromFirebase() {
@@ -1186,7 +1186,11 @@ function renderGamesPage(page) {
             <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
             <div class="absolute inset-0 flex items-center justify-center">
               <span class="text-xs font-medium text-white mix-blend-difference">
-                ${(Number(game.value) || 0).toFixed(2).replace('.', ',')}€
+                ${(() => {
+                  const num = Number(game.value) || 0;
+                  const [intPart, decimals] = num.toFixed(2).split('.');
+                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
+                })()}
               </span>
             </div>
           </div>
