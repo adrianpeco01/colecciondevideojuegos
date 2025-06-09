@@ -1212,7 +1212,7 @@ function renderPagination() {
   const createPageLink = (page, active = false) => `
     <li>
       <a 
-        href="/${page}"
+        href="#page=${page}"
         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 ${active ? 'border border-input bg-background shadow-sm' : 'hover:bg-accent hover:text-accent-foreground'} h-9 p-2.5 lg:p-3"
         data-page="${page}"
       >
@@ -1252,27 +1252,35 @@ function renderPagination() {
   pagination.innerHTML = html;
 
   // Manejador de clicks y cambio de URL
-  document.querySelectorAll('#pagination a').forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const selectedPage = parseInt(a.dataset.page);
-      if (selectedPage !== currentPage) {
-        currentPage = selectedPage;
-        history.pushState(null, "", `/colecciondevideojuegos/${currentPage}`);
-        localStorage.setItem('currentPage', currentPage);
-        renderGamesPage(currentPage);
-        renderPagination();
-      }
-    });
+document.querySelectorAll('#pagination a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const selectedPage = parseInt(a.dataset.page);
+    if (selectedPage !== currentPage) {
+      currentPage = selectedPage;
+      // Cambiar sólo el hash en la URL, sin recargar la página
+      window.location.hash = `page=${currentPage}`;
+      localStorage.setItem('currentPage', currentPage);
+      renderGamesPage(currentPage);
+      renderPagination();
+    }
   });
+});
 }
 
 // Leer número de página de la URL (ej: /3)
-const pageMatch = window.location.pathname.match(/\/colecciondevideojuegos\/(\d+)/);
-if (pageMatch) {
-  currentPage = parseInt(pageMatch[1]) || 1;
-} else {
-  currentPage = 1;
+function getPageFromHash() {
+  const hash = window.location.hash;
+  const match = hash.match(/page=(\d+)/);
+  if (match) {
+    return parseInt(match[1]);
+  }
+  return null;
+}
+
+const pageFromHash = getPageFromHash();
+if (pageFromHash !== null) {
+  currentPage = pageFromHash;
 }
 
 
@@ -2610,6 +2618,17 @@ starsContainer.addEventListener('click', (e) => {
 if (selectedRating > 0) {
   highlightStars(selectedRating - 1);
 }
+
+window.addEventListener('hashchange', () => {
+  const newPage = getPageFromHash() || 1;
+  if (newPage !== currentPage) {
+    currentPage = newPage;
+    localStorage.setItem('currentPage', currentPage);
+    renderGamesPage(currentPage);
+    renderPagination();
+  }
+});
+
 
  </script>
 
