@@ -997,8 +997,8 @@ html {
           
           
         
-        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid">
-          </div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
+        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid"></div><div id="pagination" class="mt-4"></div>
+      </main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
 <script>
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1084,123 +1084,185 @@ const scrollable = document.querySelector('.custom-scroll');
 
 let games = [];
 
+let currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
+const gamesPerPage = 6;
+
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
-  function renderGamesFromFirebase() {
+function renderGamesFromFirebase() {
+  db.collection('games').get().then(snapshot => {
     gamesContainer.innerHTML = "";
     games = [];
 
+    snapshot.forEach((doc) => {
+      const data = doc.data();
 
-    db.collection('games').get().then(snapshot => {
-      snapshot.forEach((doc, firebaseIndex) => {
-        const data = doc.data();
-        const platform = data.platform || "";
-        const { title, value, link } = data;
-        // Usamos data.ImagenURL
-        const imageSrc = (data.imageURL || "").trim() !== ""
+      const gameData = {
+        id: doc.id,
+        title: data.title,
+        value: data.value,
+        link: data.link,
+        image: (data.imageURL || "").trim() !== ""
           ? data.imageURL
-          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
+          : "https://via.placeholder.com/158x158?text=Sin+Imagen",
+        platform: data.platform || "",
+        folder: data.folder,
+        condition: data.condition,
+        rating: data.rating,
+        purchaseDate: data.purchaseDate,
+        releaseDate: data.releaseDate,
+        purchaseLocation: data.purchaseLocation,
+        region: data.region,
+        gift: data.gift,
+        cost: data.cost,
+        edition: data.edition,
+        wallapopLink: data.wallapopLink,
+        vintedLink: data.vintedLink,
+        ebayLink: data.ebayLink,
+        cex: data.cex,
+        cexLink: data.cexLink,
+        estado: data.estado,
+        details: data.details,
+      };
 
-        const imageHeight = 
-          (title === "Little Nightmares II [Edición TV]") 
-          ? 110 // Altura específica para "Little Nightmares II [Edición TV]"
-          : (title === "Bonus Demo 8 (You) + Network Access Disc" || 
-            platform === "Nintendo DS" || 
-            platform === "Nintendo 3DS" || 
-            platform === "PlayStation" || 
-            platform === "Game Boy Advance")
-            ? 130 // Altura para "Bonus Demo 8" y otras plataformas específicas
-            : 154; // Altura por defecto para el resto
+      games.push(gameData);
+    });
 
-        const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
+    renderGamesPage(currentPage);
+    renderPagination();
+  });
+}
 
-        const gameData = {
-          id: doc.id,
-          title,
-          value,
-          link,
-          image: imageSrc,
-          platform,
-          folder: data.folder,
-          condition: data.condition,
-          rating: data.rating,
-          purchaseDate: data.purchaseDate,
-          releaseDate: data.releaseDate,
-          purchaseLocation: data.purchaseLocation,
-          region: data.region,
-          gift: data.gift,
-          cost: data.cost,
-          edition: data.edition,
-          wallapopLink: data.wallapopLink,
-          vintedLink: data.vintedLink,
-          ebayLink: data.ebayLink,
-          cex: data.cex,
-          cexLink: data.cexLink,
-          estado: data.estado,
-          details: data.details,
-        };
-        games.push(gameData);
+function renderGamesPage(page) {
+  gamesContainer.innerHTML = "";
 
+  const startIndex = (page - 1) * gamesPerPage;
+  const endIndex = startIndex + gamesPerPage;
+  const gamesToRender = games.slice(startIndex, endIndex);
 
-        const card = document.createElement("a");
-          card.className = "mx-auto my-1 w-[176px]";
-          card.href = "#";
-          card.id = "Platinum";
-          card.style.display = "block";
+  gamesToRender.forEach((game, index) => {
+    const card = document.createElement("a");
+    card.className = "mx-auto my-1 w-[176px]";
+    card.href = "#";
+    card.style.display = "block";
 
-        card.innerHTML = `
-            <div
-              class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-              style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
-              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
-              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
-            >
-              <div class="flex flex-col space-y-1.5 p-0">
-                <div class="flex flex-col">
-                  <div class="grid h-[158px]">
-                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                      <img
-                        alt="${title}"
-                        loading="lazy"
-                         height="${imageHeight}"
-                        decoding="async"
-                        class="rounded-sm text-center bg-primary/10"
-                        src="${imageSrc}"
-                        style="${imgStyle}"
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="p-0">
-                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
-                <div>
-                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
-                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                      <span class="text-xs font-medium text-white mix-blend-difference">${(() => {
-                                                                                                  const num = Number(value) || 0;
-                                                                                                  const [intPart, decimals] = num.toFixed(2).split('.');
-                                                                                                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
-                                                                                                })()}
-                         </span>
-                    </div>
-                  </div>
-                </div>
+    const imageHeight =
+      game.title === "Little Nightmares II [Edición TV]" ? 110 :
+      ["Bonus Demo 8 (You) + Network Access Disc", "Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"].includes(game.platform)
+        ? 130
+        : 154;
+
+    const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
+
+    card.innerHTML = `
+      <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
+        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+        onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
+        onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
+        <div class="flex flex-col space-y-1.5 p-0">
+          <div class="flex flex-col">
+            <div class="grid h-[158px]">
+              <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                <img alt="${game.title}" loading="lazy" decoding="async"
+                  height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
+                  style="${imgStyle}">
               </div>
             </div>
-          </a>
-        `;
+          </div>
+        </div>
+        <div class="p-0">
+          <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+          <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+            <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-xs font-medium text-white mix-blend-difference">
+                ${(Number(game.value) || 0).toFixed(2).replace('.', ',')}€
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 
-         const currentGameIndex = games.length - 1;
-      card.addEventListener("click", (e) => {
-        e.preventDefault();
-        openModal(currentGameIndex); // 👈 MODIFICACIÓN: Usamos currentGameIndex
-      });
-        
-        gamesContainer.appendChild(card);
-      });
+    const globalIndex = startIndex + index;
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal(globalIndex);
     });
+
+    gamesContainer.appendChild(card);
+  });
+}
+
+function renderPagination() {
+  const pagination = document.getElementById('pagination');
+  const totalPages = Math.ceil(games.length / gamesPerPage);
+  let html = `<nav role="navigation" aria-label="pagination" class="mx-auto flex w-full justify-center"><ul class="flex flex-row items-center gap-1">`;
+
+  const createPageLink = (page, active = false) => `
+    <li>
+      <a 
+        href="/${page}"
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 ${active ? 'border border-input bg-background shadow-sm' : 'hover:bg-accent hover:text-accent-foreground'} h-9 p-2.5 lg:p-3"
+        data-page="${page}"
+      >
+        ${page}
+      </a>
+    </li>
+  `;
+
+  const addDots = () => `<li class="px-1 text-gray-500">...</li>`;
+
+  const pages = [];
+
+  if (totalPages <= 4) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    if (currentPage <= 2) {
+      pages.push(1, 2, 3, 'dots', totalPages);
+    } else if (currentPage >= totalPages - 1) {
+      pages.push(totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
+    }
   }
+
+  // Añadir enlaces
+  for (let i = 0; i < pages.length; i++) {
+    if (pages[i] === 'dots') {
+      html += addDots();
+    } else {
+      html += createPageLink(pages[i], pages[i] === currentPage);
+    }
+  }
+
+  html += `</ul></nav>`;
+  pagination.innerHTML = html;
+
+  // Manejador de clicks y cambio de URL
+  document.querySelectorAll('#pagination a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const selectedPage = parseInt(a.dataset.page);
+      if (selectedPage !== currentPage) {
+        currentPage = selectedPage;
+        localStorage.setItem('currentPage', currentPage);
+        renderGamesPage(currentPage);
+        renderPagination();
+
+        // ✅ Cambiar URL sin recargar
+        history.pushState(null, '', `/${currentPage}`);
+      }
+    });
+  });
+}
+
+// Leer número de página de la URL (ej: /3)
+const pageMatch = window.location.pathname.match(/^\/(\d+)$/);
+if (pageMatch) {
+  currentPage = parseInt(pageMatch[1]) || 1;
+}
 
 
   auth.onAuthStateChanged(user => {
