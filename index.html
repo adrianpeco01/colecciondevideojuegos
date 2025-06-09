@@ -1223,6 +1223,7 @@ function hideFullscreenImage() {
 
 
 function openEditModal(game) {
+  console.log("Abriendo modal de edición", game)
   const overlay = document.getElementById('modalOverlay');
   const form = document.getElementById('gameForm');
   const editBtn = document.getElementById("editBtn");
@@ -1230,6 +1231,7 @@ function openEditModal(game) {
   
   document.getElementById('guardarSubmit').textContent = 'Actualizar';
 
+  
   // Mostrar modal
   overlay.classList.add('visible');
   overlay.classList.remove('hidden');
@@ -1268,61 +1270,86 @@ function openEditModal(game) {
   form.dataset.gameId = game.id;
 }
 
-document.getElementById('gameForm').onsubmit = function (e) {
+const form = document.getElementById('gameForm');
+
+form.addEventListener('submit', async function handleSubmit(e) {
   e.preventDefault();
+  
+  // Desactiva temporalmente el submit
+  form.querySelector('#guardarSubmit').disabled = true;
 
-  const form = e.target;
   const gameId = form.dataset.gameId;
-
   const updatedGame = {
-    imageURL: document.getElementById('imageUrl').value,
-    title: document.getElementById('title').value,
-    platform: document.getElementById('platform').value,
-    folder: document.getElementById('folder').value,
-    condition: document.getElementById('condition').value,
-    purchaseDate: document.getElementById('purchaseDate').value,
-    releaseDate: document.getElementById('releaseDate').value,
-    purchaseLocation: document.getElementById('purchaseLocation').value,
-    region: document.getElementById('region').value,
-    gift: document.getElementById('gift').value,
-    cost: parseFloat(document.getElementById('cost').value) || 0,
-    edition: document.getElementById('edition').value,
-    value: parseFloat(document.getElementById('value').value) || 0,
-    wallapopLink: document.getElementById('wallapopLink').value,
-    vintedLink: document.getElementById('vintedLink').value,
-    ebayLink: document.getElementById('ebayLink').value,
-    cex: parseFloat(document.getElementById('cex').value) || 0,
-    cexLink: document.getElementById('cexLink').value,
+    imageURL: form.imageUrl.value,
+    title: form.title.value,
+    platform: form.platform.value,
+    folder: form.folder.value,
+    condition: form.condition.value,
+    purchaseDate: form.purchaseDate.value,
+    releaseDate: form.releaseDate.value,
+    purchaseLocation: form.purchaseLocation.value,
+    region: form.region.value,
+    gift: form.gift.value,
+    cost: parseFloat(form.cost.value) || 0,
+    edition: form.edition.value,
+    value: parseFloat(form.value.value) || 0,
+    wallapopLink: form.wallapopLink.value,
+    vintedLink: form.vintedLink.value,
+    ebayLink: form.ebayLink.value,
+    cex: parseFloat(form.cex.value) || 0,
+    cexLink: form.cexLink.value,
     estado: document.querySelectorAll('#estadoStars span.active').length,
-    details: document.getElementById('details').value,
+    details: form.details.value,
   };
 
-  if (gameId) {
-    // Actualizar documento existente
-    db.collection('games').doc(gameId).update(updatedGame)
-      .then(() => {
-        alert("Juego actualizado correctamente");
-        document.getElementById('modalOverlay').classList.remove('visible');
-        renderGamesFromFirebase();
-      })
-      .catch(error => {
-        console.error("Error al actualizar el juego:", error);
-        alert("Error al guardar los cambios.");
-      });
-  } else {
-    // Añadir nuevo documento
-    db.collection('games').add(updatedGame)
-      .then(() => {
-        alert("Juego añadido correctamente");
-        document.getElementById('modalOverlay').classList.remove('visible');
-        renderGamesFromFirebase();
-      })
-      .catch(error => {
-        console.error("Error al añadir el juego:", error);
-        alert("Error al guardar los cambios.");
-      });
+  const closeForm = () => {
+    document.getElementById('modalOverlay').classList.remove('visible');
+    form.reset();
+    delete form.dataset.gameId;
+    form.querySelector('#guardarSubmit').textContent = 'Guardar';
+    form.querySelector('#guardarSubmit').disabled = false;
+    renderGamesFromFirebase();
+  };
+
+  try {
+    if (gameId) {
+      await db.collection('games').doc(gameId).update(updatedGame);
+      alert("Juego actualizado correctamente");
+    } else {
+      await db.collection('games').add(updatedGame);
+      alert("Juego añadido correctamente");
+    }
+    closeForm();
+  } catch (error) {
+    console.error("Error guardando el juego:", error);
+    alert("Error al guardar los cambios.");
+    form.querySelector('#guardarSubmit').disabled = false;
   }
-}
+});
+
+
+document.getElementById('deleteBtn').addEventListener('click', () => {
+  const modal = document.getElementById("modal");
+  const index = parseInt(modal.dataset.currentIndex);
+
+  if (!isNaN(index) && games[index]) {
+    const game = games[index];
+    const confirmDelete = confirm(`¿Seguro que quieres eliminar el juego "${game.title}"?`);
+
+    if (confirmDelete) {
+      db.collection('games').doc(game.id).delete()
+        .then(() => {
+          alert("Juego eliminado correctamente");
+          modal.classList.add("hidden");
+          renderGamesFromFirebase();
+        })
+        .catch((error) => {
+          console.error("Error al eliminar el juego:", error);
+          alert("Error al eliminar el juego.");
+        });
+    }
+  }
+});
 
 
 function openAddModal() {
@@ -2337,70 +2364,7 @@ function closeFormModal() {
   formElement.classList.add('opacity-0', 'scale-95');
 }
 
-// Función para guardar los datos en Firebase
-async function saveGameData(data) {
-  try {
-    const docRef = await firebase.firestore().collection('games').add(data);
-    console.log('Document written with ID: ', docRef.id);
-  } catch (error) {
-    console.error('Error adding document: ', error);
-    throw error;
-  }
-}
 
-// Evento submit para el formulario
-formElement.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const formData = {
-    imageURL: document.getElementById('imageUrl').value.trim(), // <-- Debe ser imageURL
-    title: document.getElementById('title').value,
-    platform: document.getElementById('platform').value,
-    folder: document.getElementById('folder').value,
-    condition: document.getElementById('condition').value,
-    estado: selectedRating, // Usando estado como mencionaste
-    purchaseDate: document.getElementById('purchaseDate').value,
-    releaseDate: document.getElementById('releaseDate').value,
-    purchaseLocation: document.getElementById('purchaseLocation').value,
-    region: document.getElementById('region').value,
-    gift: document.getElementById('gift').value,
-    cost: parseFloat(document.getElementById('cost').value) || null,
-    value: parseFloat(document.getElementById('value').value) || null,
-    edition: document.getElementById('edition').value,
-    wallapopLink: document.getElementById('wallapopLink').value,
-    vintedLink: document.getElementById('vintedLink').value,
-    ebayLink: document.getElementById('ebayLink').value,
-    cex: parseFloat(document.getElementById('cex').value) || null,
-    cexLink: document.getElementById('cexLink').value,
-    details: document.getElementById('details').value,
-  };
-
-  let errores = [];
-  if (!formData.imageURL) errores.push('URL de imagen es requerida.');
-  if (!formData.title) errores.push('Título es requerido.');
-  if (!formData.platform) errores.push('Plataforma es requerida.');
-  if (!formData.folder) errores.push('Carpeta es requerida.');
-  if (!formData.condition) errores.push('Condición es requerida.');
-  if (!formData.purchaseDate) errores.push('Fecha de compra es requerida.');
-  if (!formData.edition) errores.push('Edición es requerida.');
-
-  if (errores.length > 0) {
-    formError.textContent = errores.join(' ');
-    return;
-  } else {
-    formError.textContent = '';
-  }
-
-  try {
-    await saveGameData(formData);
-    console.log('Datos guardados correctamente en Firebase');
-    clearForm();
-    closeFormModal();
-  } catch (error) {
-    console.error('Error al guardar los datos:', error);
-    formError.textContent = 'Error al guardar. Inténtalo de nuevo.';
-  }
-});
 
 toggleButton.addEventListener('click', (e) => {
   e.stopPropagation();
