@@ -848,25 +848,36 @@ html {
     user = u;
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
-// --- Lógica de paginación ---
+
+// --- Lógica de paginación mejorada ---
   const getPageFromHash = () => {
     const pageMatch = window.location.hash.match(/#page=(\d+)/);
+    // Devuelve el número de página si existe en el hash, si no, devuelve null.
     return pageMatch ? parseInt(pageMatch[1], 10) : null;
   };
 
-  const initialPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
-  let currentPage = initialPage;
+  // 1. Prioriza la página en la URL.
+  // 2. Si no hay hash, busca en localStorage.
+  // 3. Si tampoco hay en localStorage, usa la página 1 por defecto.
+  let currentPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
 
-  if (!getPageFromHash()) {
+  // Actualizar la URL y localStorage al cargar si no hay hash
+  if (!getPageFromHash() && currentPage !== 1) {
     window.location.hash = `#page=${currentPage}`;
+    localStorage.setItem('currentPage', currentPage);
+  } else if (getPageFromHash() && parseInt(localStorage.getItem('currentPage')) !== currentPage) {
+    // Si la URL tiene un hash, asegúrate de que localStorage también lo tenga.
+    localStorage.setItem('currentPage', currentPage);
   }
 
+  // Cargar los juegos de la página correcta al iniciar.
   renderGamesPage(currentPage);
   renderPagination();
   updateCollectionSummary();
 
-  // La función `window.addEventListener('hashchange', ...)` que tienes más abajo no necesita ser cambiada.
-  
+  // El evento 'hashchange' que ya tienes más abajo está bien y no necesita cambios.
+  // Este evento manejará la navegación cuando el usuario haga clic en los botones de paginación.
+
     tailwind.config = {
     safelist: [
       'bg-gray-50',
