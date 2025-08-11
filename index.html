@@ -1930,20 +1930,26 @@ function initCurrentPage() {
 function finalizePaginationInit() {
   const totalPages = Math.max(1, Math.ceil(games.length / gamesPerPage));
 
-  // Clamp: asegurarnos que currentPage está en rango
-  if (currentPage > totalPages) currentPage = totalPages;
-  if (currentPage < 1) currentPage = 1;
+  let wasOutOfRange = false;
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+    wasOutOfRange = true;
+  }
+  if (currentPage < 1) {
+    currentPage = 1;
+    wasOutOfRange = true;
+  }
 
-  // Actualizar hash sin añadir entrada extra al historial (ideal para la carga inicial)
-  history.replaceState(null, '', `#page=${currentPage}`);
+  // Solo cambiar hash si no había o estaba fuera de rango
+  if (!window.location.hash || wasOutOfRange) {
+    history.replaceState(null, '', `#page=${currentPage}`);
+  }
 
-  // Guardar persistente
   localStorage.setItem('currentPage', currentPage);
-
-  // Renderizar con la página correcta
   renderGamesPage(currentPage);
   renderPagination();
 }
+
 
 // --- Escuchar cambios de hash (back/forward y clicks) ---
 window.addEventListener('hashchange', () => {
