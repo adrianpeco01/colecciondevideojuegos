@@ -849,25 +849,35 @@ html {
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
 
-  // --- AÑADE ESTE CÓDIGO AQUÍ ---
-  // Lógica para guardar y cargar la página actual en localStorage
-  let currentPage = 1;
+  // --- Lógica de paginación ---
+  const getPageFromHash = () => {
+    const pageMatch = window.location.hash.match(/#page=(\d+)/);
+    return pageMatch ? parseInt(pageMatch[1], 10) : null;
+  };
 
-  // Cargar la página desde localStorage al iniciar
-  const savedPage = localStorage.getItem('currentPage');
-  if (savedPage) {
-    currentPage = parseInt(savedPage, 10);
+  // Priorizar la página de la URL, si no existe, usar localStorage, y si tampoco, la 1.
+  let currentPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
+
+  // Asegurar que la URL y localStorage reflejen la página actual al cargar
+  if (!getPageFromHash()) {
+    window.location.hash = `#page=${currentPage}`;
+  } else {
+    // Si la URL tiene un hash, asegúrate de que localStorage también lo tenga
+    localStorage.setItem('currentPage', currentPage);
   }
 
-  // Cargar los juegos de la página actual, ya sea la guardada o la 1
+  // Renderizar la página correcta al cargar el sitio
   renderGamesPage(currentPage);
+  renderPagination();
+  updateCollectionSummary();
 
-  // Función para guardar la página en localStorage al cambiar
+  // Función para guardar la página en localStorage y URL al cambiar
   function setCurrentPage(pageNumber) {
     currentPage = pageNumber;
+    window.location.hash = `#page=${pageNumber}`;
     localStorage.setItem('currentPage', pageNumber);
   }
-  // --- FIN DEL CÓDIGO A AÑADIR ---
+  // --- FIN DE LA LÓGICA DE PAGINACIÓN ---
 
     tailwind.config = {
     safelist: [
