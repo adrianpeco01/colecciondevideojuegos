@@ -1927,20 +1927,27 @@ function initCurrentPage() {
 }
 
 // --- Finalizar inicialización de paginación cuando games ya esté listo ---
-function finalizePaginationInit() {
+function finalizePaginationInit(initialLoad = true) {
   const totalPages = Math.max(1, Math.ceil(games.length / gamesPerPage));
-
+  let hashPage = getPageFromHash();
   let wasOutOfRange = false;
-  if (currentPage > totalPages) {
-    currentPage = totalPages;
-    wasOutOfRange = true;
-  }
-  if (currentPage < 1) {
-    currentPage = 1;
-    wasOutOfRange = true;
+
+  if (hashPage !== null && hashPage >= 1 && hashPage <= totalPages) {
+    currentPage = hashPage; // Prioriza hash válido
+  } else if (!initialLoad) {
+    // Solo clampea fuera del rango si NO es la carga inicial
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+      wasOutOfRange = true;
+    } else if (currentPage < 1) {
+      currentPage = 1;
+      wasOutOfRange = true;
+    }
+  } else {
+    // En carga inicial, no hacemos clamp para respetar #page aunque no haya tantos juegos
+    if (currentPage < 1) currentPage = 1; // por seguridad
   }
 
-  // Solo cambiar hash si no había o estaba fuera de rango
   if (!window.location.hash || wasOutOfRange) {
     history.replaceState(null, '', `#page=${currentPage}`);
   }
@@ -1949,7 +1956,6 @@ function finalizePaginationInit() {
   renderGamesPage(currentPage);
   renderPagination();
 }
-
 
 // --- Escuchar cambios de hash (back/forward y clicks) ---
 window.addEventListener('hashchange', () => {
@@ -2028,16 +2034,15 @@ const maybePromise = applyAllFilters && applyAllFilters();
 
 if (maybePromise && typeof maybePromise.then === 'function') {
   maybePromise.then(() => {
-    // Finalmente inicializamos la paginación (clamp, hash, render)
-    finalizePaginationInit();
+    finalizePaginationInit(true);  // <-- Aquí pasamos 'true'
   }).catch(err => {
     console.error('applyAllFilters fallo:', err);
-    finalizePaginationInit(); // aunque falle, intentamos inicializar paginación
+    finalizePaginationInit(true); // también aquí
   });
 } else {
-  // applyAllFilters fue síncrona o no existe: finalizamos inicialización
-  finalizePaginationInit();
+  finalizePaginationInit(true); // y aquí
 }
+
 
   });
 }
@@ -2058,6 +2063,7 @@ searchInput.addEventListener('input', function () {
   const filteredGamesBySearch = getFilteredGames();
 
   currentPage = 1;
+    window.location.hash = `page=${currentPage}`;  // <-- actualizar URL
   renderFilteredGames(filteredGamesBySearch);
   updateCollectionSummary(filteredGamesBySearch);  // Aquí pasamos la lista filtrada (aunque vacía)
   document.getElementById('pagination').innerHTML = "";
@@ -3243,6 +3249,7 @@ function applyFiltersAndReset() {
   games = getFilteredGames();
 
   currentPage = 1;        // Ponemos la página en la 1
+  
   renderGamesPage(currentPage);  // Renderizamos la página 1 con los juegos filtrados
   renderPagination();      // Actualizamos la paginación
   updateCollectionSummary(games); // Actualizamos el resumen con los juegos filtrados
@@ -3481,13 +3488,13 @@ if (selectedRating > 0) {
 }
 
 window.addEventListener('hashchange', () => {
-  const newPage = getPageFromHash() || 1;
-  if (newPage !== currentPage) {
-    currentPage = newPage;
+  const p = getPageFromHash();
+  if (!isNaN(p) && p >= 1 && p !== currentPage) {
+    currentPage = p;
     localStorage.setItem('currentPage', currentPage);
     renderGamesPage(currentPage);
     renderPagination();
-    updateCollectionSummary();
+    updateCollectionSummary(games);
   }
 });
 
