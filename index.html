@@ -857,9 +857,10 @@ html {
   const savedPage = localStorage.getItem('currentPage');
   if (savedPage) {
     currentPage = parseInt(savedPage, 10);
-    // Aquí deberías llamar a tu función para cargar los datos de esa página
-    // loadPage(currentPage); // (Esta función no está en tu HTML, es un ejemplo)
   }
+
+  // Cargar los juegos de la página actual, ya sea la guardada o la 1
+  renderGamesPage(currentPage);
 
   // Función para guardar la página en localStorage al cambiar
   function setCurrentPage(pageNumber) {
