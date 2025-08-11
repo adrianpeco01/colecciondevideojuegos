@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Mi colección de videojuegos"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
+<style>
+  #loginModal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#loginModal.opacity-100 {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#loginBox {
+  background-color: white;
+  border-radius: 0.75rem; /* 8px */
+  padding: 1.5rem; /* 24px */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 90%;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#loginBox.opacity-100 {
+  opacity: 1;
+  transform: scale(1);
+}
+#loginSubmit {
+  width: 100%;                  /* w-full */
+  background-color: #2563eb;    /* bg-blue-600 */
+  color: white;                 /* text-white */
+  padding-top: 0.5rem;          /* py-2 */
+  padding-bottom: 0.5rem;
+  border-radius: 0.25rem;       /* rounded */
+  border: none;
+  cursor: pointer;
+}
+
+#loginSubmit:hover {
+  background-color: #1557e6; /* Azul más fuerte al hacer hover */
+}
+
+.login-error input,
+.login-error #loginSubmit {
+  border-color: red !important;
+  background-color: #fee2e2 !important;
+  color: red !important;
+}
+
+.login-error #logoutButton {
+  color: red !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+#plus.active {
+  background-color: #f1f5f9;
+  color: var(--accent-foreground); /* o ajusta el color del texto si quieres */
+}
+
+/* Estado oculto */
+#toggleForm, #authStatus {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Estado visible */
+#toggleForm.visible, #authStatus.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.container {
+  display: flex;
+  gap: 1.5rem; /* ajusta como quieras */
+}
+
+#loginTooltip {
+  position: absolute;
+  margin-top: 0.5rem;
+  padding: 0;
+  width: 260px;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  /* Fondo suave rojizo */
+  background-color: #fee2e2; /* más claro que #fecaca */
+  border: 1px solid #fca5a5;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#loginTooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#loginTooltip > div {
+  padding: 0.5rem 1rem 0.2rem 1rem;
+  margin: 0;
+   white-space: normal;
+   color: #7f1d2f; /* rojo más intenso y legible */
+}
+
+#loginTooltip .arrow {
+  position: absolute;
+  top: -6px;
+  right: auto;
+  width: 12px;
+  height: 12px;
+  background: #fee2e2; /* mismo color que fondo */
+  border-top: 1px solid #fca5a5;
+  border-right: 1px solid #fca5a5;
+  transform: rotate(-45deg);
+  box-shadow: 1px -1px 0 #fca5a5;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+#modalOverlay.flex {
+  display: flex !important;
+}
+
+#modalOverlay.opacity-100 {
+  opacity: 1;
+  pointer-events: auto;
+  display: flex; /* Asegúrate de agregar esto */
+}
+
+#gameForm.opacity-100 {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+#gameForm {
+  background-color: white;
+  border-radius: 0.75rem; /* 12px */
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  max-width: 700px;
+  width: 90%;
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+   /* Nuevas propiedades */
+  max-height: 80vh; /* Ajusta este valor según tus necesidades */
+  overflow-y: auto; /* 'auto' muestra la barra solo cuando es necesario, 'scroll' la muestra siempre */
+}
+
+#gameForm.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+#gameForm.opacity-100 {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#modalOverlay {
+  position: fixed;
+  inset: 0;
+  display: none; /* Cambia 'flex' por 'none' */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#modalOverlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.form-item {
+  display: grid; /* Usamos Grid Layout */
+  grid-template-columns: 2em 1fr; /* Dos columnas: emoji y campo */
+  grid-template-rows: auto; /* Ajuste automático de altura */
+  align-items: center; /* Centrar verticalmente */
+  gap: 0.5rem;
+}
+
+.form-emoji {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  height: 100%; /* Asegura que el emoji ocupe toda la altura */
+}
+
+.form-input {
+  grid-column: 2;
+  grid-row: 1;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
+.form-item.w-full {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 2em 1fr;
+}
+
+/* Media query para pantallas más grandes */
+@media (min-width: 768px) {
+  .form-row-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-row-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+select#platform,
+select#folder,
+select#condition,
+select#edition {
+  color: #9ca3af; /* Color gris por defecto */
+}
+
+select#platform:valid,
+select#platform:not(:invalid),
+select#folder:valid,
+select#folder:not(:invalid),
+select#condition:valid,
+select#condition:not(:invalid),
+select#edition:valid,
+select#edition:not(:invalid) {
+  color: black; /* Color negro cuando hay valor seleccionado */
+}
+
+select#platform option:first-of-type,
+select#folder option:first-of-type,
+select#condition option:first-of-type,
+select#edition option:first-of-type {
+  color: #9ca3af; /* Asegurar gris en placeholder (redundante pero seguro) */
+}
+
+select#platform option:not(:first-of-type),
+select#folder option:not(:first-of-type),
+select#condition option:not(:first-of-type),
+select#edition option:not(:first-of-type) {
+  color: black; /* Asegurar negro en opciones (redundante pero seguro) */
+}
+#estadoStarsContainer {
+  cursor: pointer;
+}
+
+#estadoStars span {
+  transition: color 0.2s; /* Suavizar el cambio de color */
+}
+
+#estadoStars span.active {
+  color: gold; /* Color de las estrellas activas */
+}
+
+#guardarSubmit {
+  width: 100%;         /* w-full */
+  background-color: #2563eb;   /* bg-blue-600 */
+  color: white;         /* text-white */
+  padding-top: 0.5rem;     /* py-2 */
+  padding-bottom: 0.5rem;
+  border-radius: 0.25rem;   /* rounded */
+  border: none;
+  cursor: pointer;
+}
+
+#guardarSubmit:hover {
+  background-color: #1557e6; /* Azul más fuerte al hacer hover */
+}
+
+#modal {
+  display: none; /* oculto por defecto */
+  position: fixed;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+#modal.flex { /* Usamos .flex en lugar de .show para la visibilidad */
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modal > div {
+  background: white;
+  border-radius: 1rem;
+  max-width: 800px; /* Ajustado al max-width de tu HTML */
+  min-width: 400px; /* Ajustado al min-width de tu HTML */
+  width: 90%;
+  padding: 1.5rem;
+  position: relative;
+  transform: scale(0.7);
+  opacity: 0;
+  transition: transform 200ms ease, opacity 200ms ease;
+  will-change: transform, opacity;
+}
+
+#modal.flex > div { /* Usamos .flex aquí también */
+  transform: scale(1);
+  opacity: 1;
+}
+
+.zoom-image {
+  position: fixed;
+  z-index: 9999;
+  border-radius: 0.5rem;
+  transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease, width 0.5s ease, height 0.5s ease;
+  will-change: transform, top, left, width, height;
+  cursor: default;
+  object-fit: cover;
+}
+
+</style>
+</head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block __className_9fd9c5">Mi colección de videojuegos</a><a class="ml-2 mr-4 font-bold sm:hidden __className_9fd9c5">Mi colección</a></div><div class="flex items-center gap-3 relative ml-4">
+  <button id="toggleForm"
+  class="text-xl hover:bg-accent hover:text-accent-foreground rounded-md p-1"
+  title="Añadir o editar" style="font-size: 1.25rem;">✏️</button>
+
+  <button id="authStatus"
+  class="mx-2 text-xl hover:bg-accent hover:text-accent-foreground rounded-md p-1"
+  title="Estado autenticación" style="font-size: 1.25rem;">🔒</button>
+
+  <button id="plus" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button" aria-haspopup="menu" aria-expanded="false" data-state="closed"style="color: #444444;">
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="28" height="28" viewBox="0 0 208 208" preserveAspectRatio="xMidYMid meet" fill="currentColor">
+    <g transform="translate(0,208) scale(0.1,-0.1)" stroke="none">
+      <path d="M1012 1580 c-12 -5 -27 -21 -32 -35 -6 -15 -10 -118 -10 -231 l0 -204 -209 0 c-115 0 -217 -3 -226 -6 -16 -6 -45 -54 -45 -74 0 -6 11 -22 25 -35 24 -25 24 -25 239 -25 l215 0 3 -221 c3 -218 3 -221 27 -240 30 -24 52 -24 85 2 l26 20 0 220 0 219 218 0 c215 0 219 0 240 23 29 30 28 62 -3 92 -24 25 -24 25 -240 25 l-215 0 0 219 0 220 -26 20 c-29 23 -38 24 -72 11z"/>
+    </g>
+  </svg><span class="sr-only">Añadir</span></button></div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCb5vmEqe_IIasGYvH7e1g1ja56RwSoTSI",
+    authDomain: "videojuegos-cfdee.firebaseapp.com",
+    projectId: "videojuegos-cfdee",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const gameForm = document.getElementById("gameForm");
+  const toggleForm = document.getElementById("toggleForm");
+  const loginTooltip = document.getElementById("loginTooltip");
+
+  let user = null;
+
+  auth.onAuthStateChanged((u) => {
+    user = u;
+    document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
+  });
+</script></header><main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Level 267</div><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-24%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">76%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1364<button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div>Total Trophies</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/gold.d6c88f73.png" style="color: transparent;"><span class="text-lg ml-2">179</span></div><div class="flex flex-row items-center"><img alt="Silver trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/silver.e2239c30.png" style="color: transparent;"><span class="text-lg ml-2">333</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze.a58983fd.png" style="color: transparent;"><span class="text-lg ml-2">829</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div><div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
+    
+<!-- Modal login -->
+<div id="loginModal" class="fixed inset-0 hidden flex justify-center items-center z-50 bg-black bg-opacity-70 backdrop-blur-sm">
+  <div id="loginBox" class="bg-white p-6 rounded-xl max-w-sm w-full relative shadow">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Iniciar sesión</h2>
+
+    <input id="loginEmail" type="email" placeholder="Correo"
+      class="w-full mb-2 border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+    <input id="loginPassword" type="password" placeholder="Contraseña"
+      class="w-full mb-4 border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+    <button id="loginSubmit">
+      Acceder
+    </button>
+
+    <button id="logoutButton"
+      class="text-gray-500 hover:text-gray-700 text-sm px-2 py-1 mt-2 mx-auto block">
+      Salir
+    </button>
+  </div>
+</div>
+
+
+  <!-- Tooltip de Iniciar sesión -->
+<div id="loginTooltip">
+  <div class="relative bg-red-100 border border-red-300 text-red-900 rounded-xl shadow px-4 py-3 text-sm">
+    <div class="arrow"></div>
+    <p class="mb-2">Inicia sesión para poder añadir o editar juegos.</p>
+  </div>
+</div>
+
+
+  <!-- Modal Overlay -->
+  <div id="modalOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden items-center justify-center px-4 py-8"> 
+    <!-- Formulario en modal -->
+    <form id="gameForm" class="form-grid bg-white p-4 rounded-xl shadow-xl mb-8 w-full max-w-4xl opacity-0 scale-95 transition-all duration-300">
+
+  <div class="form-row-2">
+    <div class="form-item">
+      <div class="form-emoji">🖼️</div>
+      <input type="url" id="imageUrl" placeholder="URL de imagen*" class="form-input" required />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">🔠</div>
+      <input type="text" id="title" placeholder="Título*" class="form-input" required />
+    </div>
+  </div>
+
+  <div class="form-row-2">
+    <div class="form-item">
+      <div class="form-emoji">🎮</div>
+      <select id="platform" class="form-input" required>
+        <option value="" disabled selected>Plataforma*</option>
+        <option value="Game Boy Advance">Game Boy Advance</option>
+        <option value="Nintendo 3DS">Nintendo 3DS</option>
+        <option value="Nintendo 64">Nintendo 64</option>
+        <option value="Nintendo DS">Nintendo DS</option>
+        <option value="Nintendo Switch">Nintendo Switch</option>
+        <option value="Nintendo Wii">Nintendo Wii</option>
+        <option value="Nintendo Wii U">Nintendo Wii U</option>
+        <option value="PlayStation">PlayStation</option>
+        <option value="PlayStation 2">PlayStation 2</option>
+        <option value="PlayStation 3">PlayStation 3</option>
+        <option value="PlayStation 4">PlayStation 4</option>
+        <option value="PlayStation 5">PlayStation 5</option>
+        <option value="Xbox 360">Xbox 360</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">📂</div>
+      <select id="folder" class="form-input" required>
+        <option value="" disabled selected>Carpeta*</option>
+        <option value="Colección">Colección</option>
+        <option value="Extras">Extras</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row-2">
+    <div class="form-item">
+      <div class="form-emoji">📦</div>
+      <select id="condition" class="form-input" required>
+        <option value="" disabled selected>Condición*</option>
+        <option value="Nuevo">Nuevo</option>
+        <option value="CIB">CIB</option>
+        <option value="Item y Caja">Item y Caja</option>
+        <option value="Item y Manual">Item y Manual</option>
+        <option value="Caja y Manual">Caja y Manual</option>
+        <option value="Solo Item">Solo Item</option>
+        <option value="Solo Caja">Solo Caja</option>
+        <option value="Solo Manual">Solo Manual</option>
+      </select>
+    </div>
+    <div class="form-item" id="estadoStarsContainer" title="Estado">
+      <div class="form-emoji">⭐</div>
+      <div id="estadoStars" class="flex gap-1 text-yellow-400 text-3xl">
+        <span data-star="1">☆</span>
+        <span data-star="2">☆</span>
+        <span data-star="3">☆</span>
+        <span data-star="4">☆</span>
+        <span data-star="5">☆</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row-2">
+    <div class="form-item">
+      <div class="form-emoji">🗓️</div>
+      <input type="text" id="purchaseDate" onfocus="this.type='date'" onblur="if(this.value===''){this.type='text'}" placeholder="Fecha de compra*" class="form-input" required />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">🕑</div>
+      <input type="text" id="releaseDate" onfocus="this.type='date'" onblur="if(this.value===''){this.type='text'}" placeholder="Fecha de lanzamiento" class="form-input" />
+    </div>
+  </div>
+
+  <div class="form-row-3">
+    <div class="form-item">
+      <div class="form-emoji">📍</div>
+      <input type="text" id="purchaseLocation" placeholder="Lugar de compra" class="form-input" />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">🌍</div>
+      <input type="text" id="region" placeholder="Región" class="form-input" />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">🎁</div>
+      <input type="text" id="gift" placeholder="Regalo" class="form-input" />
+    </div>
+  </div>
+
+  <div class="form-row-3 md:col-span-2">
+  <div class="form-item">
+    <div class="form-emoji">💸</div>
+    <input type="number" id="cost" placeholder="Coste (€)" step="0.01" class="form-input"/>
+  </div>
+  <div class="form-item">
+    <div class="form-emoji">💰</div>
+    <input type="number" id="value" placeholder="Valor (€)" step="0.01" class="form-input" />
+  </div>
+  <div class="form-item">
+  <div class="form-emoji">🗃️</div>
+  <select id="edition" class="form-input" required>
+    <option value="" disabled selected>Edición*</option>
+    <option value="Básica">Básica</option>
+    <option value="Reedición (Platinum, etc)">Reedición (Platinum, etc)</option>
+    <option value="Especial">Especial</option>
+  </select>
+</div>
+</div>
+
+  <div class="form-row-3">
+    <div class="form-item">
+      <div class="form-emoji">
+        <img src="https://i.ibb.co/RpbCN10H/217439.png" alt="Wallapop" class="w-6 h-6" style="width: 1em; height: 1em;"/>
+      </div>
+      <input type="url" id="wallapopLink" placeholder="Enlace Wallapop" class="form-input" />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">
+        <img src="https://i.ibb.co/gY2Tqd5/217438.png" alt="Vinted" class="w-6 h-6" style="width: 1em; height: 1em;"/>
+      </div>
+      <input type="url" id="vintedLink" placeholder="Enlace Vinted" class="form-input" />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">
+        <img src="https://i.ibb.co/67Mcg0Qd/217436.png" alt="Ebay" class="w-6 h-6" style="width: 1em; height: 1em;"/>
+      </div>
+      <input type="url" id="ebayLink" placeholder="Enlace eBay" class="form-input" />
+    </div>
+  </div>
+
+  <div class="form-row-2">
+    <div class="form-item">
+      <div class="form-emoji">🤑</div>
+      <input type="number" id="cex" placeholder="Cex (€)" step="0.01" class="form-input" />
+    </div>
+    <div class="form-item">
+      <div class="form-emoji">
+        <img src="https://i.ibb.co/kg4KSbJX/217437.png" alt="Cex" class="w-6 h-6" style="width: 1em; height: 1em;"/>
+      </div>
+      <input type="url" id="cexLink" placeholder="Enlace Cex" class="form-input" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-item w-full">
+      <div class="form-emoji">📄</div>
+      <textarea id="details" placeholder="Detalles" class="form-input w-full" style="min-height: 100px; resize: vertical;"></textarea>
+    </div>
+  </div>
+
+  <button type="submit" id="guardarSubmit">Guardar</button>
+
+</form>
+  </div>
+
+<!-- Modal de detalles -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
+<div class="bg-white p-8 rounded-2xl w-full max-w-[800px] min-w-[400px] relative">
+
+
+    <!-- Botón cerrar -->
+    <button onclick="closeModal()" class="absolute top-2 right-3 text-lg font-bold text-red-500">✕</button>
+
+    <!-- Imagen del juego -->
+    <img id="modalImage" src="" class="w-full max-h-[400px] object-contain rounded mb-4" />
+
+    <!-- Detalles del juego -->
+    <div id="modalDetails" class="text-gray-700"></div>
+
+    <!-- Botones editar y borrar -->
+    <div id="modalButtons" class="flex justify-end gap-4 mt-6 hidden">
+      <button id="editBtn" title="Editar juego" class="text-blue-600 text-xl">✏️</button>
+      <button id="deleteBtn" title="Borrar juego" class="text-red-600 text-xl">🗑️</button>
+    </div>
+
+  </div>
+</div>
+
+    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Search for games" autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
+
+
+
+        <!-- Contenedor de los botones -->
+        <div class="flex w-full flex-row space-x-2 lg:w-auto justify-between">
+          
+    <!-- Botón principal de orden (Last Updated) -->
+    <div class="relative inline-block text-left w-full lg:w-auto">
+      <button 
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+        type="button" 
+        id="sort-button" 
+        aria-haspopup="menu" 
+        aria-expanded="false" 
+        data-state="closed"
+        onclick="toggleSortMenu()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down mr-1 h-4">
+          <path d="m21 16-4 4-4-4"></path>
+          <path d="M17 20V4"></path>
+          <path d="m3 8 4-4 4 4"></path>
+          <path d="M7 4v16"></path>
+        </svg>
+        <div class="hidden lg:block" id="sort-button-label">Last Updated</div>
+      </button>
+
+      <!-- Menú desplegable que sale debajo -->
+      <div id="sort-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+        <div class="py-1">
+          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Last Updated</div>
+          <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alphabetical</div>
+        </div>
+    </div>
+    </div>
+
+  <!-- Botón 2: All -->
+  <div class="relative inline-block text-left w-full lg:w-auto">
+  <button 
+    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+    type="button"
+    id="all-button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    onclick="toggleAllMenu()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter mr-1 h-4">
+      <path d="M3 6h18"></path>
+      <path d="M7 12h10"></path>
+      <path d="M10 18h4"></path>
+    </svg>
+    <div class="hidden lg:block" id="all-button-label">All</div>
+  </button>
+
+  <!-- Menú desplegable que sale debajo para All -->
+  <div id="all-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+    <div class="py-1">
+  <div id="option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+    <div id="option-platinum" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Platinum</div>
+    <div id="option-100" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">100%</div>
+    </div>
+  </div>
+  </div>
+
+
+<!-- Botón de plataforma actualizado -->
+<div class="relative inline-block text-left w-full lg:w-auto">
+  <button id="platform-button"
+    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
+    type="button"
+    id="all-button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    onclick="toggleAllMenu()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad2 mr-1 h-4">
+        <line x1="6" x2="10" y1="11" y2="11"></line>
+        <line x1="8" x2="8" y1="9" y2="13"></line>
+        <line x1="15" x2="15.01" y1="12" y2="12"></line>
+        <line x1="18" x2="18.01" y1="10" y2="10"></line>
+        <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path>
+      </svg>
+    <div class="hidden lg:block" id="platform-button-label">All</div>
+  </button>
+
+  <!-- Menú desplegable que sale debajo para All -->
+  <div id="platform-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+    <div class="py-1">
+      <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+      <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS3</div>
+      <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS4</div>
+      <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS5</div>
+      <div id="platform-option-vita" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Vita</div>
+      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PC</div>
+    </div>
+  </div>
+  </div>
+
+</div>
+          
+          
+        
+        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid">
+          </div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const authStatusBtn = document.getElementById('authStatus');
+  const loginModal = document.getElementById('loginModal');
+  const loginBox = document.getElementById('loginBox');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginSubmit = document.getElementById('loginSubmit');
+  const logoutButton = document.getElementById('logoutButton');
+  const gamesContainer = document.getElementById('games-container'); // ✅ asegúrate que esto exista
+  const purchaseDateInput = document.getElementById('purchaseDate');
+  const releaseDateInput = document.getElementById('releaseDate');
+  const modal = document.getElementById('modal');
+
+  let isAuthenticated = false;
+
+  function updateAuthStatusIcon(user) {
+    if (user) {
+      isAuthenticated = true;
+      authStatusBtn.textContent = '🔓';
+      authStatusBtn.title = `Autenticado como: ${user.email}`;
+    } else {
+      isAuthenticated = false;
+      authStatusBtn.textContent = '🔒';
+      authStatusBtn.title = 'No autenticado';
+    }
+  }
+
+  auth.onAuthStateChanged(user => {
+    updateAuthStatusIcon(user);
+    if (!user && typeof form !== 'undefined') {
+      form.classList.add('hidden');
+    }
+
+    // ✅ Llama aquí a renderGamesFromFirebase para asegurar que se ejecuta tras autenticar o no
+    renderGamesFromFirebase();
+  });
+
+  authStatusBtn.onclick = () => {
+  if (isAuthenticated) {
+    auth.signOut().then(() => alert('Sesión cerrada'));
+  } else {
+    showLoginModal(); // ✅ Usa tu función animada
+  }
+};
+
+  loginSubmit.onclick = () => {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value.trim();
+
+    if (!email || !password) {
+      alert('Introduce correo y contraseña');
+      return;
+    }
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        hideLoginModal(); // ✅ Usa función animada
+        loginModal.classList.add('hidden');
+        loginModal.classList.remove('login-error');
+        if (typeof form !== 'undefined') {
+          form.classList.remove('hidden');
+          
+        }
+      })
+      .catch(() => {
+        loginModal.classList.add('login-error');
+      });
+      
+  };
+
+  logoutButton.onclick = () => {
+    loginModal.classList.add('hidden');
+    loginModal.classList.remove('login-error');
+  };
+
+  loginModal.onclick = (e) => {
+    if (e.target === loginModal) {
+      loginModal.classList.add('hidden');
+      loginModal.classList.remove('login-error');
+      hideLoginModal();
+    }
+  };
+
+// Mostrar modal con animación
+function showLoginModal() {
+  loginModal.classList.remove('hidden');
+  setTimeout(() => {
+    loginModal.classList.add('opacity-100');
+    loginBox.classList.remove('scale-95', 'opacity-0');
+    loginBox.classList.add('scale-100', 'opacity-100');
+  }, 10);
+}
+
+// Ocultar modal con animación
+function hideLoginModal() {
+  loginModal.classList.remove('opacity-100'); // ✅ AÑADE ESTO
+  loginBox.classList.remove('scale-100', 'opacity-100');
+  loginBox.classList.add('scale-95', 'opacity-0');
+  setTimeout(() => {
+    loginModal.classList.add('hidden');
+  }, 300);
+}
+
+
+// Pulsar Enter en email o password → hace login
+  document.getElementById('loginEmail').addEventListener('keydown', handleEnterKey);
+  document.getElementById('loginPassword').addEventListener('keydown', handleEnterKey);
+
+  function handleEnterKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('loginSubmit').click(); // Simula clic en el botón
+    }
+  }
+  
+  // Pulsar "Salir" → cierra el modal
+  document.getElementById('logoutButton').addEventListener('click', () => {
+    const modal = document.getElementById('loginModal');
+    const box = document.getElementById('loginBox');
+
+    // Animación de salida si usas clases .opacity-100
+    modal.classList.remove('opacity-100');
+    box.classList.remove('opacity-100');
+
+    // Opcional: esperar animación antes de ocultar
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 300); // coincide con transition duration
+  });
+  
+  async function loadGames() {
+  const snap = await db.collection("games").get();
+  const gamesContainer = document.getElementById("games-container");
+  gamesContainer.innerHTML = ""; // Limpia antes de insertar
+
+  snap.forEach(doc => {
+    const game = doc.data();
+    const card = document.createElement("a");
+    card.className = "mx-auto my-1 w-[176px]";
+    card.href = "#";
+    card.target = "_blank";
+
+    card.innerHTML = `
+      <div class="text-card-foreground rounded-xl border shadow-md p-2 duration-200 ease-in-out bg-platinum hover:bg-platinum/50">
+        <div class="flex flex-col space-y-1.5 p-0">
+          <div class="flex flex-col">
+            <div class="grid h-[158px]">
+              <div class="col-start-1 row-start-1 w-full self-center" style="height: 158px;">
+                <img alt="${game.title}" class="rounded-md text-center bg-primary/10 object-cover w-full h-full" src="${game.imageUrl}" style="color: transparent;" />
+              </div>
+            </div>
+            <div class="mt-2 truncate text-sm font-medium text-center" title="${game.title}">${game.title}</div>
+          </div>
+        </div>
+        <div class="pt-1">
+          <div class="flex justify-center items-center bg-black text-white text-xs font-medium rounded-full h-4">
+            <span class="px-2">${game.cost ? game.cost + " €" : "—"}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    gamesContainer.appendChild(card);
+  });
+}
+
+const minDate = '1970-01-01';
+
+  function getTodayISOInSpain() {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000;
+    const spainTime = new Date(now.getTime() + offset + (2 * 60 * 60000));
+    const year = spainTime.getFullYear();
+    const month = String(spainTime.getMonth() + 1).padStart(2, '0');
+    const day = String(spainTime.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  const todayISO = getTodayISOInSpain();
+
+  // Función para actualizar los atributos type, min y max
+  function updateDateInputAttributes(inputElement) {
+    inputElement.type = 'date';
+    inputElement.min = minDate;
+    inputElement.max = todayISO;
+  }
+
+  // Event listeners para cambiar el tipo a 'date' al enfocar y establecer min/max
+  purchaseDateInput.addEventListener('focus', function() {
+    updateDateInputAttributes(this);
+  });
+
+  releaseDateInput.addEventListener('focus', function() {
+    updateDateInputAttributes(this);
+  });
+
+  // Event listeners para volver a 'text' si está vacío al perder el foco
+  purchaseDateInput.addEventListener('blur', function() {
+    if (!this.value) {
+      this.type = 'text';
+    }
+  });
+
+  releaseDateInput.addEventListener('blur', function() {
+    if (!this.value) {
+      this.type = 'text';
+    }
+  });
+
+  let selectedTypes = new Set();  // Añadir al principio del script
+  // --- Búsqueda ---
+ const searchInput = document.querySelector('input[placeholder="Search for games"]');
+ const gameCardsContainer = document.getElementById('games-container');
+ const gameCards = () => gameCardsContainer.querySelectorAll('a.mx-auto');
+ let originalCardsOrder = []; // Nuevo: para guardar las cartas originales
+ 
+ document.addEventListener('DOMContentLoaded', function() {
+   originalCardsOrder = Array.from(gameCards()); // Guardarlas cuando la página cargue
+ 
+   searchInput.addEventListener('input', function() {
+     const filter = searchInput.value.toLowerCase();
+ 
+     gameCards().forEach(card => {
+       const img = card.querySelector('img');
+       const altText = img ? img.alt.toLowerCase() : '';
+ 
+       if (altText.includes(filter)) {
+         card.style.display = 'block';
+       } else {
+         card.style.display = 'none';
+       }
+     });
+   });
+ 
+   // --- Ordenación ---
+   const sortButton = document.getElementById('sort-button');
+   const sortMenu = document.getElementById('sort-menu');
+   const sortButtonLabel = document.getElementById('sort-button-label');
+   const optionAlphabetical = document.getElementById('option-alphabetical');
+   const optionLastUpdated = document.getElementById('option-lastupdated');
+ 
+   sortButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sortMenu.classList.toggle('hidden');
+  allMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
+});
+
+ 
+   optionAlphabetical.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Alphabetical';
+     sortMenu.classList.add('hidden');
+     sortGamesAlphabetically();
+     selectOption('sort-menu', 'option-alphabetical');
+   });
+ 
+   optionLastUpdated.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Last Updated';
+     sortMenu.classList.add('hidden');
+     restoreOriginalOrder(); // Ahora restauramos el orden original sin recargar la página
+     selectOption('sort-menu', 'option-lastupdated');
+   });
+ 
+   document.addEventListener('click', (e) => {
+     if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
+       sortMenu.classList.add('hidden');
+     }
+   });
+ 
+   function sortGamesAlphabetically() {
+     const cardsArray = Array.from(gameCards());
+ 
+     cardsArray.sort((a, b) => {
+       const imgA = a.querySelector('img');
+       const imgB = b.querySelector('img');
+       const altA = imgA ? imgA.alt.toLowerCase() : '';
+       const altB = imgB ? imgB.alt.toLowerCase() : '';
+       return altA.localeCompare(altB);
+     });
+ 
+     gameCardsContainer.innerHTML = '';
+     cardsArray.forEach(card => gameCardsContainer.appendChild(card));
+   }
+ 
+   // Función para restaurar el orden original sin recargar la página
+   function restoreOriginalOrder() {
+     gameCardsContainer.innerHTML = '';  // Borrar el contenedor
+     originalCardsOrder.forEach(card => gameCardsContainer.appendChild(card)); // Volver a poner las cartas en el orden original
+   }
+ 
+    // --- Filtro por All, Limited, Full ---
+    const allButton = document.getElementById('all-button');
+    const allMenu = document.getElementById('all-menu');
+    const allButtonLabel = document.getElementById('all-button-label');
+    const optionAll = document.getElementById('option-all');
+    const optionLimited = document.getElementById('option-100');
+    const optionFull = document.getElementById('option-platinum');
+
+    allButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  allMenu.classList.toggle('hidden');
+  sortMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
+});
+
+
+    optionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();  
+  setActiveOption(optionAll, 'All');
+  allMenu.classList.add('hidden');
+  showAllGames();
+});
+
+optionLimited.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('100%'); // Filtra solo los juegos con id="100%"
+  setActiveOption(optionLimited, '100%');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+optionFull.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('Platinum'); // Filtra solo los juegos con id="Platinum"
+  setActiveOption(optionFull, 'Platinum');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+
+    document.addEventListener('click', (e) => {
+      if (!allButton.contains(e.target) && !allMenu.contains(e.target)) {
+        allMenu.classList.add('hidden');
+      }
+    });
+
+    function showAllGames() {
+  // Asegurarse de que se muestran todos los juegos, pero respetando la plataforma seleccionada
+  gameCards().forEach(card => {
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(card.querySelectorAll('svg')).some(svg => selectedPlatforms.has(svg.id));
+    card.style.display = matchesPlatform ? 'block' : 'none';
+  });
+}
+
+function applyCombinedFilters() {
+  gameCards().forEach(card => {
+    // Filtrar por tipo
+    const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+    // Filtrar por plataforma
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(card.querySelectorAll('svg')).some(svg => selectedPlatforms.has(svg.id));
+    
+    // Mostrar el juego solo si cumple ambos filtros
+    card.style.display = (matchesType && matchesPlatform) ? 'block' : 'none';
+  });
+}
+
+
+
+ 
+   // --- Sistema de selección del punto ---
+   function clearSelections(menuId) {
+     const options = document.querySelectorAll(`#${menuId} .block`);
+     
+     options.forEach(option => {
+       option.innerHTML = option.textContent.trim().replace(/^·\s*/, ''); // Quitar el punto
+       option.style.fontWeight = 'normal'; // Normalizar la fuente
+     });
+   }
+ 
+   function selectOption(menuId, optionId) {
+     clearSelections(menuId); // Limpiar solo las opciones del menú indicado
+ 
+     const selectedOption = document.getElementById(optionId);
+     if (selectedOption) {
+       selectedOption.innerHTML = `<strong>·</strong> ${selectedOption.textContent.trim().replace(/^·\s*/, '')}`; // Poner el · en negrita
+     }
+   }
+
+   function setActiveOption(activeElement, labelText) {
+  [optionAll, optionLimited, optionFull].forEach(opt => {
+    opt.innerHTML = opt.textContent.trim().replace(/^·\s*/, '');  // Limpiar el punto
+  });
+
+  activeElement.innerHTML = `<strong>·</strong> ${labelText}`;
+  allButtonLabel.textContent = labelText;
+}
+
+
+const platformButton = document.getElementById('platform-button');
+const platformMenu = document.getElementById('platform-menu');
+const platformButtonLabel = document.getElementById('platform-button-label');
+const platformOptionAll = document.getElementById('platform-option-all');
+const platformOptionPS3 = document.getElementById('platform-option-ps3');
+const platformOptionPS4 = document.getElementById('platform-option-ps4');
+const platformOptionPS5 = document.getElementById('platform-option-ps5');
+const platformOptionVita = document.getElementById('platform-option-vita');
+const platformOptionPC = document.getElementById('platform-option-pc');
+
+
+let selectedPlatforms = new Set();
+
+platformButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeMenusExcept('platform-menu');
+  platformMenu.classList.toggle('hidden');
+  if (!platformMenu.classList.contains('hidden')) {
+    adjustPlatformMenuPosition(); // ← AÑADE ESTA LÍNEA
+  }
+});
+
+// Ajustar posición del menú si se desborda
+function adjustPlatformMenuPosition() {
+  const menu = platformMenu;
+  const rect = menu.getBoundingClientRect();
+  const overflowRight = rect.right > window.innerWidth;
+
+  if (overflowRight) {
+    menu.style.right = '0';     // pega al borde derecho de la ventana
+    menu.style.left = 'auto';   // evita conflicto si estaba a la derecha del botón
+  } else {
+    menu.style.right = '';      // resetear si no hay overflow
+    menu.style.left = '';       // resetear si no hay overflow
+  }
+}
+
+function closeMenusExcept(openId) {
+  ['sort-menu', 'all-menu', 'platform-menu'].forEach(id => {
+    const menu = document.getElementById(id);
+    if (id !== openId) {
+      menu.classList.add('hidden'); // Cerrar menús no seleccionados
+      // Restablecer la posición del menú de plataformas
+      if (id === 'platform-menu') {
+        menu.style.right = '';
+        menu.style.left = '';
+      }
+    } else {
+      if (id === 'platform-menu') {
+        adjustPlatformMenuPosition(); // Ajustar la posición si está abierto
+      }
+    }
+  });
+}
+
+
+platformOptionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  if (selectedPlatforms.size === 0) {
+    // Si ya está en modo "All", al volver a pulsar, seleccionamos todas las plataformas
+    selectedPlatforms = new Set(['PS3', 'PS4', 'PS5', 'Vita', 'PC']);
+  } else {
+    // Si hay alguna seleccionada, entonces vaciamos el set (modo All original)
+    selectedPlatforms.clear();
+  }
+
+  updatePlatformSelectionUI();
+  applyCombinedFilters();
+});
+
+
+
+[
+  { id: 'PS3', element: platformOptionPS3 },
+  { id: 'PS4', element: platformOptionPS4 },
+  { id: 'PS5', element: platformOptionPS5 },
+  { id: 'Vita', element: platformOptionVita },
+  { id: 'PC', element: platformOptionPC },
+].forEach(({ id, element }) => {
+  element.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (selectedPlatforms.has(id)) {
+      selectedPlatforms.delete(id);
+    } else {
+      selectedPlatforms.add(id);
+    }
+    updatePlatformSelectionUI();
+    filterGamesByPlatform();
+  });
+});
+
+
+
+function updatePlatformSelectionUI() {
+  [platformOptionAll, platformOptionPS3, platformOptionPS4, platformOptionPS5, platformOptionVita, platformOptionPC].forEach(opt => {
+    opt.innerHTML = opt.textContent.trim().replace(/^✓\s*/, '');
+  });
+
+  if (selectedPlatforms.size === 0) {
+    platformOptionAll.innerHTML = `<strong>✓</strong> All`;
+    platformButtonLabel.textContent = 'All';
+  } else {
+    if (selectedPlatforms.has('PS3')) platformOptionPS3.innerHTML = `<strong>✓</strong> PS3`;
+    if (selectedPlatforms.has('PS4')) platformOptionPS4.innerHTML = `<strong>✓</strong> PS4`;
+    if (selectedPlatforms.has('PS5')) platformOptionPS5.innerHTML = `<strong>✓</strong> PS5`;
+    if (selectedPlatforms.has('Vita')) platformOptionVita.innerHTML = `<strong>✓</strong> Vita`;
+    if (selectedPlatforms.has('PC')) platformOptionPC.innerHTML = `<strong>✓</strong> PC`;
+    platformButtonLabel.textContent = Array.from(selectedPlatforms).join(', ');
+  }
+}
+
+
+
+function filterGamesByPlatform() {
+  gameCards().forEach(card => {
+    // Buscar todos los <svg> dentro de la tarjeta
+    const svgsInCard = card.querySelectorAll('svg');
+
+    // Si no hay ninguna plataforma seleccionada, mostramos todos los juegos
+    const matchesPlatform = selectedPlatforms.size === 0 || Array.from(svgsInCard).some(svg => selectedPlatforms.has(svg.id));
+    
+    // Verificar que el juego también coincida con el tipo seleccionado
+    const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+
+    // Mostrar el juego solo si cumple con los filtros de plataforma y tipo
+    const shouldShow = (matchesPlatform && matchesType);
+    card.style.display = shouldShow ? 'block' : 'none';
+  });
+}
+
+
+
+   // --- MARCAR por defecto ---
+   selectOption('sort-menu', 'option-lastupdated');
+   selectOption('all-menu', 'option-all');
+   selectedPlatforms.clear();  // Vaciar selección al cargar
+updatePlatformSelectionUI();  // Refrescar UI
+applyCombinedFilters();      // Aplicar filtros (mostrar todos los juegos)
+
+ }); // Aquí cerramos el 'DOMContentLoaded'
+ 
+
+
+// ✅ FUNCIÓN PARA CARGAR JUEGOS
+  function renderGamesFromFirebase() {
+    gamesContainer.innerHTML = "";
+
+    db.collection('games').get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const platform = data.platform || "";
+        const { title, value, link } = data;
+        // Usamos data.ImagenURL
+        const imageSrc = (data.imageURL || "").trim() !== ""
+          ? data.imageURL
+          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
+
+        const imageHeight = (platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" || platform === "Nintendo 3DS")
+          ? 130
+          : 154;
+
+        const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
+
+        const html = `
+          <a id="Platinum" class="mx-auto my-1 w-[176px]" href="${link || '#'}" target="_blank" style="display: block; ">
+            <div
+              class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
+              style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
+              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
+            >
+              <div class="flex flex-col space-y-1.5 p-0">
+                <div class="flex flex-col">
+                  <div class="grid h-[158px]">
+                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                      <img
+                        alt="${title}"
+                        loading="lazy"
+                        height="${platform === "Nintendo DS" || platform === "Nintendo 3DS" || platform === "PlayStation" || platform === "Game Boy Advance" ? 130 : 154}"
+                        decoding="async"
+                        class="rounded-sm text-center bg-primary/10"
+                        src="${imageSrc}"
+                        style="${imgStyle}"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-0">
+                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+                <div>
+                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <span class="text-xs font-medium text-white mix-blend-difference">${(Number(value) || 0).toFixed(2)}€</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        `;
+
+        gamesContainer.innerHTML += html;
+      });
+    });
+  }
+
+});
+
+const plusBtn = document.getElementById("plus");
+const toggleFormBtn = document.getElementById("toggleForm");
+const authStatusBtn = document.getElementById("authStatus");
+
+let isOpen = false;
+
+plusBtn.addEventListener("click", () => {
+  isOpen = !isOpen;
+
+  if (isOpen) {
+    // Mostrar botones sin hidden, con fade in tras un pequeño delay
+    [toggleFormBtn, authStatusBtn].forEach(btn => {
+      btn.classList.add("visible");
+    });
+  } else {
+    // Ocultar botones con fade out
+    [toggleFormBtn, authStatusBtn].forEach(btn => {
+      btn.classList.remove("visible");
+    });
+  }
+
+  // Cambiar el estado visual del botón plus
+  plusBtn.classList.toggle("active", isOpen);
+});
+// Simula el estado de autenticación (reemplaza por lógica Firebase)
+let authStatus = '🔒'; // Cambiar a '🔓' dinámicamente con Firebase Auth
+
+const toggleButton = document.getElementById('toggleForm'); 
+const tooltip = document.getElementById('loginTooltip');
+const modalOverlay = document.getElementById('modalOverlay');
+const formElement = document.getElementById('gameForm');
+const guardarSubmitButton = document.getElementById('guardarSubmit');
+
+function positionTooltip() {
+  const rect = toggleButton.getBoundingClientRect();
+  const tooltipWidth = tooltip.offsetWidth;
+  const smallScreenBreakpoint = 600;
+
+  if (window.innerWidth <= smallScreenBreakpoint) {
+    // Centrar tooltip respecto al botón, limitar que no salga de pantalla
+    const leftPos = Math.min(
+  Math.max(
+    rect.left + window.scrollX - (tooltipWidth / 2) + (rect.width / 2) - 108,  // <-- aquí sumas 20 para desplazar a la derecha
+    8
+  ),
+  window.innerWidth - tooltipWidth - 8
+);
+
+    tooltip.style.left = `${leftPos}px`;
+    tooltip.style.right = 'auto';
+    tooltip.style.top = `${rect.bottom + window.scrollY + 8}px`;
+    tooltip.style.transform = 'none';
+
+    const arrow = tooltip.querySelector('.arrow');
+    arrow.style.left = 'calc(50% + 103px)';
+    arrow.style.right = 'auto';
+    arrow.style.transform = 'rotate(-45deg)';
+
+  } else {
+    tooltip.style.left = `${rect.left + window.scrollX - tooltipWidth + rect.width}px`;
+    tooltip.style.top = `${rect.bottom + window.scrollY + 8}px`;
+    tooltip.style.right = 'auto';
+    tooltip.style.transform = 'none';
+
+    const arrow = tooltip.querySelector('.arrow');
+    arrow.style.right = '10px';
+    arrow.style.left = 'auto';
+    arrow.style.transform = 'rotate(-45deg)';
+  }
+}
+
+// Elemento para mostrar errores de formulario
+const formError = document.createElement('div');
+formError.className = 'text-red-500 mb-2';
+formElement.parentNode.insertBefore(formError, formElement);
+
+function clearForm() {
+  document.getElementById('imageUrl').value = '';
+  document.getElementById('title').value = '';
+  document.getElementById('platform').selectedIndex = 0;
+  document.getElementById('folder').selectedIndex = 0;
+  document.getElementById('condition').selectedIndex = 0;
+  // Resetear las estrellas visualmente (si es necesario)
+  highlightStars(-1); // Deselecciona todas las estrellas
+  selectedRating = 0; // Resetea la calificación
+  document.getElementById('purchaseDate').value = '';
+  document.getElementById('releaseDate').value = '';
+  document.getElementById('purchaseLocation').value = '';
+  document.getElementById('region').value = '';
+  document.getElementById('gift').value = '';
+  document.getElementById('cost').value = '';
+  document.getElementById('value').value = '';
+  document.getElementById('edition').selectedIndex = 0;
+  document.getElementById('wallapopLink').value = '';
+  document.getElementById('vintedLink').value = '';
+  document.getElementById('ebayLink').value = '';
+  document.getElementById('cex').value = '';
+  document.getElementById('cexLink').value = '';
+  document.getElementById('details').value = '';
+}
+
+function closeFormModal() {
+  modalOverlay.classList.remove('flex', 'opacity-100', 'pointer-events-auto');
+  modalOverlay.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+  formElement.classList.remove('opacity-100', 'scale-100');
+  formElement.classList.add('opacity-0', 'scale-95');
+}
+
+// Función para guardar los datos en Firebase
+async function saveGameData(data) {
+  try {
+    const docRef = await firebase.firestore().collection('games').add(data);
+    console.log('Document written with ID: ', docRef.id);
+  } catch (error) {
+    console.error('Error adding document: ', error);
+    throw error;
+  }
+}
+
+// Evento submit para el formulario
+formElement.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const formData = {
+    imageURL: document.getElementById('imageUrl').value.trim(), // <-- Debe ser imageURL
+    title: document.getElementById('title').value,
+    platform: document.getElementById('platform').value,
+    folder: document.getElementById('folder').value,
+    condition: document.getElementById('condition').value,
+    estado: selectedRating, // Usando estado como mencionaste
+    purchaseDate: document.getElementById('purchaseDate').value,
+    releaseDate: document.getElementById('releaseDate').value,
+    purchaseLocation: document.getElementById('purchaseLocation').value,
+    region: document.getElementById('region').value,
+    gift: document.getElementById('gift').value,
+    cost: parseFloat(document.getElementById('cost').value) || null,
+    value: parseFloat(document.getElementById('value').value) || null,
+    edition: document.getElementById('edition').value,
+    wallapopLink: document.getElementById('wallapopLink').value,
+    vintedLink: document.getElementById('vintedLink').value,
+    ebayLink: document.getElementById('ebayLink').value,
+    cex: parseFloat(document.getElementById('cex').value) || null,
+    cexLink: document.getElementById('cexLink').value,
+    details: document.getElementById('details').value,
+  };
+
+  let errores = [];
+  if (!formData.imageURL) errores.push('URL de imagen es requerida.');
+  if (!formData.title) errores.push('Título es requerido.');
+  if (!formData.platform) errores.push('Plataforma es requerida.');
+  if (!formData.folder) errores.push('Carpeta es requerida.');
+  if (!formData.condition) errores.push('Condición es requerida.');
+  if (!formData.purchaseDate) errores.push('Fecha de compra es requerida.');
+  if (!formData.edition) errores.push('Edición es requerida.');
+
+  if (errores.length > 0) {
+    formError.textContent = errores.join(' ');
+    return;
+  } else {
+    formError.textContent = '';
+  }
+
+  try {
+    await saveGameData(formData);
+    console.log('Datos guardados correctamente en Firebase');
+    clearForm();
+    closeFormModal();
+  } catch (error) {
+    console.error('Error al guardar los datos:', error);
+    formError.textContent = 'Error al guardar. Inténtalo de nuevo.';
+  }
+});
+
+toggleButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const currentAuth = document.getElementById("authStatus").textContent;
+
+  // Si el tooltip está visible actualmente, hacer clic en el botón SÓLO debería ocultarlo.
+  if (tooltip.classList.contains('visible')) {
+    tooltip.classList.remove('visible'); // Esto activará el fade-out.
+  } else {
+    // Si el tooltip NO está visible, entonces proceder con la lógica original:
+    // mostrar modal si está autenticado, o mostrar tooltip si no está autenticado.
+    if (currentAuth === '🔓') {
+      // Mostrar modal con animación
+      modalOverlay.classList.add('flex');
+      setTimeout(() => {
+        modalOverlay.classList.add('opacity-100');
+        formElement.classList.add('opacity-100');
+      }, 10);
+    } else {
+      // Mostrar tooltip (esto activará el fade-in ya que no estaba visible antes)
+      positionTooltip();
+      tooltip.classList.add('visible');
+    }
+  }
+});
+
+// Ocultar al hacer clic fuera
+document.addEventListener('click', (e) => {
+  const isInsideTooltip = tooltip.contains(e.target) || toggleButton.contains(e.target);
+  const isClickOnButton = e.target.tagName === 'BUTTON' || e.target.closest('button');
+  const isInsideModal = formElement.contains(e.target);
+
+  // Cerrar tooltip si se hace clic fuera de él
+  if (!isInsideTooltip && tooltip.classList.contains('visible')) {
+  tooltip.classList.remove('visible');
+}
+
+// Cerrar tooltip si se hace clic en cualquier botón (aunque tenga SVG, span, etc.)
+if (tooltip.classList.contains('visible') && e.target.closest('button')) {
+  tooltip.classList.remove('visible');
+}
+
+  // Cerrar modal si se hace clic fuera del formulario
+
+  if (modalOverlay.classList.contains('opacity-100') && !isInsideModal) {
+    modalOverlay.classList.remove('opacity-100');
+    formElement.classList.remove('opacity-100');
+    setTimeout(() => {
+      modalOverlay.classList.remove('flex');
+    }, 300); // coincide con la duración de animación
+  }
+});
+
+// Función para mostrar el modal
+function showModal() {
+  modalOverlay.style.display = 'flex'; // Primero, establecemos display: flex
+  modalOverlay.classList.add('opacity-100'); // Luego, iniciamos la transición de opacidad
+  gameForm.classList.add('opacity-100'); // Asegúrate de manejar la opacidad del formulario también si es necesario
+}
+
+// Función para ocultar el modal
+function hideModal() {
+  modalOverlay.classList.remove('opacity-100');
+  gameForm.classList.remove('opacity-100');
+  setTimeout(() => {
+    modalOverlay.style.display = 'none'; // Después de la transición, ocultamos el modal
+  }, 300); // Espera la duración de la transición (0.3s)
+}
+
+// Reposicionar si está visible en resize o scroll
+window.addEventListener('resize', () => {
+  if (tooltip.classList.contains('visible')) positionTooltip();
+});
+window.addEventListener('scroll', () => {
+  if (tooltip.classList.contains('visible')) positionTooltip();
+});
+
+const starsContainer = document.getElementById('estadoStarsContainer');
+const stars = document.querySelectorAll('#estadoStars span');
+let selectedRating = 0; // Almacena la calificación seleccionada
+
+// Función para resaltar las estrellas hasta un cierto índice
+function highlightStars(index) {
+  stars.forEach((star, i) => {
+    if (i <= index) {
+      star.textContent = '★'; // Estrella rellena
+      star.classList.add('active');
+    } else {
+      star.textContent = '☆'; // Estrella vacía
+      star.classList.remove('active');
+    }
+  });
+}
+
+// Evento mouseover para resaltar las estrellas al pasar el ratón
+starsContainer.addEventListener('mouseover', (e) => {
+  if (e.target.tagName === 'SPAN') {
+    const hoveredStar = parseInt(e.target.dataset.star);
+    highlightStars(hoveredStar - 1); // -1 porque el índice comienza en 0
+  }
+});
+
+// Evento mouseout para restaurar la selección actual
+starsContainer.addEventListener('mouseout', () => {
+  highlightStars(selectedRating - 1); // -1 porque el índice comienza en 0
+});
+
+// Evento click para almacenar la selección
+starsContainer.addEventListener('click', (e) => {
+  if (e.target.tagName === 'SPAN') {
+    selectedRating = parseInt(e.target.dataset.star);
+    highlightStars(selectedRating - 1);
+    // Aquí puedes almacenar selectedRating en tu base de datos (Firebase)
+    console.log('Calificación seleccionada:', selectedRating);
+  }
+});
+
+// Inicializar la visualización (opcional, si hay una calificación preseleccionada)
+if (selectedRating > 0) {
+  highlightStars(selectedRating - 1);
+}
+
+ </script>
+</body></html>

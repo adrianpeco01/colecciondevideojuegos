@@ -11,14 +11,6 @@
     font-style: normal;
   }
 
-.sm\:block.__className_9fd9c5,
-.sm\:hidden.__className_9fd9c5 {
-  /* Usa 'Orbitron' directamente, ya que el @import de Google Fonts la define así */
-  font-family: 'Orbitron', sans-serif; 
-
-  /* Asegúrate de que el font-weight sea 700 */
-  font-weight: 700 !important; 
-}
 
 #modal, #modal * {
   font-family: 'Inter', sans-serif;
@@ -406,14 +398,6 @@ select#edition option:not(:first-of-type) {
   #modal > div {
     width: 95%;
     max-height: 85vh;
-    overflow-y: scroll; /* Permitir scroll vertical */
-    -ms-overflow-style: none;  /* IE y Edge */
-    scrollbar-width: none;     /* Firefox */
-  }
-
-  /* Ocultar scrollbar en WebKit (Chrome, Safari, Opera) */
-  #modal > div::-webkit-scrollbar {
-    display: none;
   }
 
   #modal > div::-webkit-scrollbar-track {
@@ -636,203 +620,8 @@ html {
   transform: scale(1); /* Estado final para el zoom-in */
 }
 
-#sort-menu {
-  width: 11rem; /* o 10.5rem */
-}
-
-.chart-container {
-            width: 100%;
-            height: 250px; /* Approximate height based on image */
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            background-color: #f9f9f9;
-            /* In a real scenario, this would be a canvas or SVG for the chart */
-        }
-        .chart-placeholder {
-            /* This will be replaced by a JS chart (e.g., Chart.js, D3.js) */
-            text-align: center;
-            padding: 20px;
-        }
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            color: #555;
-        }
-        .legend-icon {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-            border: 1px solid #666; /* Circle border */
-            box-sizing: border-box;
-            background-color: transparent; /* Default for hollow circle */
-        }
-        /* Specific colors for filled circles based on the image's legend */
-        .legend-icon.valor { background-color: #333; border-color: #333;}
-        .legend-icon.contar { border-color: #333; } /* Hollow */
-        .legend-icon.costo { border-color: #333; } /* Hollow */
-        .legend-icon.ganancia { border-color: #333; } /* Hollow */
-
-
-        .summary-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden; /* Ensures border-radius applies to rows */
-        }
-        .summary-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            font-size: 16px;
-        }
-        .summary-table tr:last-child td {
-            border-bottom: none;
-        }
-        .summary-table td:first-child {
-            color: #555;
-            font-weight: normal;
-        }
-        .summary-table td:last-child {
-            text-align: right;
-            font-weight: bold;
-            color: #333;
-        }
-        /* Specific styling for the 'Valor' row to match the image */
-        .summary-table tr:nth-child(1) td {
-            background-color: #f0f2f5; /* Light grey background for Valor row */
-            font-weight: bold;
-            color: #333;
-        }
-        .summary-table tr:nth-child(1) td:last-child {
-             color: #333;
-        }
-
-        /* Specific styling for the 'Ganancia' row to match the image's bolding */
-        .summary-table tr:nth-child(3) td {
-            background-color: #f0f2f5; /* Light grey background for Ganancia row */
-            font-weight: bold;
-            color: #333;
-        }
-        .summary-table tr:nth-child(3) td:last-child {
-             color: #333;
-        }
-
-
-/*
-  Estilos para la tabla de resumen de la colección.
-  Versión final: sin título, sin margen y pegado a la cabecera.
-*/
-
-/* Oculta el título "Resumen de la colección" */
-.lg\:w-96 .text-lg {
-    display: none;
-}
-
-/* Contenedor principal del resumen en pantallas grandes (lg) */
-@media (min-width: 1024px) {
-    .lg\:w-96 {
-        margin-top: 0 !important; /* Elimina el margen superior */
-        top: 4rem !important;  /* NUEVO: Lo pega justo debajo de la cabecera (que mide 3.5rem) */
-    }
-}
-
-/* Contenedor principal del resumen en pantallas pequeñas */
-.lg\:w-96 {
-    margin-top: 0.5rem; /* Mantiene un pequeño margen en móvil para que no se pegue arriba */
-}
-
-/* Contenedor de la tabla */
-.lg\:w-96 > .bg-white {
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Tabla de resumen */
-.lg\:w-96 table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Celdas de la tabla (td) */
-.lg\:w-96 table td {
-    padding: 14px 15px;
-    font-size: 16px;
-    border-bottom: 1px solid #f8f8f8;
-    vertical-align: middle;
-}
-
-/* Eliminar el borde de la última fila */
-.lg\:w-96 table tr:last-of-type td {
-    border-bottom: none;
-}
-
-/* Filas con fondo gris (la primera y la tercera) */
-.lg\:w-96 table tr:nth-child(1) td,
-.lg\:w-96 table tr:nth-child(3) td {
-    background-color: #f1f8fe;
-}
-
-/* Celdas de la izquierda (Valor, Costo, etc.) */
-.lg\:w-96 table td:first-child {
-    font-weight: normal;
-    color: #555;
-}
-
-/* Celdas de la derecha (los valores numéricos) */
-.lg\:w-96 table td:last-child {
-    font-weight: bold;
-    color: #333;
-    text-align: right;
-}
-
-/* Estilos para el menú de plataformas */
-#platform-menu {
-    position: absolute;
-    /* Por defecto, lo anclamos a la izquierda del botón */
-    left: 0;
-    /* Ajustamos el ancho del menú para que no se desborde */
-    width: max-content; /* O un ancho fijo, como 200px */
-}
-
-/* Media query para pantallas pequeñas */
-@media (max-width: 1650px) {
-    #platform-menu {
-        /*
-        1. Ancla el menú al borde derecho del contenedor (botón).
-        2. `transform: translateX(100%)` mueve el menú 100% de su propio ancho a la derecha.
-           Como `left: 100%` lo había movido 100% del ancho del botón a la derecha,
-           esto lo ancla perfectamente al borde derecho.
-        */
-        right: 0;
-        left: auto;
-    }
-}
-
 </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=block" rel="stylesheet">
-</head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block orbitron-font __className_9fd9c5">Mi colección de videojuegos</a>
-<a class="ml-2 mr-4 font-bold sm:hidden orbitron-font __className_9fd9c5">Mi colección</a>
-</div><div class="flex items-center gap-3 relative ml-4">
+</head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block __className_9fd9c5">Mi colección de videojuegos</a><a class="ml-2 mr-4 font-bold sm:hidden __className_9fd9c5">Mi colección</a></div><div class="flex items-center gap-3 relative ml-4">
   <button id="toggleForm"
   class="text-xl hover:bg-accent hover:text-accent-foreground rounded-md p-1"
   title="Añadir o editar" style="font-size: 1.25rem;">✏️</button>
@@ -872,26 +661,6 @@ html {
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
 
-  // --- AÑADE ESTE CÓDIGO AQUÍ ---
-  // Lógica para guardar y cargar la página actual en localStorage
-  let currentPage = 1;
-
-  // Cargar la página desde localStorage al iniciar
-  const savedPage = localStorage.getItem('currentPage');
-  if (savedPage) {
-    currentPage = parseInt(savedPage, 10);
-  }
-
-  // Cargar los juegos de la página actual, ya sea la guardada o la 1
-  renderGamesPage(currentPage);
-
-  // Función para guardar la página en localStorage al cambiar
-  function setCurrentPage(pageNumber) {
-    currentPage = pageNumber;
-    localStorage.setItem('currentPage', pageNumber);
-  }
-  // --- FIN DEL CÓDIGO A AÑADIR ---
-
     tailwind.config = {
     safelist: [
       'bg-gray-50',
@@ -901,35 +670,7 @@ html {
       'text-gray-500'
     ]
   }
-</script></header><main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96">
-  
-  <!-- NUEVA TABLA: Resumen de la colección -->
-  <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 mb-4">
-    <h2 class="text-lg font-bold text-gray-800 mb-4">Resumen de la colección</h2>
-    <table class="w-full border-collapse">
-      <tr class="bg-gray-200">
-        <td class="py-2 px-3 text-gray-800">Valor</td>
-        <td id="summary-value" class="py-2 px-3 text-right font-bold text-gray-800">0 €</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="py-2 px-3 text-gray-600">Costo</td>
-        <td id="summary-cost" class="py-2 px-3 text-right font-bold text-gray-800">0 €</td>
-      </tr>
-      <tr class="bg-gray-200">
-        <td class="py-2 px-3 text-gray-800">Diferencia</td>
-        <td id="summary-diff" class="py-2 px-3 text-right font-bold text-gray-800">0 €</td>
-      </tr>
-      <tr class="bg-gray-50">
-        <td class="py-2 px-3 text-gray-600">Cantidad</td>
-        <td id="summary-count" class="py-2 px-3 text-right font-bold text-gray-800">0</td>
-      </tr>
-    </table>
-  </div>
-
-</div>
-
-
-<div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
+</script></header><main class="flex grow flex-col items-stretch"><div class="lg:container lg:flex lg:flex-1 lg:flex-row"><div class="mt-6 block lg:sticky lg:top-20 lg:mr-2 lg:h-[calc(100vh-5rem)] lg:w-96 lg:min-w-96"><div class="bg-card text-card-foreground rounded-xl border-0 shadow-none"><div class="flex flex-col space-y-1.5 p-6 pt-0"><div class="relative mx-auto"><img alt="adricollantex" fetchpriority="high" width="200" height="200" decoding="async" data-nimg="1" class="mb-2 transform-gpu rounded-md drop-shadow-md" src="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" style="color: transparent;"></div><h3 class="text-2xl font-semibold leading-none tracking-tight flex flex-row items-center justify-center">adricollantex<span class="ml-2 mt-0.5 text-2xl">🇪🇸</span></h3></div><div class="px-6 pt-0"><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full mb-6"></div><div class="mb-6 flex h-14 flex-row justify-between"><div class="flex flex-row items-center"><img alt="254" loading="lazy" width="58" height="55" decoding="async" data-nimg="1" class="mr-4" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze3.39efc8c2.png" style="color: transparent;"><div class="flex w-32 flex-col items-center"><div class="text-md font-medium">Level 267</div><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="bg-secondary relative h-4 w-full overflow-hidden rounded-full mt-1"><div data-state="indeterminate" data-max="100" class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(-24%);"></div><div class="absolute inset-0 flex items-center justify-center"><span class="text-xs font-medium text-white mix-blend-difference">76%</span></div></div></div></div><div data-orientation="vertical" role="none" class="bg-border shrink-0 h-full w-[1px]"></div><div class="flex flex-col items-center justify-center"><div class="flex text-3xl">1364<button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div>Total Trophies</div></div></div><div data-orientation="horizontal" role="none" class="bg-border shrink-0 h-[1px] w-full my-6"></div><div class="flex flex-row justify-between space-x-1"><div class="flex flex-row items-center"><img alt="Platinum trophy" loading="lazy" width="307" height="477" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/platinum.c0edb513.png" style="color: transparent;"><span class="text-lg ml-2">23</span></div><div class="flex flex-row items-center"><img alt="Gold trophy" loading="lazy" width="380" height="459" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/gold.d6c88f73.png" style="color: transparent;"><span class="text-lg ml-2">179</span></div><div class="flex flex-row items-center"><img alt="Silver trophy" loading="lazy" width="351" height="435" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/silver.e2239c30.png" style="color: transparent;"><span class="text-lg ml-2">333</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div><div class="flex flex-row items-center"><img alt="Bronze trophy" loading="lazy" width="318" height="417" decoding="async" data-nimg="1" class="w-auto h-5 lg:h-6" src="./adricollantex • Platinum Hunt MARZO 2025_files/bronze.a58983fd.png" style="color: transparent;"><span class="text-lg ml-2">829</span><button type="button" class="h-fit cursor-pointer self-start" data-state="closed"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5"><path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button></div></div><div></div></div></div></div><div class="mt-6 grow lg:mt-4"><div dir="ltr" data-orientation="horizontal" class="w-full px-2 lg:px-0"></div><div class="mx-2 lg:mx-0"><div class="mb-2">
     
 <!-- Modal login -->
 <div id="loginModal" class="fixed inset-0 hidden flex justify-center items-center z-50 bg-black bg-opacity-70 backdrop-blur-sm">
@@ -1152,14 +893,14 @@ html {
   <img id="fullscreenImageView" src="" alt="Carátula en pantalla completa" class="fullscreen-image">
 </div>
 
-    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input id="searchInput" class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Buscar videojuegos..." autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
+    <div class="mt-2 flex flex-col items-center space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0"><input class="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Buscar videojuegos..." autocomplete="off" autocorrect="off" spellcheck="false"><div class="flex w-full flex-row space-x-2 lg:w-auto">
 
 
 
         <!-- Contenedor de los botones -->
         <div class="flex w-full flex-row space-x-2 lg:w-auto justify-between">
           
-    <!-- Botón principal de orden (ORDENACIÓN) -->
+    <!-- Botón principal de orden (Last Updated) -->
     <div class="relative inline-block text-left w-full lg:w-auto">
       <button 
         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
@@ -1168,6 +909,7 @@ html {
         aria-haspopup="menu" 
         aria-expanded="false" 
         data-state="closed"
+        onclick="toggleSortMenu()"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down mr-1 h-4">
           <path d="m21 16-4 4-4-4"></path>
@@ -1179,18 +921,10 @@ html {
       </button>
 
       <!-- Menú desplegable que sale debajo -->
-        <div id="sort-menu" class="hidden absolute right-0 mt-2 w-[11rem] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
+      <div id="sort-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
         <div class="py-1">
-          <div id="option-lastpurchase" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Últimas compras</div>
-          <div id="option-firstpurchase" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Primeras compras</div>
-          <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alfabético (A-Z)</div>
-          <div id="option-alphabetical-reverse" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alfabético (Z-A)</div>
-          <div id="option-newest" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más nuevos</div>
-          <div id="option-oldest" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Más antiguos</div>
-          <div id="option-value-high" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Mayor valor</div>
-          <div id="option-value-low" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menor valor</div>
-          <div id="option-cost-high" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Mayor coste</div>
-          <div id="option-cost-low" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Menor coste</div>
+          <div id="option-lastupdated" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Últimas compras</div>
+          <div id="option-alphabetical" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Alphabetical</div>
         </div>
     </div>
     </div>
@@ -1204,6 +938,7 @@ html {
     aria-haspopup="menu"
     aria-expanded="false"
     data-state="closed"
+    onclick="toggleAllMenu()"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter mr-1 h-4">
       <path d="M3 6h18"></path>
@@ -1215,11 +950,10 @@ html {
 
   <!-- Menú desplegable que sale debajo para All -->
   <div id="all-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
- <div class="py-1">
-      <div id="option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Todo</div>
-      <div id="option-basic" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Básica</div>
-      <div id="option-reissue" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Reedición</div>
-      <div id="option-special" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Especial</div>
+    <div class="py-1">
+  <div id="option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">All</div>
+    <div id="option-platinum" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Platinum</div>
+    <div id="option-100" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">100%</div>
     </div>
   </div>
   </div>
@@ -1230,9 +964,11 @@ html {
   <button id="platform-button"
     class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full lg:w-auto"
     type="button"
+    id="all-button"
     aria-haspopup="menu"
     aria-expanded="false"
     data-state="closed"
+    onclick="toggleAllMenu()"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad2 mr-1 h-4">
         <line x1="6" x2="10" y1="11" y2="11"></line>
@@ -1244,32 +980,25 @@ html {
     <div class="hidden lg:block" id="platform-button-label">Todo</div>
   </button>
 
-  <div id="platform-menu" class="hidden absolute right-0 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important; width: 11rem !important;">
+  <!-- Menú desplegable que sale debajo para All -->
+  <div id="platform-menu" class="hidden absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important;">
     <div class="py-1">
       <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Todo</div>
-      <div id="platform-option-gba" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Game Boy Advance</div>
-      <div id="platform-option-3ds" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo 3DS</div>
-      <div id="platform-option-ds" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo DS</div>
-      <div id="platform-option-n64" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo 64</div>
-      <div id="platform-option-switch" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Switch</div>
-      <div id="platform-option-wii" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Wii</div>
-      <div id="platform-option-wiiu" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Wii U</div>
-      <div id="platform-option-ps" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation</div>
-      <div id="platform-option-ps2" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 2</div>
-      <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 3</div>
-      <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 4</div>
-      <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 5</div>
-      <div id="platform-option-x360" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox 360</div>
+      <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS3</div>
+      <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS4</div>
+      <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS5</div>
+      <div id="platform-option-vita" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Vita</div>
+      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PC</div>
     </div>
   </div>
-</div>
+  </div>
 
 </div>
           
           
         
-        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid"></div><div id="pagination" class="mt-4"></div>
-      </main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
+        </div></div><div id="games-container" class="grid-cols-previews mb-2 mt-1 grid">
+          </div></main></div><link rel="preload" as="image" href="https://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png" fetchpriority="high"><next-route-announcer style="position: absolute;"><template shadowrootmode="open"><div aria-live="assertive" id="__next-route-announcer__" role="alert" style="position: absolute; border: 0px; height: 1px; margin: -1px; padding: 0px; width: 1px; clip: rect(0px, 0px, 0px, 0px); overflow: hidden; white-space: nowrap; overflow-wrap: normal;">adricollantex • Platinum Hunt</div></template></next-route-announcer>
 <script>
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1289,40 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const modalContent = document.querySelector('#modal > div');
 
-  const editBtn = document.getElementById("editBtn");
-  const allButton = document.getElementById('all-button');
-  const allMenu = document.getElementById('all-menu');
-  const allButtonLabel = document.getElementById('all-button-label');
-
-  // Referencias a todas las opciones del menú de edición
-  const optionAll = document.getElementById('option-all');
-  const optionBasic = document.getElementById('option-basic');
-  const optionReissue = document.getElementById('option-reissue');
-  const optionSpecial = document.getElementById('option-special');
-
-const platformButton = document.getElementById('platform-button');
-  const platformMenu = document.getElementById('platform-menu');
-  const platformButtonLabel = document.getElementById('platform-button-label');
-
-  // Array para guardar las plataformas seleccionadas
-  let selectedPlatforms = [];
-let selectedEditionType = 'all'; // Inicialmente, "Todo" está seleccionado
-
-  // Referencias a todas las opciones del menú de plataforma
-  const platformOptionAll = document.getElementById('platform-option-all');
-  const platformOptionGBA = document.getElementById('platform-option-gba');
-  const platformOption3DS = document.getElementById('platform-option-3ds');
-  const platformOptionDS = document.getElementById('platform-option-ds');
-  const platformOptionN64 = document.getElementById('platform-option-n64');
-  const platformOptionSwitch = document.getElementById('platform-option-switch');
-  const platformOptionWii = document.getElementById('platform-option-wii');
-  const platformOptionWiiU = document.getElementById('platform-option-wiiu');
-  const platformOptionPS = document.getElementById('platform-option-ps');
-  const platformOptionPS2 = document.getElementById('platform-option-ps2');
-  const platformOptionPS3 = document.getElementById('platform-option-ps3');
-  const platformOptionPS4 = document.getElementById('platform-option-ps4');
-  const platformOptionPS5 = document.getElementById('platform-option-ps5');
-  const platformOptionX360 = document.getElementById('platform-option-x360');
+const editBtn = document.getElementById("editBtn");
 
 editBtn.addEventListener("click", () => {
   const modal = document.getElementById("modal");
@@ -1386,1017 +1082,126 @@ const scrollable = document.querySelector('.custom-scroll');
     }
   }
 
-const sortButton = document.getElementById('sort-button');
-    const sortMenu = document.getElementById('sort-menu');
-    const sortButtonLabel = document.getElementById('sort-button-label');
-
-    // Referencias a todas las opciones del menú de ordenación
-    const optionLastPurchase = document.getElementById('option-lastpurchase');
-    const optionFirstPurchase = document.getElementById('option-firstpurchase');
-    const optionAlphabetical = document.getElementById('option-alphabetical');
-    const optionAlphabeticalReverse = document.getElementById('option-alphabetical-reverse');
-    const optionNewest = document.getElementById('option-newest');
-    const optionOldest = document.getElementById('option-oldest');
-    const optionValueHigh = document.getElementById('option-value-high');
-    const optionValueLow = document.getElementById('option-value-low');
-    const optionCostHigh = document.getElementById('option-cost-high');
-    const optionCostLow = document.getElementById('option-cost-low');
-
-    // Variable para almacenar el orden original de los juegos, tal como vienen de Firebase
-    let originalGamesOrder = [];
-
-    // --- Funciones de Ordenación ---
-
-    // Función para marcar la opción seleccionada en el menú
-    // `menuId` es el ID del contenedor del menú (e.g., 'sort-menu')
-    // `selectedOptionId` es el ID de la opción que queremos marcar
-    // Función para marcar la opción seleccionada en el menú
-    // `menuId` es el ID del contenedor del menú (e.g., 'sort-menu', 'all-menu', 'platform-menu')
-    // `selectedOptionId` es el ID de la opción que queremos marcar
-    // `marker` es el carácter a usar para marcar (e.g., '· ', '✓ ')
-    function selectOption(menuId, selectedOptionId, marker = '· ') {
-        const menuOptions = document.querySelectorAll(`#${menuId} > div > div`); // Selecciona todos los divs de opción
-        menuOptions.forEach(option => {
-            // Quita cualquier marcador existente (ya sea '· ' o '✓ ')
-            let optionText = option.textContent;
-            if (optionText.startsWith('· ')) {
-                optionText = optionText.substring(2);
-            } else if (optionText.startsWith('✓ ')) {
-                optionText = optionText.substring(2);
-            }
-            option.textContent = optionText; // Restablece el texto sin el marcador
-        });
-
-        const selectedOption = document.getElementById(selectedOptionId);
-        if (selectedOption) {
-            selectedOption.textContent = marker + selectedOption.textContent; // Añade el marcador
-        }
-    }
-
-    // Nueva función para manejar el marcado de múltiples opciones de plataforma
-    function togglePlatformOption(optionId, platformName) {
-  const optionElement = document.getElementById(optionId);
-  const isSelected = optionElement.textContent.startsWith('✓ ');
-
-  if (platformName === 'all') {
-    // Si seleccionamos "Todo"
-    selectedPlatforms = ['all'];
-    // Marcar "Todo" y desmarcar otros
-    document.querySelectorAll('#platform-menu > div > div').forEach(option => {
-      if (option.id === optionId) {
-        if (!option.textContent.startsWith('✓ ')) option.textContent = '✓ ' + option.textContent;
-      } else {
-        option.textContent = option.textContent.replace('✓ ', '');
-      }
-    });
-  } else {
-    // Seleccionamos una plataforma individual
-    // Quitar "all" si está presente
-    selectedPlatforms = selectedPlatforms.filter(p => p !== 'all');
-
-    if (isSelected) {
-      // Si ya estaba seleccionada, la quitamos
-      optionElement.textContent = optionElement.textContent.replace('✓ ', '');
-      selectedPlatforms = selectedPlatforms.filter(p => p !== platformName);
-    } else {
-      // La seleccionamos
-      optionElement.textContent = '✓ ' + optionElement.textContent;
-      selectedPlatforms.push(platformName);
-    }
-
-    // Si no queda ninguna plataforma seleccionada, volver a "all"
-    if (selectedPlatforms.length === 0) {
-      selectedPlatforms = ['all'];
-      const allOption = document.getElementById('platform-option-all');
-      if (allOption && !allOption.textContent.startsWith('✓ ')) {
-        allOption.textContent = '✓ ' + allOption.textContent;
-      }
-    } else {
-      // Asegurarse que "Todo" no está marcado si hay otras plataformas
-      const allOption = document.getElementById('platform-option-all');
-      if (allOption) {
-        allOption.textContent = allOption.textContent.replace('✓ ', '');
-      }
-    }
-  }
-
-  // En su lugar, llama a tu función personalizada para actualizar el label
-updatePlatformButtonLabel();
-}
-
-
-    // Nueva función para actualizar el texto del botón de plataforma
-function updatePlatformButtonLabel() {
-    if (selectedPlatforms.length === 0 || (selectedPlatforms.length === 1 && selectedPlatforms[0] === 'all')) {
-        platformButtonLabel.textContent = 'Todo';
-        return;
-    }
-
-    // Define las abreviaturas o nombres personalizados para cada plataforma
-    const platformLabels = {
-        'Game Boy Advance': 'GBA',
-        'Nintendo 3DS': '3DS',
-        'Nintendo DS': 'DS',
-        'Nintendo 64': 'N64',
-        'Nintendo Switch': 'Switch',
-        'Nintendo Wii': 'Wii',
-        'Nintendo Wii U': 'Wii U',
-        'PlayStation': 'PS1',
-        'PlayStation 2': 'PS2',
-        'PlayStation 3': 'PS3',
-        'PlayStation 4': 'PS4',
-        'PlayStation 5': 'PS5',
-        'Xbox 360': 'X360'
-    };
-
-// Define el orden fijo en que quieres mostrar las plataformas
-    const platformOrder = [
-        'Game Boy Advance',
-        'Nintendo 3DS',
-        'Nintendo DS',
-        'Nintendo 64',
-        'Nintendo Switch',
-        'Nintendo Wii',
-        'Nintendo Wii U',
-        'PlayStation',
-        'PlayStation 2',
-        'PlayStation 3',
-        'PlayStation 4',
-        'PlayStation 5',
-        'Xbox 360'
-    ];
-
-    // Número máximo de plataformas a mostrar antes de poner "..."
-    const maxOptionsToShow = 5;
-
-    // Filtrar platformOrder para solo dejar las seleccionadas
-    const orderedSelected = platformOrder.filter(p => selectedPlatforms.includes(p));
-
-    // Mapear a etiquetas personalizadas
-    const mappedLabels = orderedSelected.map(p => platformLabels[p] || p);
-
-    // Tomar solo las primeras maxOptionsToShow opciones
-    let displayedLabels = mappedLabels.slice(0, maxOptionsToShow);
-
-    // Construir texto y añadir "..." si hace falta
-    let labelText = displayedLabels.join(', ');
-    if (orderedSelected.length > maxOptionsToShow) {
-        labelText += '...';
-    }
-
-    platformButtonLabel.textContent = labelText;
-}
-
-        // Variable para almacenar los juegos filtrados actualmente
-    let filteredGames = [];
-
-function updateCollectionSummary(gamesToSum) {
-  const list = Array.isArray(gamesToSum) ? gamesToSum : games;
-
-  let totalValue = 0;
-  let totalCost = 0;
-  let count = 0;
-
-  list.forEach(game => {
-    const value = parseFloat(game.value) || 0;
-    const cost = parseFloat(game.cost) || 0;
-    totalValue += value;
-    totalCost += cost;
-    count++;
-  });
-
-    const diff = totalValue - totalCost;
-
-  // Función para formatear moneda sin espacio y sin decimales si es entero
-  const formatMoney = (num) => {
-    const options = {
-      minimumFractionDigits: num % 1 === 0 ? 0 : 2,
-      maximumFractionDigits: num % 1 === 0 ? 0 : 2,
-      useGrouping: true
-    };
-    // Formateamos solo el número
-    const formattedNumber = num.toLocaleString('es-ES', options);
-    // Añadimos el símbolo € sin espacio
-    return `${formattedNumber} €`;
-  };
-
-  const isEmpty = list.length === 0;
-
-document.getElementById('summary-value').textContent = isEmpty ? formatMoney(0) : formatMoney(totalValue);
-document.getElementById('summary-cost').textContent = isEmpty ? formatMoney(0) : formatMoney(totalCost);
-document.getElementById('summary-diff').textContent = isEmpty ? formatMoney(0) : formatMoney(diff);
-document.getElementById('summary-count').textContent = count;
-
-}
-
-
-
-// Función central para aplicar todos los filtros activos (ordenación, edición, plataforma)
-function applyAllFilters() {
-  // AÑADE ESTAS DOS LÍNEAS AQUÍ, AL PRINCIPIO DE LA FUNCIÓN
-    currentSearchTerm = "";
-    searchInput.value = "";
-    // 1. Empezar con el orden original
-    games = [...originalGamesOrder];
-
-    // 2. Aplicar filtro de edición si hay uno seleccionado
-    // Usamos selectedEditionType en lugar de allButtonLabel.textContent
-    if (selectedEditionType !== 'all') {
-        const editionMap = {
-            'Básica': 'Básica',
-            'Reedición': 'Reedición',
-            'Especial': 'Especial'
-        };
-        const editionFilterValue = editionMap[selectedEditionType]; // Usar selectedEditionType
-        if (editionFilterValue) {
-            games = games.filter(game => {
-                const edition = game.edition ? game.edition.toLowerCase() : '';
-                return edition.includes(editionFilterValue.toLowerCase());
-            });
-        }
-    }
-
-    // 3. Aplicar filtro de plataforma si hay alguna seleccionada (excluyendo "Todo" si es la única seleccionada)
-    const activePlatforms = selectedPlatforms.filter(p => p !== 'all');
-    if (activePlatforms.length > 0) {
-        games = games.filter(game => {
-  const platform = (game.platform || '').toLowerCase().trim();
-  return activePlatforms.some(selected => selected.toLowerCase().trim() === platform);
-});
-    }
-    
-    // 4. Aplicar ordenación (usa el label actual del sort-button para saber qué ordenación aplicar)
-    const currentSortLabel = sortButtonLabel.textContent;
-    switch (currentSortLabel) {
-        case 'Últimas compras':
-            // Las funciones de ordenación no necesitan redibujar la página, solo ordenar el array 'games'
-            games.sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
-            break;
-        case 'Primeras compras':
-            games.sort((a, b) => new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime());
-            break;
-        case 'Alfabético (A-Z)':
-            games.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
-            break;
-        case 'Alfabético (Z-A)':
-            games.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
-            break;
-        case 'Más nuevos':
-            games.sort((a, b) => {
-                const dateA = new Date(a.releaseDate);
-                const dateB = new Date(b.releaseDate);
-                if (!a.releaseDate) return 1;
-                if (!b.releaseDate) return -1;
-                return dateB.getTime() - dateA.getTime();
-            });
-            break;
-        case 'Más antiguos':
-            games.sort((a, b) => {
-                const dateA = new Date(a.releaseDate);
-                const dateB = new Date(b.releaseDate);
-                if (!a.releaseDate) return -1;
-                if (!b.releaseDate) return 1;
-                return dateA.getTime() - dateB.getTime();
-            });
-            break;
-        case 'Mayor valor':
-            games.sort((a, b) => (parseFloat(b.value) || 0) - (parseFloat(a.value) || 0));
-            break;
-        case 'Menor valor':
-            games.sort((a, b) => (parseFloat(a.value) || 0) - (parseFloat(b.value) || 0));
-            break;
-        case 'Mayor coste':
-            games.sort((a, b) => (parseFloat(b.cost) || 0) - (parseFloat(a.cost) || 0));
-            break;
-        case 'Menor coste':
-            games.sort((a, b) => (parseFloat(a.cost) || 0) - (parseFloat(b.cost) || 0));
-            break;
-        default:
-            // Si no hay un orden específico, mantiene el orden actual después de filtros
-            break;
-    }
-
-    currentPage = 1;
-    renderGamesPage(currentPage);
-    renderPagination();
-    updateCollectionSummary();
-}
-
-    function sortGamesByPurchaseDate(order = 'desc') { // 'desc' para últimas compras, 'asc' para primeras
-        games.sort((a, b) => {
-            const dateA = new Date(a.purchaseDate);
-            const dateB = new Date(b.purchaseDate);
-            if (order === 'desc') {
-                return dateB.getTime() - dateA.getTime();
-            } else {
-                return dateA.getTime() - dateB.getTime();
-            }
-        });
-        currentPage = 1; // Volver a la primera página después de ordenar
-        renderGamesPage(currentPage);
-        renderPagination();
-        updateCollectionSummary();
-        applyFiltersAndReset();
-
-    }
-
-    function sortGamesAlphabetically(order = 'asc') { // 'asc' para A-Z, 'desc' para Z-A
-        games.sort((a, b) => {
-            const titleA = a.title.toLowerCase();
-            const titleB = b.title.toLowerCase();
-            if (order === 'asc') {
-                return titleA.localeCompare(titleB);
-            } else {
-                return titleB.localeCompare(titleA);
-            }
-        });
-        currentPage = 1;
-        renderGamesPage(currentPage);
-        renderPagination();
-        updateCollectionSummary();
-        applyFiltersAndReset();
-    }
-
-    function sortGamesByReleaseDate(order = 'desc') { // 'desc' para más nuevos, 'asc' para más antiguos
-        games.sort((a, b) => {
-            const dateA = new Date(a.releaseDate);
-            const dateB = new Date(b.releaseDate);
-            // Manejar fechas vacías o inválidas: se consideran más "antiguas"
-            if (!a.releaseDate) return order === 'desc' ? 1 : -1;
-            if (!b.releaseDate) return order === 'desc' ? -1 : 1;
-
-            if (order === 'desc') {
-                return dateB.getTime() - dateA.getTime();
-            } else {
-                return dateA.getTime() - dateB.getTime();
-            }
-        });
-        currentPage = 1;
-        renderGamesPage(currentPage);
-        renderPagination();
-        updateCollectionSummary();
-        applyFiltersAndReset();
-
-    }
-
-    function sortGamesByValue(order = 'desc') { // 'desc' para mayor valor, 'asc' para menor valor
-        games.sort((a, b) => {
-            const valueA = parseFloat(a.value) || 0;
-            const valueB = parseFloat(b.value) || 0;
-            if (order === 'desc') {
-                return valueB - valueA;
-            } else {
-                return valueA - valueB;
-            }
-        });
-        currentPage = 1;
-        renderGamesPage(currentPage);
-        renderPagination();
-        updateCollectionSummary();
-        applyFiltersAndReset();
-
-    }
-
-    function sortGamesByCost(order = 'desc') { // 'desc' para mayor coste, 'asc' para menor coste
-        games.sort((a, b) => {
-            const costA = parseFloat(a.cost) || 0;
-            const costB = parseFloat(b.cost) || 0;
-            if (order === 'desc') {
-                return costB - costA;
-            } else {
-                return costA - costB;
-            }
-        });
-        currentPage = 1;
-        renderGamesPage(currentPage);
-        renderPagination();
-        updateCollectionSummary();
-        applyFiltersAndReset();
-
-    }
-
-    // --- Event Listeners para el botón y las opciones de ordenación ---
-
-    // Función para alternar el menú de ordenación
-    function toggleSortMenu() {
-        sortMenu.classList.toggle('hidden');
-        // Asegúrate de cerrar otros menús si los tienes (como allMenu, platformMenu)
-        if (typeof allMenu !== 'undefined') allMenu.classList.add('hidden');
-        if (typeof platformMenu !== 'undefined') platformMenu.classList.add('hidden');
-        // Actualiza el aria-expanded del botón
-        sortButton.setAttribute('aria-expanded', sortMenu.classList.contains('hidden') ? 'false' : 'true');
-    }
-    // Asigna la función toggleSortMenu al botón
-    sortButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita que el clic se propague al document y cierre el menú
-        toggleSortMenu();
-    });
-
-    // Cierra el menú si se hace clic fuera
-    document.addEventListener('click', (e) => {
-        if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
-            sortMenu.classList.add('hidden');
-            sortButton.setAttribute('aria-expanded', 'false'); // Actualiza el aria-expanded
-        }
-    });
-
-    // Event listeners para cada opción del menú
-    optionLastPurchase.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Últimas compras';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-lastpurchase');
-    });
-
-    optionFirstPurchase.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Primeras compras';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-firstpurchase');
-    });
-
-    optionAlphabetical.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Alfabético (A-Z)';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-alphabetical');
-    });
-
-    optionAlphabeticalReverse.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Alfabético (Z-A)';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-alphabetical-reverse');
-    });
-
-    optionNewest.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Más nuevos';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-newest');
-    });
-
-    optionOldest.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Más antiguos';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-oldest');
-    });
-
-    optionValueHigh.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Mayor valor';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-value-high');
-    });
-
-    optionValueLow.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Menor valor';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-value-low');
-    });
-
-    optionCostHigh.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Mayor coste';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-cost-high');
-    });
-
-    optionCostLow.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sortButtonLabel.textContent = 'Menor coste';
-        sortMenu.classList.add('hidden');
-        window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // <-- CAMBIA la función aquí
-        selectOption('sort-menu', 'option-cost-low');
-    });
-
- function toggleAllMenu() {
-        allMenu.classList.toggle('hidden');
-        // Asegúrate de cerrar otros menús
-        if (typeof sortMenu !== 'undefined') sortMenu.classList.add('hidden');
-        if (typeof platformMenu !== 'undefined') platformMenu.classList.add('hidden'); // Si tienes un menú de plataforma
-        allButton.setAttribute('aria-expanded', allMenu.classList.contains('hidden') ? 'false' : 'true');
-    }
-
-    allButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleAllMenu();
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!allButton.contains(e.target) && !allMenu.contains(e.target)) {
-            allMenu.classList.add('hidden');
-            allButton.setAttribute('aria-expanded', 'false');
-        }
-    });
-
-optionAll.addEventListener('click', (e) => {
-        e.stopPropagation();
-        allButtonLabel.textContent = 'Todo';
-        allMenu.classList.add('hidden');
-        // Antes: filterGamesByEdition('all');
-        selectedEditionType = 'all'; // Nueva variable para almacenar la edición seleccionada
-        selectOption('all-menu', 'option-all');
-window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // Llamar a la función principal de filtros
-    });
-
-    optionBasic.addEventListener('click', (e) => {
-        e.stopPropagation();
-        allButtonLabel.textContent = 'Básica';
-        allMenu.classList.add('hidden');
-        // Antes: filterGamesByEdition('Básica');
-        selectedEditionType = 'Básica'; // Almacenar la edición
-        selectOption('all-menu', 'option-basic');
-window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // Llamar a la función principal de filtros
-    });
-
-    optionReissue.addEventListener('click', (e) => {
-        e.stopPropagation();
-        allButtonLabel.textContent = 'Reedición';
-        allMenu.classList.add('hidden');
-        // Antes: filterGamesByEdition('Reedición');
-        selectedEditionType = 'Reedición'; // Almacenar la edición
-        selectOption('all-menu', 'option-reissue');
-window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // Llamar a la función principal de filtros
-    });
-
-    optionSpecial.addEventListener('click', (e) => {
-        e.stopPropagation();
-        allButtonLabel.textContent = 'Especial';
-        allMenu.classList.add('hidden');
-        // Antes: filterGamesByEdition('Especial');
-        selectedEditionType = 'Especial'; // Almacenar la edición
-        selectOption('all-menu', 'option-special');
-window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
-        applyAllFilters(); // Llamar a la función principal de filtros
-    });
-
-// --- Event Listeners para el botón y las opciones de plataforma ---
-
-    function togglePlatformMenu() {
-        platformMenu.classList.toggle('hidden');
-        // Asegúrate de cerrar otros menús
-        if (typeof sortMenu !== 'undefined') sortMenu.classList.add('hidden');
-        if (typeof allMenu !== 'undefined') allMenu.classList.add('hidden');
-        platformButton.setAttribute('aria-expanded', platformMenu.classList.contains('hidden') ? 'false' : 'true');
-    }
-
-    platformButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        togglePlatformMenu();
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!platformButton.contains(e.target) && !platformMenu.contains(e.target)) {
-            platformMenu.classList.add('hidden');
-            platformButton.setAttribute('aria-expanded', 'false');
-        }
-    });
-
-    // Event listeners para cada opción del menú de plataforma
-    platformOptionAll.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Desmarcar todas las demás opciones si "Todo" es seleccionado
-        document.querySelectorAll('#platform-menu > div > div').forEach(option => {
-            if (option.id !== 'platform-option-all' && option.textContent.startsWith('✓ ')) {
-                option.textContent = option.textContent.replace('✓ ', '');
-            }
-        });
-        selectedPlatforms = ['all']; // Solo "Todo"
-        togglePlatformOption('platform-option-all', 'all'); // Esto lo marcará con ✓
-        applyAllFilters();
-    });
-
-    platformOptionGBA.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-gba', 'Game Boy Advance'); applyAllFilters(); });
-    platformOption3DS.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-3ds', 'Nintendo 3DS'); applyAllFilters(); });
-    platformOptionDS.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ds', 'Nintendo DS'); applyAllFilters(); });
-    platformOptionN64.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-n64', 'Nintendo 64'); applyAllFilters(); });
-    platformOptionSwitch.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-switch', 'Nintendo Switch'); applyAllFilters(); });
-    platformOptionWii.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-wii', 'Nintendo Wii'); applyAllFilters(); });
-    platformOptionWiiU.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-wiiu', 'Nintendo Wii U'); applyAllFilters(); });
-    platformOptionPS.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps', 'PlayStation'); applyAllFilters(); });
-    platformOptionPS2.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps2', 'PlayStation 2'); applyAllFilters(); });
-    platformOptionPS3.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps3', 'PlayStation 3'); applyAllFilters(); });
-    platformOptionPS4.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps4', 'PlayStation 4'); applyAllFilters(); });
-    platformOptionPS5.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps5', 'PlayStation 5'); applyAllFilters(); });
-    platformOptionX360.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-x360', 'Xbox 360'); applyAllFilters(); });
-
 let games = [];
-let currentPage = 1; // <-- UNA sola declaración
-const gamesPerPage = 48;
-
-// --- Helper: leer página del hash ---
-function getPageFromHash() {
-  const hash = window.location.hash || '';
-  const match = hash.match(/page=(\d+)/);
-  if (match) return parseInt(match[1], 10);
-  return null;
-}
-
-// --- Inicializar currentPage: prioridad hash > localStorage > 1 ---
-function initCurrentPage() {
-  const hashPage = getPageFromHash();
-  const savedPage = parseInt(localStorage.getItem('currentPage'), 10);
-
-  if (!isNaN(hashPage) && hashPage >= 1) {
-    currentPage = hashPage;
-  } else if (!isNaN(savedPage) && savedPage >= 1) {
-    currentPage = savedPage;
-  } else {
-    currentPage = 1;
-  }
-}
-
-// --- Finalizar inicialización de paginación cuando games ya esté listo ---
-function finalizePaginationInit(initialLoad = true) {
-  const totalPages = Math.max(1, Math.ceil(games.length / gamesPerPage));
-  let hashPage = getPageFromHash();
-  let wasOutOfRange = false;
-
-  if (hashPage !== null && hashPage >= 1 && hashPage <= totalPages) {
-    currentPage = hashPage; // Prioriza hash válido
-  } else if (!initialLoad) {
-    // Solo clampea fuera del rango si NO es la carga inicial
-    if (currentPage > totalPages) {
-      currentPage = totalPages;
-      wasOutOfRange = true;
-    } else if (currentPage < 1) {
-      currentPage = 1;
-      wasOutOfRange = true;
-    }
-  } else {
-    // En carga inicial, no hacemos clamp para respetar #page aunque no haya tantos juegos
-    if (currentPage < 1) currentPage = 1; // por seguridad
-  }
-
-  if (!window.location.hash || wasOutOfRange) {
-    history.replaceState(null, '', `#page=${currentPage}`);
-  }
-
-  localStorage.setItem('currentPage', currentPage);
-  renderGamesPage(currentPage);
-  renderPagination();
-}
-
-// --- Escuchar cambios de hash (back/forward y clicks) ---
-window.addEventListener('hashchange', () => {
-  const p = getPageFromHash();
-  if (!isNaN(p) && p >= 1 && p !== currentPage) {
-    currentPage = p;
-    localStorage.setItem('currentPage', currentPage);
-    renderGamesPage(currentPage);
-    renderPagination();
-  }
-});
-
-// INICIALIZAR currentPage ahora (antes de cargar juegos)
-initCurrentPage();
-
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
-function renderGamesFromFirebase() {
-  db.collection('games').get().then(snapshot => {
+  function renderGamesFromFirebase() {
     gamesContainer.innerHTML = "";
     games = [];
-    originalGamesOrder = [];
 
-    snapshot.forEach((doc) => {
-      const data = doc.data();
 
-      const gameData = {
-        id: doc.id,
-        title: data.title,
-        value: data.value,
-        link: data.link,
-        image: (data.imageURL || "").trim() !== ""
+    db.collection('games').get().then(snapshot => {
+      snapshot.forEach((doc, firebaseIndex) => {
+        const data = doc.data();
+        const platform = data.platform || "";
+        const { title, value, link } = data;
+        // Usamos data.ImagenURL
+        const imageSrc = (data.imageURL || "").trim() !== ""
           ? data.imageURL
-          : "https://via.placeholder.com/158x158?text=Sin+Imagen",
-        platform: data.platform || "",
-        folder: data.folder,
-        condition: data.condition,
-        rating: data.rating,
-        purchaseDate: data.purchaseDate,
-        releaseDate: data.releaseDate,
-        purchaseLocation: data.purchaseLocation,
-        region: data.region,
-        gift: data.gift,
-        cost: data.cost,
-        edition: data.edition,
-        wallapopLink: data.wallapopLink,
-        vintedLink: data.vintedLink,
-        ebayLink: data.ebayLink,
-        cex: data.cex,
-        cexLink: data.cexLink,
-        estado: data.estado,
-        details: data.details,
-      };
+          : "https://via.placeholder.com/158x158?text=Sin+Imagen";
 
-      originalGamesOrder.push(gameData); // Guardar el orden original
-    });
+        const imageHeight = 
+          (title === "Little Nightmares II [Edición TV]") 
+          ? 110 // Altura específica para "Little Nightmares II [Edición TV]"
+          : (title === "Bonus Demo 8 (You) + Network Access Disc" || 
+            platform === "Nintendo DS" || 
+            platform === "Nintendo 3DS" || 
+            platform === "PlayStation" || 
+            platform === "Game Boy Advance")
+            ? 130 // Altura para "Bonus Demo 8" y otras plataformas específicas
+            : 154; // Altura por defecto para el resto
 
-    // Inicializar selectedPlatforms con 'all' y marcar la opción 'Todo' por defecto
-selectedPlatforms = ['all'];
-if (platformOptionAll && !platformOptionAll.textContent.startsWith('✓ ')) {
-    platformOptionAll.textContent = '✓ ' + platformOptionAll.textContent;
-}
-platformButtonLabel.textContent = 'Todo';
+        const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
 
-// --- CÓDIGO CLAVE PARA LA ORDENACIÓN DE INICIO ---
-
-// 1. Establecer la variable de ordenación por defecto
-//    (Si usas una variable para esto, aunque tu código lea del textContent)
-//    selectedSortType = 'lastpurchase';
-
-// 2. Marcar visualmente la opción "Últimas compras"
-selectOption('sort-menu', 'option-lastpurchase');
-sortButtonLabel.textContent = 'Últimas compras';
-
-// 3. Establecer la opción "Todo" de edición como seleccionada
-selectedEditionType = 'lastpurchase'; 
-selectOption('all-menu', 'option-all');
-allButtonLabel.textContent = 'Todo';
-
-// 4. Aseguramos que `games` contiene los datos cargados
-games = originalGamesOrder.slice();
-
-// 5. ¡Ejecutar la función que aplica todos los filtros y la ordenación!
-//    Esto ordenará la lista de juegos según lo que has puesto en sortButtonLabel.textContent
-applyAllFilters();
-
-// Llamar a applyAllFilters y, si es asíncrona, esperar su resolución
-const maybePromise = applyAllFilters && applyAllFilters();
-
-if (maybePromise && typeof maybePromise.then === 'function') {
-  maybePromise.then(() => {
-    finalizePaginationInit(true);  // <-- Aquí pasamos 'true'
-  }).catch(err => {
-    console.error('applyAllFilters fallo:', err);
-    finalizePaginationInit(true); // también aquí
-  });
-} else {
-  finalizePaginationInit(true); // y aquí
-}
+        const gameData = {
+          id: doc.id,
+          title,
+          value,
+          link,
+          image: imageSrc,
+          platform,
+          folder: data.folder,
+          condition: data.condition,
+          rating: data.rating,
+          purchaseDate: data.purchaseDate,
+          releaseDate: data.releaseDate,
+          purchaseLocation: data.purchaseLocation,
+          region: data.region,
+          gift: data.gift,
+          cost: data.cost,
+          edition: data.edition,
+          wallapopLink: data.wallapopLink,
+          vintedLink: data.vintedLink,
+          ebayLink: data.ebayLink,
+          cex: data.cex,
+          cexLink: data.cexLink,
+          estado: data.estado,
+          details: data.details,
+        };
+        games.push(gameData);
 
 
-  });
-}
+        const card = document.createElement("a");
+          card.className = "mx-auto my-1 w-[176px]";
+          card.href = "#";
+          card.id = "Platinum";
+          card.style.display = "block";
 
-const searchInput = document.getElementById('searchInput');
-
-searchInput.addEventListener('input', function () {
-  const filter = searchInput.value.trim().toLowerCase();
-  currentSearchTerm = filter;
-
-  if (filter === "") {
-    // Si la barra está vacía, aplica filtros y reinicia todo
-    applyFiltersAndReset();
-    return;
-  }
-
-  // Si hay texto, filtramos y ordenamos con la nueva función (incluyendo búsqueda)
-  const filteredGamesBySearch = getFilteredGames();
-
-  currentPage = 1;
-    window.location.hash = `page=${currentPage}`;  // <-- actualizar URL
-  renderFilteredGames(filteredGamesBySearch);
-  updateCollectionSummary(filteredGamesBySearch);  // Aquí pasamos la lista filtrada (aunque vacía)
-  document.getElementById('pagination').innerHTML = "";
-});
-
-
-
-
-function renderFilteredGames(filteredGames) {
-  gamesContainer.innerHTML = "";
-
-  filteredGames.forEach(game => {
-    const card = document.createElement("a");
-    card.className = "mx-auto my-1 w-[176px]";
-    card.href = "#";
-    card.style.display = "block";
-    card.dataset.cost = game.cost || 0;
-    card.dataset.value = game.value || 0;
-
-    let imageHeight = 154;
-
-    const specialTitleHeights = {
-      "Little Nightmares II [Edición TV]": 110,
-      "Bonus Demo 8 (You) + Network Access Disc": 130,
-    };
-
-    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
-
-    if (specialTitleHeights[game.title]) {
-      imageHeight = specialTitleHeights[game.title];
-    } else if (specialPlatformHeights.includes(game.platform)) {
-      imageHeight = 130;
-    }
-
-    const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
-
-    card.innerHTML = `
-      <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.5rem;"
-        onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
-        onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
-        <div class="flex flex-col space-y-1.5 p-0">
-          <div class="flex flex-col">
-            <div class="grid h-[158px]">
-              <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                <img alt="${game.title}" loading="lazy" decoding="async"
-                  height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
-                  style="${imgStyle}">
+        card.innerHTML = `
+            <div
+              class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
+              style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+              onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
+              onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';"
+            >
+              <div class="flex flex-col space-y-1.5 p-0">
+                <div class="flex flex-col">
+                  <div class="grid h-[158px]">
+                    <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
+                      <img
+                        alt="${title}"
+                        loading="lazy"
+                         height="${imageHeight}"
+                        decoding="async"
+                        class="rounded-sm text-center bg-primary/10"
+                        src="${imageSrc}"
+                        style="${imgStyle}"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="p-0">
+                <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
+                <div>
+                  <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
+                    <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <span class="text-xs font-medium text-white mix-blend-difference">${(() => {
+                                                                                                  const num = Number(value) || 0;
+                                                                                                  const [intPart, decimals] = num.toFixed(2).split('.');
+                                                                                                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
+                                                                                                })()}
+                         </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="p-0">
-          <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
-          <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
-            <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span class="text-xs font-medium text-white mix-blend-difference">
-                ${(() => {
-                  const num = Number(game.value) || 0;
-                  const [intPart, decimals] = num.toFixed(2).split('.');
-                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
-                })()}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+          </a>
+        `;
 
-    card.addEventListener("click", (e) => {
-      e.preventDefault();
-      openModal(games.indexOf(game)); // Abrir modal con índice real
+         const currentGameIndex = games.length - 1;
+      card.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(currentGameIndex); // 👈 MODIFICACIÓN: Usamos currentGameIndex
+      });
+        
+        gamesContainer.appendChild(card);
+      });
     });
-
-    gamesContainer.appendChild(card);
-  });
-}
-
-
-function renderGamesPage(page) {
-  gamesContainer.innerHTML = "";
-
-  const startIndex = (page - 1) * gamesPerPage;
-  const endIndex = startIndex + gamesPerPage;
-  const gamesToRender = games.slice(startIndex, endIndex);
-
-  gamesToRender.forEach((game, index) => {
-    const card = document.createElement("a");
-    card.className = "mx-auto my-1 w-[176px]";
-    card.href = "#";
-    card.style.display = "block";
-
-    let imageHeight = 154; // Valor por defecto
-
-    // Títulos específicos con altura especial
-    const specialTitleHeights = {
-      "Little Nightmares II [Edición TV]": 110,
-      "Bonus Demo 8 (You) + Network Access Disc": 130,
-    };
-
-    // Plataformas con altura especial
-    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
-
-    if (specialTitleHeights[game.title]) {
-      imageHeight = specialTitleHeights[game.title];
-    } else if (specialPlatformHeights.includes(game.platform)) {
-      imageHeight = 130;
-    }
-
-    const imgStyle = `color: transparent; height: ${imageHeight}px; width: auto;`;
-
-    card.innerHTML = `
-      <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.5rem;"
-        onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
-        onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
-        <div class="flex flex-col space-y-1.5 p-0">
-          <div class="flex flex-col">
-            <div class="grid h-[158px]">
-              <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                <img alt="${game.title}" loading="lazy" decoding="async"
-                  height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
-                  style="${imgStyle}">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="p-0">
-          <div class="bg-border shrink-0 h-[1px] w-full mb-1 mt-1"></div>
-          <div role="progressbar" class="bg-blue-300 relative h-4 w-full overflow-hidden rounded-full mt-1.5">
-            <div class="dark:bg-primary h-full w-full flex-1 bg-black transition-all" style="transform: translateX(0%);"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span class="text-xs font-medium text-white mix-blend-difference">
-                ${(() => {
-                  const num = Number(game.value) || 0;
-                  const [intPart, decimals] = num.toFixed(2).split('.');
-                  return decimals === '00' ? `${intPart}€` : `${intPart},${decimals}€`;
-                })()}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    const globalIndex = startIndex + index;
-    card.addEventListener("click", (e) => {
-      e.preventDefault();
-      openModal(globalIndex);
-    });
-
-    gamesContainer.appendChild(card);
-  });
-}
-
-function renderPagination() {
-  const pagination = document.getElementById('pagination');
-  const totalPages = Math.ceil(games.length / gamesPerPage);
-  let html = `<nav role="navigation" aria-label="pagination" class="mx-auto flex w-full justify-center"><ul class="flex flex-row items-center gap-1">`;
-
-  const createPageLink = (page, active = false) => `
-    <li>
-      <a 
-        href="#page=${page}"
-        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 ${active ? 'border border-input bg-background shadow-sm' : 'hover:bg-accent hover:text-accent-foreground'} h-9 p-2.5 lg:p-3"
-        data-page="${page}"
-      >
-        ${page}
-      </a>
-    </li>
-  `;
-
-  const addDots = () => `<li class="px-1 text-gray-500">...</li>`;
-
-  const pages = [];
-
-  if (totalPages <= 4) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else {
-    if (currentPage <= 2) {
-      pages.push(1, 2, 3, 'dots', totalPages);
-    } else if (currentPage >= totalPages - 1) {
-      pages.push(totalPages - 2, totalPages - 1, totalPages);
-    } else {
-      pages.push(currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
-    }
   }
 
-  // Añadir enlaces
-  for (let i = 0; i < pages.length; i++) {
-    if (pages[i] === 'dots') {
-      html += addDots();
-    } else {
-      html += createPageLink(pages[i], pages[i] === currentPage);
-    }
-  }
-
-  html += `</ul></nav>`;
-  pagination.innerHTML = html;
-
-// Manejador de clicks: solo actualizar hash — el listener 'hashchange' hará el render y localStorage
-document.querySelectorAll('#pagination a').forEach(a => {
-  a.addEventListener('click', (e) => {
-    e.preventDefault();
-    const selectedPage = parseInt(a.dataset.page, 10);
-    if (!isNaN(selectedPage) && selectedPage !== currentPage) {
-      // Cambiamos solo el hash; esto genera evento 'hashchange' que hará render + guardado
-      window.location.hash = `page=${selectedPage}`;
-    }
-  });
-});
-}
 
   auth.onAuthStateChanged(user => {
     updateAuthStatusIcon(user);
@@ -3175,9 +1980,140 @@ const minDate = '1970-01-01';
   });
 
   let selectedTypes = new Set();  // Añadir al principio del script
-
+  // --- Búsqueda ---
+ const searchInput = document.querySelector('input[placeholder="Search for games"]');
+ const gameCardsContainer = document.getElementById('games-container');
+ const gameCards = () => gameCardsContainer.querySelectorAll('a.mx-auto');
+ let originalCardsOrder = []; // Nuevo: para guardar las cartas originales
+ 
+ document.addEventListener('DOMContentLoaded', function() {
+   originalCardsOrder = Array.from(gameCards()); // Guardarlas cuando la página cargue
+ 
+   searchInput.addEventListener('input', function() {
+     const filter = searchInput.value.toLowerCase();
+ 
+     gameCards().forEach(card => {
+       const img = card.querySelector('img');
+       const altText = img ? img.alt.toLowerCase() : '';
+ 
+       if (altText.includes(filter)) {
+         card.style.display = 'block';
+       } else {
+         card.style.display = 'none';
+       }
+     });
+   });
+}); 
    // --- Ordenación ---
+   const sortButton = document.getElementById('sort-button');
+   const sortMenu = document.getElementById('sort-menu');
+   const sortButtonLabel = document.getElementById('sort-button-label');
+   const optionAlphabetical = document.getElementById('option-alphabetical');
+   const optionLastUpdated = document.getElementById('option-lastupdated');
+ 
+   sortButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sortMenu.classList.toggle('hidden');
+  allMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
+});
 
+ 
+   optionAlphabetical.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Alphabetical';
+     sortMenu.classList.add('hidden');
+     sortGamesAlphabetically();
+     selectOption('sort-menu', 'option-alphabetical');
+   });
+ 
+   optionLastUpdated.addEventListener('click', (e) => {
+     e.stopPropagation();
+     sortButtonLabel.textContent = 'Last Updated';
+     sortMenu.classList.add('hidden');
+     restoreOriginalOrder(); // Ahora restauramos el orden original sin recargar la página
+     selectOption('sort-menu', 'option-lastupdated');
+   });
+ 
+   document.addEventListener('click', (e) => {
+     if (!sortButton.contains(e.target) && !sortMenu.contains(e.target)) {
+       sortMenu.classList.add('hidden');
+     }
+   });
+ 
+   function sortGamesAlphabetically() {
+     const cardsArray = Array.from(gameCards());
+ 
+     cardsArray.sort((a, b) => {
+       const imgA = a.querySelector('img');
+       const imgB = b.querySelector('img');
+       const altA = imgA ? imgA.alt.toLowerCase() : '';
+       const altB = imgB ? imgB.alt.toLowerCase() : '';
+       return altA.localeCompare(altB);
+     });
+ 
+     gameCardsContainer.innerHTML = '';
+     cardsArray.forEach(card => gameCardsContainer.appendChild(card));
+   }
+ 
+   // Función para restaurar el orden original sin recargar la página
+   function restoreOriginalOrder() {
+     gameCardsContainer.innerHTML = '';  // Borrar el contenedor
+     originalCardsOrder.forEach(card => gameCardsContainer.appendChild(card)); // Volver a poner las cartas en el orden original
+   }
+ 
+    // --- Filtro por All, Limited, Full ---
+    const allButton = document.getElementById('all-button');
+    const allMenu = document.getElementById('all-menu');
+    const allButtonLabel = document.getElementById('all-button-label');
+    const optionAll = document.getElementById('option-all');
+    const optionLimited = document.getElementById('option-100');
+    const optionFull = document.getElementById('option-platinum');
+
+    allButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  allMenu.classList.toggle('hidden');
+  sortMenu.classList.add('hidden'); // 🔒 cerrar el otro menú
+  platformMenu.classList.add('hidden'); // 🔒 cerrar menú de plataformas
+});
+
+
+    optionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();  
+  setActiveOption(optionAll, 'All');
+  allMenu.classList.add('hidden');
+  showAllGames();
+});
+
+optionLimited.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('100%'); // Filtra solo los juegos con id="100%"
+  setActiveOption(optionLimited, '100%');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+optionFull.addEventListener('click', (e) => {
+  e.stopPropagation();
+  selectedTypes.clear();
+  selectedTypes.add('Platinum'); // Filtra solo los juegos con id="Platinum"
+  setActiveOption(optionFull, 'Platinum');
+  allMenu.classList.add('hidden');
+  applyCombinedFilters(); // Aplica el filtro combinado con plataformas
+});
+
+
+
+
+    document.addEventListener('click', (e) => {
+      if (!allButton.contains(e.target) && !allMenu.contains(e.target)) {
+        allMenu.classList.add('hidden');
+      }
+    });
 
     function showAllGames() {
   // Asegurarse de que se muestran todos los juegos, pero respetando la plataforma seleccionada
@@ -3230,21 +2166,41 @@ function applyCombinedFilters() {
   allButtonLabel.textContent = labelText;
 }
 
+
+const platformButton = document.getElementById('platform-button');
+const platformMenu = document.getElementById('platform-menu');
+const platformButtonLabel = document.getElementById('platform-button-label');
+const platformOptionAll = document.getElementById('platform-option-all');
+const platformOptionPS3 = document.getElementById('platform-option-ps3');
+const platformOptionPS4 = document.getElementById('platform-option-ps4');
+const platformOptionPS5 = document.getElementById('platform-option-ps5');
+const platformOptionVita = document.getElementById('platform-option-vita');
+const platformOptionPC = document.getElementById('platform-option-pc');
+
+
+let selectedPlatforms = new Set();
+
+platformButton.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeMenusExcept('platform-menu');
+  platformMenu.classList.toggle('hidden');
+  if (!platformMenu.classList.contains('hidden')) {
+    adjustPlatformMenuPosition(); // ← AÑADE ESTA LÍNEA
+  }
+});
+
 // Ajustar posición del menú si se desborda
 function adjustPlatformMenuPosition() {
   const menu = platformMenu;
-  // Obtener el ancho de la ventana
-  const screenWidth = window.innerWidth;
-  
-  // Si el ancho de la pantalla es menor de 1700px, alinear a la derecha
-  if (screenWidth < 1700) {
-    // Esto alinea el borde derecho del menú con el borde derecho del botón
-    menu.style.right = '0';
-    menu.style.left = 'auto'; // Asegura que no haya un left que lo anule
+  const rect = menu.getBoundingClientRect();
+  const overflowRight = rect.right > window.innerWidth;
+
+  if (overflowRight) {
+    menu.style.right = '0';     // pega al borde derecho de la ventana
+    menu.style.left = 'auto';   // evita conflicto si estaba a la derecha del botón
   } else {
-    // En pantallas grandes, resetear a la posición por defecto
-    menu.style.right = '';
-    menu.style.left = '';
+    menu.style.right = '';      // resetear si no hay overflow
+    menu.style.left = '';       // resetear si no hay overflow
   }
 }
 
@@ -3258,125 +2214,98 @@ function closeMenusExcept(openId) {
         menu.style.right = '';
         menu.style.left = '';
       }
+    } else {
+      if (id === 'platform-menu') {
+        adjustPlatformMenuPosition(); // Ajustar la posición si está abierto
+      }
     }
   });
 }
 
-function getFilteredGames() {
-  // 1. Empieza con todos los juegos en el orden original
-  let filtered = [...originalGamesOrder];
 
-  // 2. Aplica filtro de edición si está activo
-  if (selectedEditionType !== 'all') {
-    const editionMap = {
-      'Básica': 'Básica',
-      'Reedición': 'Reedición',
-      'Especial': 'Especial'
-    };
-    const editionFilterValue = editionMap[selectedEditionType];
-    if (editionFilterValue) {
-      filtered = filtered.filter(game => {
-        const edition = game.edition ? game.edition.toLowerCase() : '';
-        return edition.includes(editionFilterValue.toLowerCase());
-      });
+platformOptionAll.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  if (selectedPlatforms.size === 0) {
+    // Si ya está en modo "All", al volver a pulsar, seleccionamos todas las plataformas
+    selectedPlatforms = new Set(['PS3', 'PS4', 'PS5', 'Vita', 'PC']);
+  } else {
+    // Si hay alguna seleccionada, entonces vaciamos el set (modo All original)
+    selectedPlatforms.clear();
+  }
+
+  updatePlatformSelectionUI();
+  applyCombinedFilters();
+});
+
+
+
+[
+  { id: 'PS3', element: platformOptionPS3 },
+  { id: 'PS4', element: platformOptionPS4 },
+  { id: 'PS5', element: platformOptionPS5 },
+  { id: 'Vita', element: platformOptionVita },
+  { id: 'PC', element: platformOptionPC },
+].forEach(({ id, element }) => {
+  element.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (selectedPlatforms.has(id)) {
+      selectedPlatforms.delete(id);
+    } else {
+      selectedPlatforms.add(id);
     }
-  }
+    updatePlatformSelectionUI();
+    filterGamesByPlatform();
+  });
+});
 
-  // 3. Aplica filtro de plataforma si hay alguno seleccionado
-  const activePlatforms = selectedPlatforms.filter(p => p !== 'all');
-  if (activePlatforms.length > 0) {
-    filtered = filtered.filter(game => {
-      const platform = game.platform ? game.platform : '';
-      return activePlatforms.some(selected => platform.includes(selected));
-    });
-  }
 
-  // 4. Aplica filtro de búsqueda usando la variable global currentSearchTerm
-  if (currentSearchTerm && currentSearchTerm !== '') {
-    filtered = filtered.filter(game => game.title.toLowerCase().includes(currentSearchTerm));
-  }
 
-  // 5. Aplica ordenación según lo que tengas en el botón de ordenación (puedes reutilizar tu código aquí)
-  const currentSortLabel = sortButtonLabel.textContent;
-  switch (currentSortLabel) {
-    case 'Últimas compras':
-      filtered.sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
-      break;
-    case 'Primeras compras':
-      filtered.sort((a, b) => new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime());
-      break;
-    case 'Alfabético (A-Z)':
-      filtered.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
-      break;
-    case 'Alfabético (Z-A)':
-      filtered.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
-      break;
-    case 'Más nuevos':
-      filtered.sort((a, b) => {
-        const dateA = new Date(a.releaseDate);
-        const dateB = new Date(b.releaseDate);
-        if (!a.releaseDate) return 1;
-        if (!b.releaseDate) return -1;
-        return dateB.getTime() - dateA.getTime();
-      });
-      break;
-    case 'Más antiguos':
-      filtered.sort((a, b) => {
-        const dateA = new Date(a.releaseDate);
-        const dateB = new Date(b.releaseDate);
-        if (!a.releaseDate) return -1;
-        if (!b.releaseDate) return 1;
-        return dateA.getTime() - dateB.getTime();
-      });
-      break;
-    case 'Mayor valor':
-      filtered.sort((a, b) => (parseFloat(b.value) || 0) - (parseFloat(a.value) || 0));
-      break;
-    case 'Menor valor':
-      filtered.sort((a, b) => (parseFloat(a.value) || 0) - (parseFloat(b.value) || 0));
-      break;
-    case 'Mayor coste':
-      filtered.sort((a, b) => (parseFloat(b.cost) || 0) - (parseFloat(a.cost) || 0));
-      break;
-    case 'Menor coste':
-      filtered.sort((a, b) => (parseFloat(a.cost) || 0) - (parseFloat(b.cost) || 0));
-      break;
-    default:
-      // Si no hay ordenación específica, no cambiar el orden
-      break;
-  }
+function updatePlatformSelectionUI() {
+  [platformOptionAll, platformOptionPS3, platformOptionPS4, platformOptionPS5, platformOptionVita, platformOptionPC].forEach(opt => {
+    opt.innerHTML = opt.textContent.trim().replace(/^✓\s*/, '');
+  });
 
-  // 6. Devuelve el array filtrado y ordenado
-  return filtered;
+  if (selectedPlatforms.size === 0) {
+    platformOptionAll.innerHTML = `<strong>✓</strong> All`;
+    platformButtonLabel.textContent = 'All';
+  } else {
+    if (selectedPlatforms.has('PS3')) platformOptionPS3.innerHTML = `<strong>✓</strong> PS3`;
+    if (selectedPlatforms.has('PS4')) platformOptionPS4.innerHTML = `<strong>✓</strong> PS4`;
+    if (selectedPlatforms.has('PS5')) platformOptionPS5.innerHTML = `<strong>✓</strong> PS5`;
+    if (selectedPlatforms.has('Vita')) platformOptionVita.innerHTML = `<strong>✓</strong> Vita`;
+    if (selectedPlatforms.has('PC')) platformOptionPC.innerHTML = `<strong>✓</strong> PC`;
+    platformButtonLabel.textContent = Array.from(selectedPlatforms).join(', ');
+  }
 }
 
 
 
 function filterGamesByPlatform() {
   gameCards().forEach(card => {
+    // Buscar todos los <svg> dentro de la tarjeta
     const svgsInCard = card.querySelectorAll('svg');
+
+    // Si no hay ninguna plataforma seleccionada, mostramos todos los juegos
     const matchesPlatform = selectedPlatforms.size === 0 || Array.from(svgsInCard).some(svg => selectedPlatforms.has(svg.id));
+    
+    // Verificar que el juego también coincida con el tipo seleccionado
     const matchesType = selectedTypes.size === 0 || selectedTypes.has(card.id);
+
+    // Mostrar el juego solo si cumple con los filtros de plataforma y tipo
     const shouldShow = (matchesPlatform && matchesType);
     card.style.display = shouldShow ? 'block' : 'none';
   });
 }
 
-function applyFiltersAndReset() {
-  currentSearchTerm = ""; // Limpiamos el término de búsqueda
-  searchInput.value = "";  // Limpia el texto de la barra de búsqueda
-
-  // Obtener los juegos filtrados y ordenados usando la nueva función
-  games = getFilteredGames();
 
 
-  currentPage = 1;        // Ponemos la página en la 1
-  renderGamesPage(currentPage);  // Renderizamos la página 1 con los juegos filtrados
-  renderPagination();      // Actualizamos la paginación
-  updateCollectionSummary(games); // Actualizamos el resumen con los juegos filtrados
-}
-
-
+   // --- MARCAR por defecto ---
+   selectOption('sort-menu', 'option-lastupdated');
+   selectOption('all-menu', 'option-all');
+   selectedPlatforms.clear();  // Vaciar selección al cargar
+updatePlatformSelectionUI();  // Refrescar UI
+applyCombinedFilters();      // Aplicar filtros (mostrar todos los juegos)
 
  }); // Aquí cerramos el 'DOMContentLoaded'
  
@@ -3608,22 +2537,11 @@ if (selectedRating > 0) {
   highlightStars(selectedRating - 1);
 }
 
-window.addEventListener('hashchange', () => {
-  const newPage = getPageFromHash() || 1;
-  if (newPage !== currentPage) {
-    currentPage = newPage;
-    localStorage.setItem('currentPage', currentPage);
-    renderGamesPage(currentPage);
-    renderPagination();
-    updateCollectionSummary();
-  }
-});
+ </script>
 
-  window.addEventListener("DOMContentLoaded", () => {
-    document.querySelector(".chart-toggle[data-type='valor']")?.click();
-  });
-</script>
-
-
+<!-- 👻 Esto asegura que Tailwind las incluya en el CSS final -->
+<div class="hidden">
+  bg-blue-50 bg-gray-50 text-blue-800 text-green-600 text-gray-500
+</div>
 
 </body></html>
