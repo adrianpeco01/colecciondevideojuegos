@@ -1904,9 +1904,20 @@ optionAll.addEventListener('click', (e) => {
     platformOptionX360.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-x360', 'Xbox 360'); applyAllFilters(); });
 
 let games = [];
-
-let currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
 const gamesPerPage = 48;
+
+// Función auxiliar para leer el número de página desde el hash de la URL
+function getPageFromHash() {
+  const hash = window.location.hash;
+  const match = hash.match(/page=(\d+)/);
+  if (match) {
+    return parseInt(match[1]);
+  }
+  return null;
+}
+
+// Se inicializa la página: 1. Hash de la URL, 2. localStorage, 3. Por defecto (página 1)
+let currentPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
 function renderGamesFromFirebase() {
@@ -2146,7 +2157,7 @@ function renderPagination() {
 
   const createPageLink = (page, active = false) => `
     <li>
-      <a 
+      <a
         href="#page=${page}"
         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 ${active ? 'border border-input bg-background shadow-sm' : 'hover:bg-accent hover:text-accent-foreground'} h-9 p-2.5 lg:p-3"
         data-page="${page}"
@@ -2168,13 +2179,12 @@ function renderPagination() {
     if (currentPage <= 2) {
       pages.push(1, 2, 3, 'dots', totalPages);
     } else if (currentPage >= totalPages - 1) {
-      pages.push(totalPages - 2, totalPages - 1, totalPages);
+      pages.push(1, 'dots', totalPages - 2, totalPages - 1, totalPages);
     } else {
-      pages.push(currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
+      pages.push(1, 'dots', currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
     }
   }
 
-  // Añadir enlaces
   for (let i = 0; i < pages.length; i++) {
     if (pages[i] === 'dots') {
       html += addDots();
@@ -2185,22 +2195,6 @@ function renderPagination() {
 
   html += `</ul></nav>`;
   pagination.innerHTML = html;
-
-  // Manejador de clicks y cambio de URL
-document.querySelectorAll('#pagination a').forEach(a => {
-  a.addEventListener('click', (e) => {
-    e.preventDefault();
-    const selectedPage = parseInt(a.dataset.page);
-    if (selectedPage !== currentPage) {
-      currentPage = selectedPage;
-      // Cambiar sólo el hash en la URL, sin recargar la página
-      window.location.hash = `page=${currentPage}`;
-      localStorage.setItem('currentPage', currentPage);
-      renderGamesPage(currentPage);
-      renderPagination();
-    }
-  });
-});
 }
 
 // Leer número de página de la URL (ej: /3)
@@ -2213,10 +2207,16 @@ function getPageFromHash() {
   return null;
 }
 
-const pageFromHash = getPageFromHash();
-if (pageFromHash !== null) {
-  currentPage = pageFromHash;
-}
+// Escucha los cambios del hash en la URL
+window.addEventListener('hashchange', () => {
+  const newPageFromHash = getPageFromHash();
+  if (newPageFromHash !== null) {
+    currentPage = newPageFromHash;
+    localStorage.setItem('currentPage', currentPage); // Guarda la nueva página en localStorage
+    renderGamesPage(currentPage); // ✅ Usa tu función existente
+    renderPagination(); // ✅ Usa tu función existente
+  }
+});
 
 
 
