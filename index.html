@@ -849,28 +849,25 @@ html {
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
 
-// --- Lógica de paginación ---
-  const getPageFromHash = () => {
-    const pageMatch = window.location.hash.match(/#page=(\d+)/);
-    return pageMatch ? parseInt(pageMatch[1], 10) : 1;
-  };
+  // --- AÑADE ESTE CÓDIGO AQUÍ ---
+  // Lógica para guardar y cargar la página actual en localStorage
+  let currentPage = 1;
 
-  let currentPage = getPageFromHash();
+  // Cargar la página desde localStorage al iniciar
+  const savedPage = localStorage.getItem('currentPage');
+  if (savedPage) {
+    currentPage = parseInt(savedPage, 10);
+  }
 
-  const renderCurrentPage = () => {
-    renderGamesPage(currentPage);
-    renderPagination();
-    updateCollectionSummary();
-  };
+  // Cargar los juegos de la página actual, ya sea la guardada o la 1
+  renderGamesPage(currentPage);
 
-  // Cargar la página al inicio
-  renderCurrentPage();
-
-  // Escuchar cambios en la URL para navegar
-  window.addEventListener('hashchange', () => {
-    currentPage = getPageFromHash();
-    renderCurrentPage();
-  });
+  // Función para guardar la página en localStorage al cambiar
+  function setCurrentPage(pageNumber) {
+    currentPage = pageNumber;
+    localStorage.setItem('currentPage', pageNumber);
+  }
+  // --- FIN DEL CÓDIGO A AÑADIR ---
 
     tailwind.config = {
     safelist: [
@@ -1904,20 +1901,64 @@ optionAll.addEventListener('click', (e) => {
     platformOptionX360.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-x360', 'Xbox 360'); applyAllFilters(); });
 
 let games = [];
+let currentPage = 1; // <-- UNA sola declaración
 const gamesPerPage = 48;
 
-// Función auxiliar para leer el número de página desde el hash de la URL
+// --- Helper: leer página del hash ---
 function getPageFromHash() {
-  const hash = window.location.hash;
+  const hash = window.location.hash || '';
   const match = hash.match(/page=(\d+)/);
-  if (match) {
-    return parseInt(match[1]);
-  }
+  if (match) return parseInt(match[1], 10);
   return null;
 }
 
-// Se inicializa la página: 1. Hash de la URL, 2. localStorage, 3. Por defecto (página 1)
-let currentPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
+// --- Inicializar currentPage: prioridad hash > localStorage > 1 ---
+function initCurrentPage() {
+  const hashPage = getPageFromHash();
+  const savedPage = parseInt(localStorage.getItem('currentPage'), 10);
+
+  if (!isNaN(hashPage) && hashPage >= 1) {
+    currentPage = hashPage;
+  } else if (!isNaN(savedPage) && savedPage >= 1) {
+    currentPage = savedPage;
+  } else {
+    currentPage = 1;
+  }
+}
+
+// --- Finalizar inicialización de paginación cuando games ya esté listo ---
+function finalizePaginationInit() {
+  const totalPages = Math.max(1, Math.ceil(games.length / gamesPerPage));
+
+  // Clamp: asegurarnos que currentPage está en rango
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  // Actualizar hash sin añadir entrada extra al historial (ideal para la carga inicial)
+  history.replaceState(null, '', `#page=${currentPage}`);
+
+  // Guardar persistente
+  localStorage.setItem('currentPage', currentPage);
+
+  // Renderizar con la página correcta
+  renderGamesPage(currentPage);
+  renderPagination();
+}
+
+// --- Escuchar cambios de hash (back/forward y clicks) ---
+window.addEventListener('hashchange', () => {
+  const p = getPageFromHash();
+  if (!isNaN(p) && p >= 1 && p !== currentPage) {
+    currentPage = p;
+    localStorage.setItem('currentPage', currentPage);
+    renderGamesPage(currentPage);
+    renderPagination();
+  }
+});
+
+// INICIALIZAR currentPage ahora (antes de cargar juegos)
+initCurrentPage();
+
 
 // ✅ FUNCIÓN PARA CARGAR JUEGOS
 function renderGamesFromFirebase() {
@@ -1973,8 +2014,25 @@ function renderGamesFromFirebase() {
     selectOption('all-menu', 'option-all');
     allButtonLabel.textContent = 'Todo';
 
-    // Llamar a applyAllFilters después de cargar todos los juegos y establecer los estados iniciales de los filtros
-    applyAllFilters(); 
+    // Aseguramos que `games` contiene los datos cargados (antes de filtrar)
+games = originalGamesOrder.slice();
+
+// Llamar a applyAllFilters y, si es asíncrona, esperar su resolución
+const maybePromise = applyAllFilters && applyAllFilters();
+
+if (maybePromise && typeof maybePromise.then === 'function') {
+  maybePromise.then(() => {
+    // Finalmente inicializamos la paginación (clamp, hash, render)
+    finalizePaginationInit();
+  }).catch(err => {
+    console.error('applyAllFilters fallo:', err);
+    finalizePaginationInit(); // aunque falle, intentamos inicializar paginación
+  });
+} else {
+  // applyAllFilters fue síncrona o no existe: finalizamos inicialización
+  finalizePaginationInit();
+}
+
   });
 }
 
@@ -2157,7 +2215,7 @@ function renderPagination() {
 
   const createPageLink = (page, active = false) => `
     <li>
-      <a
+      <a 
         href="#page=${page}"
         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 ${active ? 'border border-input bg-background shadow-sm' : 'hover:bg-accent hover:text-accent-foreground'} h-9 p-2.5 lg:p-3"
         data-page="${page}"
@@ -2179,12 +2237,13 @@ function renderPagination() {
     if (currentPage <= 2) {
       pages.push(1, 2, 3, 'dots', totalPages);
     } else if (currentPage >= totalPages - 1) {
-      pages.push(1, 'dots', totalPages - 2, totalPages - 1, totalPages);
+      pages.push(totalPages - 2, totalPages - 1, totalPages);
     } else {
-      pages.push(1, 'dots', currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
+      pages.push(currentPage - 1, currentPage, currentPage + 1, 'dots', totalPages);
     }
   }
 
+  // Añadir enlaces
   for (let i = 0; i < pages.length; i++) {
     if (pages[i] === 'dots') {
       html += addDots();
@@ -2195,30 +2254,19 @@ function renderPagination() {
 
   html += `</ul></nav>`;
   pagination.innerHTML = html;
-}
 
-// Leer número de página de la URL (ej: /3)
-function getPageFromHash() {
-  const hash = window.location.hash;
-  const match = hash.match(/page=(\d+)/);
-  if (match) {
-    return parseInt(match[1]);
-  }
-  return null;
-}
-
-// Escucha los cambios del hash en la URL
-window.addEventListener('hashchange', () => {
-  const newPageFromHash = getPageFromHash();
-  if (newPageFromHash !== null) {
-    currentPage = newPageFromHash;
-    localStorage.setItem('currentPage', currentPage); // Guarda la nueva página en localStorage
-    renderGamesPage(currentPage); // ✅ Usa tu función existente
-    renderPagination(); // ✅ Usa tu función existente
-  }
+// Manejador de clicks: solo actualizar hash — el listener 'hashchange' hará el render y localStorage
+document.querySelectorAll('#pagination a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const selectedPage = parseInt(a.dataset.page, 10);
+    if (!isNaN(selectedPage) && selectedPage !== currentPage) {
+      // Cambiamos solo el hash; esto genera evento 'hashchange' que hará render + guardado
+      window.location.hash = `page=${selectedPage}`;
+    }
+  });
 });
-
-
+}
 
   auth.onAuthStateChanged(user => {
     updateAuthStatusIcon(user);
