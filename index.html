@@ -848,37 +848,25 @@ html {
     user = u;
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
-
-  // --- Lógica de paginación ---
+// --- Lógica de paginación ---
   const getPageFromHash = () => {
     const pageMatch = window.location.hash.match(/#page=(\d+)/);
     return pageMatch ? parseInt(pageMatch[1], 10) : null;
   };
 
-  // Priorizar la página de la URL, si no existe, usar localStorage, y si tampoco, la 1.
-  let currentPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
+  const initialPage = getPageFromHash() || parseInt(localStorage.getItem('currentPage')) || 1;
+  let currentPage = initialPage;
 
-  // Asegurar que la URL y localStorage reflejen la página actual al cargar
   if (!getPageFromHash()) {
     window.location.hash = `#page=${currentPage}`;
-  } else {
-    // Si la URL tiene un hash, asegúrate de que localStorage también lo tenga
-    localStorage.setItem('currentPage', currentPage);
   }
 
-  // Renderizar la página correcta al cargar el sitio
   renderGamesPage(currentPage);
   renderPagination();
   updateCollectionSummary();
 
-  // Función para guardar la página en localStorage y URL al cambiar
-  function setCurrentPage(pageNumber) {
-    currentPage = pageNumber;
-    window.location.hash = `#page=${pageNumber}`;
-    localStorage.setItem('currentPage', pageNumber);
-  }
-  // --- FIN DE LA LÓGICA DE PAGINACIÓN ---
-
+  // La función `window.addEventListener('hashchange', ...)` que tienes más abajo no necesita ser cambiada.
+  
     tailwind.config = {
     safelist: [
       'bg-gray-50',
