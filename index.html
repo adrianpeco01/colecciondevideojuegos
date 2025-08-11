@@ -733,6 +733,78 @@ html {
              color: #333;
         }
 
+
+/*
+  Estilos para la tabla de resumen de la colección.
+  Versión final: sin título, sin margen y pegado a la cabecera.
+*/
+
+/* Oculta el título "Resumen de la colección" */
+.lg\:w-96 .text-lg {
+    display: none;
+}
+
+/* Contenedor principal del resumen en pantallas grandes (lg) */
+@media (min-width: 1024px) {
+    .lg\:w-96 {
+        margin-top: 0 !important; /* Elimina el margen superior */
+        top: 4rem !important;  /* NUEVO: Lo pega justo debajo de la cabecera (que mide 3.5rem) */
+    }
+}
+
+/* Contenedor principal del resumen en pantallas pequeñas */
+.lg\:w-96 {
+    margin-top: 0.5rem; /* Mantiene un pequeño margen en móvil para que no se pegue arriba */
+}
+
+/* Contenedor de la tabla */
+.lg\:w-96 > .bg-white {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Tabla de resumen */
+.lg\:w-96 table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Celdas de la tabla (td) */
+.lg\:w-96 table td {
+    padding: 14px 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #f8f8f8;
+    vertical-align: middle;
+}
+
+/* Eliminar el borde de la última fila */
+.lg\:w-96 table tr:last-of-type td {
+    border-bottom: none;
+}
+
+/* Filas con fondo gris (la primera y la tercera) */
+.lg\:w-96 table tr:nth-child(1) td,
+.lg\:w-96 table tr:nth-child(3) td {
+    background-color: #f1f8fe;
+}
+
+/* Celdas de la izquierda (Valor, Costo, etc.) */
+.lg\:w-96 table td:first-child {
+    font-weight: normal;
+    color: #555;
+}
+
+/* Celdas de la derecha (los valores numéricos) */
+.lg\:w-96 table td:last-child {
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+}
+
 </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=block" rel="stylesheet">
 </head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block orbitron-font __className_9fd9c5">Mi colección de videojuegos</a>
@@ -776,6 +848,25 @@ html {
     user = u;
     document.getElementById("authStatus").textContent = user ? "🔓" : "🔒";
   });
+
+  // --- AÑADE ESTE CÓDIGO AQUÍ ---
+  // Lógica para guardar y cargar la página actual en localStorage
+  let currentPage = 1;
+
+  // Cargar la página desde localStorage al iniciar
+  const savedPage = localStorage.getItem('currentPage');
+  if (savedPage) {
+    currentPage = parseInt(savedPage, 10);
+    // Aquí deberías llamar a tu función para cargar los datos de esa página
+    // loadPage(currentPage); // (Esta función no está en tu HTML, es un ejemplo)
+  }
+
+  // Función para guardar la página en localStorage al cambiar
+  function setCurrentPage(pageNumber) {
+    currentPage = pageNumber;
+    localStorage.setItem('currentPage', pageNumber);
+  }
+  // --- FIN DEL CÓDIGO A AÑADIR ---
 
     tailwind.config = {
     safelist: [
@@ -1926,7 +2017,7 @@ function renderFilteredGames(filteredGames) {
 
     card.innerHTML = `
       <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.5rem;"
         onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
         onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
         <div class="flex flex-col space-y-1.5 p-0">
@@ -2002,7 +2093,7 @@ function renderGamesPage(page) {
 
     card.innerHTML = `
       <div class="text-card-foreground border shadow-md p-2 duration-200 ease-in-out"
-        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.1rem;"
+        style="background-color: rgba(242, 249, 255, 1); border-radius: 0.5rem;"
         onmouseover="this.style.backgroundColor='rgba(230, 245, 255, 1)';"
         onmouseout="this.style.backgroundColor='rgba(242, 249, 255, 1)';">
         <div class="flex flex-col space-y-1.5 p-0">
