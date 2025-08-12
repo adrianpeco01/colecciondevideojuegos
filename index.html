@@ -1452,9 +1452,7 @@ const sortButton = document.getElementById('sort-button');
   const isSelected = optionElement.textContent.startsWith('✓ ');
 
   if (platformName === 'all') {
-    // Si seleccionamos "Todo"
     selectedPlatforms = ['all'];
-    // Marcar "Todo" y desmarcar otros
     document.querySelectorAll('#platform-menu > div > div').forEach(option => {
       if (option.id === optionId) {
         if (!option.textContent.startsWith('✓ ')) option.textContent = '✓ ' + option.textContent;
@@ -1463,21 +1461,14 @@ const sortButton = document.getElementById('sort-button');
       }
     });
   } else {
-    // Seleccionamos una plataforma individual
-    // Quitar "all" si está presente
     selectedPlatforms = selectedPlatforms.filter(p => p !== 'all');
-
     if (isSelected) {
-      // Si ya estaba seleccionada, la quitamos
       optionElement.textContent = optionElement.textContent.replace('✓ ', '');
       selectedPlatforms = selectedPlatforms.filter(p => p !== platformName);
     } else {
-      // La seleccionamos
       optionElement.textContent = '✓ ' + optionElement.textContent;
       selectedPlatforms.push(platformName);
     }
-
-    // Si no queda ninguna plataforma seleccionada, volver a "all"
     if (selectedPlatforms.length === 0) {
       selectedPlatforms = ['all'];
       const allOption = document.getElementById('platform-option-all');
@@ -1485,7 +1476,6 @@ const sortButton = document.getElementById('sort-button');
         allOption.textContent = '✓ ' + allOption.textContent;
       }
     } else {
-      // Asegurarse que "Todo" no está marcado si hay otras plataformas
       const allOption = document.getElementById('platform-option-all');
       if (allOption) {
         allOption.textContent = allOption.textContent.replace('✓ ', '');
@@ -1493,8 +1483,13 @@ const sortButton = document.getElementById('sort-button');
     }
   }
 
-  // En su lugar, llama a tu función personalizada para actualizar el label
-updatePlatformButtonLabel();
+  updatePlatformButtonLabel();
+
+  // 🔹 Reset URL y página
+  window.location.hash = '#page=1';
+  setCurrentPage(1);
+  renderGamesPage(currentPage);
+
 }
 
 
