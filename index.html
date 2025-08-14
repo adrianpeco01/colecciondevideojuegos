@@ -1634,55 +1634,94 @@ function applyAllFilters() {
     }
     
     // 4. Aplicar ordenación (usa el label actual del sort-button para saber qué ordenación aplicar)
-    const currentSortLabel = sortButtonLabel.textContent;
-    switch (currentSortLabel) {
-        case 'Últimas compras':
-            // Las funciones de ordenación no necesitan redibujar la página, solo ordenar el array 'games'
-            games.sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
-            break;
-        case 'Primeras compras':
-            games.sort((a, b) => new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime());
-            break;
-        case 'Alfabético (A-Z)':
-            games.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
-            break;
-        case 'Alfabético (Z-A)':
-            games.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
-            break;
-        case 'Más nuevos':
-            games.sort((a, b) => {
-                const dateA = new Date(a.releaseDate);
-                const dateB = new Date(b.releaseDate);
-                if (!a.releaseDate) return 1;
-                if (!b.releaseDate) return -1;
-                return dateB.getTime() - dateA.getTime();
-            });
-            break;
-        case 'Más antiguos':
-            games.sort((a, b) => {
-                const dateA = new Date(a.releaseDate);
-                const dateB = new Date(b.releaseDate);
-                if (!a.releaseDate) return -1;
-                if (!b.releaseDate) return 1;
-                return dateA.getTime() - dateB.getTime();
-            });
-            break;
-        case 'Mayor valor':
-            games.sort((a, b) => (parseFloat(b.value) || 0) - (parseFloat(a.value) || 0));
-            break;
-        case 'Menor valor':
-            games.sort((a, b) => (parseFloat(a.value) || 0) - (parseFloat(b.value) || 0));
-            break;
-        case 'Mayor coste':
-            games.sort((a, b) => (parseFloat(b.cost) || 0) - (parseFloat(a.cost) || 0));
-            break;
-        case 'Menor coste':
-            games.sort((a, b) => (parseFloat(a.cost) || 0) - (parseFloat(b.cost) || 0));
-            break;
-        default:
-            // Si no hay un orden específico, mantiene el orden actual después de filtros
-            break;
-    }
+    // 4. Aplicar ordenación (usa el label actual del sort-button para saber qué ordenación aplicar)
+const currentSortLabel = sortButtonLabel.textContent;
+switch (currentSortLabel) {
+    case 'Últimas compras':
+        games.sort((a, b) => {
+            const fechaDiff = new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
+            if (fechaDiff !== 0) return fechaDiff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' });
+        });
+        break;
+
+    case 'Primeras compras':
+        games.sort((a, b) => {
+            const fechaDiff = new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime();
+            if (fechaDiff !== 0) return fechaDiff;
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
+        });
+        break;
+
+    case 'Alfabético (A-Z)':
+        games.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+        break;
+
+    case 'Alfabético (Z-A)':
+        games.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
+        break;
+
+    case 'Más nuevos':
+        games.sort((a, b) => {
+            const dateA = new Date(a.releaseDate);
+            const dateB = new Date(b.releaseDate);
+            if (!a.releaseDate) return 1;
+            if (!b.releaseDate) return -1;
+            const diff = dateB.getTime() - dateA.getTime();
+            if (diff !== 0) return diff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+        });
+        break;
+
+    case 'Más antiguos':
+        games.sort((a, b) => {
+            const dateA = new Date(a.releaseDate);
+            const dateB = new Date(b.releaseDate);
+            if (!a.releaseDate) return -1;
+            if (!b.releaseDate) return 1;
+            const diff = dateA.getTime() - dateB.getTime();
+            if (diff !== 0) return diff;
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
+        });
+        break;
+
+    case 'Mayor valor':
+        games.sort((a, b) => {
+            const diff = (parseFloat(b.value) || 0) - (parseFloat(a.value) || 0);
+            if (diff !== 0) return diff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+        });
+        break;
+
+    case 'Menor valor':
+        games.sort((a, b) => {
+            const diff = (parseFloat(a.value) || 0) - (parseFloat(b.value) || 0);
+            if (diff !== 0) return diff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+        });
+        break;
+
+    case 'Mayor coste':
+        games.sort((a, b) => {
+            const diff = (parseFloat(b.cost) || 0) - (parseFloat(a.cost) || 0);
+            if (diff !== 0) return diff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+        });
+        break;
+
+    case 'Menor coste':
+        games.sort((a, b) => {
+            const diff = (parseFloat(a.cost) || 0) - (parseFloat(b.cost) || 0);
+            if (diff !== 0) return diff;
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+        });
+        break;
+
+    default:
+        // Si no hay un orden específico, mantiene el orden actual después de filtros
+        break;
+}
+
 
     currentPage = 1;
     renderGamesPage(currentPage);
