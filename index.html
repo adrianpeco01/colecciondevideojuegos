@@ -1641,7 +1641,7 @@ switch (currentSortLabel) {
         games.sort((a, b) => {
             const fechaDiff = new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
             if (fechaDiff !== 0) return fechaDiff;
-            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' });
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
         });
         break;
 
@@ -1649,7 +1649,7 @@ switch (currentSortLabel) {
         games.sort((a, b) => {
             const fechaDiff = new Date(a.purchaseDate).getTime() - new Date(b.purchaseDate).getTime();
             if (fechaDiff !== 0) return fechaDiff;
-            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
         });
         break;
 
@@ -1661,7 +1661,7 @@ switch (currentSortLabel) {
         games.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
         break;
 
-    case 'Más nuevos':
+     case 'Más nuevos':
         games.sort((a, b) => {
             const dateA = new Date(a.releaseDate);
             const dateB = new Date(b.releaseDate);
@@ -1669,7 +1669,7 @@ switch (currentSortLabel) {
             if (!b.releaseDate) return -1;
             const diff = dateB.getTime() - dateA.getTime();
             if (diff !== 0) return diff;
-            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
         });
         break;
 
@@ -1681,7 +1681,7 @@ switch (currentSortLabel) {
             if (!b.releaseDate) return 1;
             const diff = dateA.getTime() - dateB.getTime();
             if (diff !== 0) return diff;
-            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
+            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
         });
         break;
 
@@ -1689,7 +1689,7 @@ switch (currentSortLabel) {
         games.sort((a, b) => {
             const diff = (parseFloat(b.value) || 0) - (parseFloat(a.value) || 0);
             if (diff !== 0) return diff;
-            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
         });
         break;
 
@@ -1705,7 +1705,7 @@ switch (currentSortLabel) {
         games.sort((a, b) => {
             const diff = (parseFloat(b.cost) || 0) - (parseFloat(a.cost) || 0);
             if (diff !== 0) return diff;
-            return a.title.localeCompare(b.title, 'es', { sensitivity: 'base' }); // A-Z
+            return b.title.localeCompare(a.title, 'es', { sensitivity: 'base' }); // Z-A
         });
         break;
 
