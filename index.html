@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Videojuegos que me interesan</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Videojuegos que me interesan"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
+<html lang="en" class="light" style="color-scheme: light;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="preload" href="https://platinumhunt.com/_next/static/media/04ff47e1ca568747-s.p.woff2" as="font" crossorigin="" type="font/woff2"><link rel="stylesheet" href="./adricollantex • Platinum Hunt MARZO 2025_files/6a6e97510208f44d.css" data-precedence="next"><link rel="preload" as="script" fetchpriority="low" href="https://platinumhunt.com/_next/static/chunks/webpack-c1bcd6ec2f134d68.js"><link rel="preload" href="./adricollantex • Platinum Hunt MARZO 2025_files/A2103_xl.png" as="image" fetchpriority="high"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mi colección de videojuegos</title><meta name="description" content="Mi colección de videojuegos"><meta property="og:title" content="adricollantex"><meta property="og:description" content="Mi colección de videojuegos"><meta property="og:url" content="https://platinumhunt.com"><meta property="og:site_name" content="Platinum Hunt"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="adricollantex"><meta name="twitter:description" content="Mi colección de videojuegos"><meta name="twitter:image" content="http://static-resource.np.community.playstation.net/avatar_xl/WWS_A/A2103_xl.png"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/x-icon" sizes="48x48"><link rel="icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/svg+xml" sizes="any"><link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"><link rel="apple-touch-icon" href="./adricollantex • Platinum Hunt MARZO 2025_files/favicon.ico" type="image/png" sizes="180x180"><meta name="next-size-adjust"><!-- Tailwind safelist --> <div class="hidden opacity-0 opacity-100 pointer-events-none pointer-events-auto"></div>
 
 <style>
 
@@ -865,62 +865,14 @@ html {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDSVRvWnk1I_HtvBbTxZXOmRlr7qoH13aI",
-  authDomain: "videojuegosquequiero.firebaseapp.com",
-  projectId: "videojuegosquequiero",
-  storageBucket: "videojuegosquequiero.firebasestorage.app",
-  messagingSenderId: "387016892410",
-  appId: "1:387016892410:web:6d990b5c7cfdfda875ce43",
-  measurementId: "G-66X1S59WWD"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();      // 🔑 Auth usará la nueva lista de usuarios
-const db = firebase.firestore();   // 📦 Firestore usará la nueva base de datos
-
-document.getElementById("gameForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  if (!auth.currentUser) {
-    alert("Debes iniciar sesión para guardar.");
-    return;
-  }
-
-  const newGame = {
-    imageUrl: document.getElementById("imageUrl").value,
-    title: document.getElementById("title").value,
-    platform: document.getElementById("platform").value,
-    folder: document.getElementById("folder").value,
-    condition: document.getElementById("condition").value,
-    purchaseDate: document.getElementById("purchaseDate").value,
-    releaseDate: document.getElementById("releaseDate").value,
-    purchaseLocation: document.getElementById("purchaseLocation").value,
-    region: document.getElementById("region").value,
-    gift: document.getElementById("gift").value,
-    edition: document.getElementById("edition").value,
-    cost: parseFloat(document.getElementById("cost").value) || 0,
-    value: parseFloat(document.getElementById("value").value) || 0,
-    wallapopLink: document.getElementById("wallapopLink").value,
-    vintedLink: document.getElementById("vintedLink").value,
-    ebayLink: document.getElementById("ebayLink").value,
-    cex: parseFloat(document.getElementById("cex").value) || 0,
-    cexLink: document.getElementById("cexLink").value,
-    details: document.getElementById("details").value,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    userId: auth.currentUser.uid
+  const firebaseConfig = {
+    apiKey: "AIzaSyCb5vmEqe_IIasGYvH7e1g1ja56RwSoTSI",
+    authDomain: "videojuegos-cfdee.firebaseapp.com",
+    projectId: "videojuegos-cfdee",
   };
-
-  try {
-    await db.collection("games").add(newGame);
-    alert("Juego guardado con éxito ✅");
-    e.target.reset();
-  } catch (error) {
-    console.error("Error guardando el juego:", error);
-    alert("❌ No se pudo guardar el juego.");
-  }
-});
-
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
   const gameForm = document.getElementById("gameForm");
   const toggleForm = document.getElementById("toggleForm");
@@ -1057,7 +1009,6 @@ document.getElementById("gameForm").addEventListener("submit", async (e) => {
         <option value="PlayStation 3">PlayStation 3</option>
         <option value="PlayStation 4">PlayStation 4</option>
         <option value="PlayStation 5">PlayStation 5</option>
-        <option value="PSVita">PS Vita</option>
         <option value="Xbox 360">Xbox 360</option>
       </select>
     </div>
@@ -1065,7 +1016,7 @@ document.getElementById("gameForm").addEventListener("submit", async (e) => {
       <div class="form-emoji">📂</div>
       <select id="folder" class="form-input" required>
         <option value="" disabled selected>Carpeta*</option>
-        <option value="Colección">Videojuegos</option>
+        <option value="Colección">Colección</option>
         <option value="Extras">Extras</option>
       </select>
     </div>
@@ -1237,7 +1188,7 @@ document.getElementById("gameForm").addEventListener("submit", async (e) => {
           <path d="m3 8 4-4 4 4"></path>
           <path d="M7 4v16"></path>
         </svg>
-        <div class="hidden lg:block" id="sort-button-label">Mayor valor</div>
+        <div class="hidden lg:block" id="sort-button-label">Últimas compras</div>
       </button>
 
       <!-- Menú desplegable que sale debajo -->
@@ -1321,7 +1272,6 @@ document.getElementById("gameForm").addEventListener("submit", async (e) => {
       <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 3</div>
       <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 4</div>
       <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 5</div>
-      <div id="platform-option-psvita" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PS Vita</div>
       <div id="platform-option-x360" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox 360</div>
     </div>
   </div>
@@ -2229,11 +2179,11 @@ platformButtonLabel.textContent = 'Todo';
 //    selectedSortType = 'lastpurchase';
 
 // 2. Marcar visualmente la opción "Últimas compras"
-selectOption('sort-menu', 'option-value-high');
-sortButtonLabel.textContent = 'Mayor valor';
+selectOption('sort-menu', 'option-lastpurchase');
+sortButtonLabel.textContent = 'Últimas compras';
 
 // 3. Establecer la opción "Todo" de edición como seleccionada
-selectedEditionType = 'all';
+selectedEditionType = 'lastpurchase'; 
 selectOption('all-menu', 'option-all');
 allButtonLabel.textContent = 'Todo';
 
