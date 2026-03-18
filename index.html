@@ -287,8 +287,9 @@
 select#platform,
 select#folder,
 select#condition,
-select#edition {
-  color: #9ca3af; /* Color gris por defecto */
+select#edition,
+select#protection {
+  color: #9ca3af;
 }
 
 select#platform:valid,
@@ -298,21 +299,25 @@ select#folder:not(:invalid),
 select#condition:valid,
 select#condition:not(:invalid),
 select#edition:valid,
-select#edition:not(:invalid) {
-  color: black; /* Color negro cuando hay valor seleccionado */
+select#edition:not(:invalid),
+select#protection:valid,
+select#protection:not(:invalid) {
+  color: black;
 }
 
 select#platform option:first-of-type,
 select#folder option:first-of-type,
 select#condition option:first-of-type,
-select#edition option:first-of-type {
+select#edition option:first-of-type,
+select#protection option:first-of-type {
   color: #9ca3af; /* Asegurar gris en placeholder (redundante pero seguro) */
 }
 
 select#platform option:not(:first-of-type),
 select#folder option:not(:first-of-type),
 select#condition option:not(:first-of-type),
-select#edition option:not(:first-of-type) {
+select#edition option:not(:first-of-type),
+select#protection option:not(:first-of-type) { /* <-- Añade esta línea */
   color: black; /* Asegurar negro en opciones (redundante pero seguro) */
 }
 #estadoStarsContainer {
@@ -1048,6 +1053,26 @@ html {
       </div>
     </div>
   </div>
+
+<div class="form-row-2">
+  <div class="form-item">
+    <div class="form-emoji">🛡️</div>
+    <select id="protection" class="form-input" required>
+      <option value="" disabled selected>Protección</option>
+      <option value="Ninguna">Ninguna</option>
+      <option value="Bolsa de plástico">Bolsa de plástico</option>
+      <option value="Funda PET">Funda PET</option>
+      <option value="Bolsa y PET">Funda PET con bolsa</option>
+      <option value="Metacrilato">Metacrilato</option>
+      <option value="Bolsa y metacrilato">Metacrilato con bolsa</option>
+    </select>
+  </div>
+
+  <div class="form-item">
+    <div class="form-emoji">🏠</div>
+    <input type="text" id="collectionLocation" placeholder="Lugar de colección" class="form-input" />
+  </div>
+</div>
 
   <div class="form-row-2">
     <div class="form-item">
@@ -2160,6 +2185,8 @@ function renderGamesFromFirebase() {
         cexLink: data.cexLink,
         estado: data.estado,
         details: data.details,
+        protection: data.protection, // Asegúrate que el ID sea 'protection'
+        collectionLocation: data.collectionLocation,
       };
 
       originalGamesOrder.push(gameData); // Guardar el orden original
@@ -2512,7 +2539,14 @@ setTimeout(() => { // Da un respiro mínimo al navegador para que procese el cam
   document.getElementById('cex').value = game.cex || '';
   document.getElementById('cexLink').value = game.cexLink || '';
   document.getElementById('details').value = game.details || '';
-
+// --- AÑADE ESTO AQUÍ ---
+  // Rellenar Protección y Ubicación
+  if (document.getElementById('protection')) {
+      document.getElementById('protection').value = game.protection || '';
+  }
+  if (document.getElementById('collectionLocation')) {
+      document.getElementById('collectionLocation').value = game.collectionLocation || '';
+  }
   // ⭐ Rellenar las estrellas
   const stars = document.querySelectorAll('#estadoStars span');
   stars.forEach(star => {
@@ -2593,6 +2627,8 @@ form.addEventListener('submit', async function handleSubmit(e) {
     cexLink: form.cexLink.value,
     estado: document.querySelectorAll('#estadoStars span.active').length,
     details: form.details.value,
+    protection: form.protection.value,
+    collectionLocation: form.collectionLocation.value,
   };
 
   try {
@@ -2751,9 +2787,17 @@ const column2 = [];
 if (game.platform) column1.push({ icon: '🎮', label: game.platform, title: 'Plataforma' });
 if (game.region) column1.push({ icon: '🌍', label: game.region, title: 'Región' });
 column1.push('CONDICION_ESTADO_PLACEHOLDER');
+// Nuevo: Protección (🛡️) debajo de Condición
+if (game.protection && game.protection.trim() !== "") {
+    column1.push({ icon: '🛡️', label: game.protection, title: 'Protección' });
+}
 if (game.purchaseDate) column2.push({ icon: '🛒', label: formatDate(game.purchaseDate), title: 'Fecha de compra' });
 if (game.releaseDate) column2.push({ icon: '🆕', label: formatDate(game.releaseDate), title: 'Fecha de lanzamiento' });
 if (game.folder) column2.push({ icon: '📂', label: game.folder, title: 'Carpeta' });
+// Ubicación (🏠) - ASEGÚRATE QUE DIGA collectionLocation
+if (game.collectionLocation && game.collectionLocation.trim() !== "") {
+    column2.push({ icon: '🏠', label: game.collectionLocation, title: 'Ubicación' });
+}
 
 // Elementos condicionales
 if (game.gift) {
