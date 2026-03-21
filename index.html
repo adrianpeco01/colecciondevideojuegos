@@ -1879,7 +1879,7 @@ function applyAllFilters() {
             }
         }
 
-        // 3. Filtrar juegos (Lógica AND)
+// 3. Filtrar juegos (Lógica AND para diferentes emojis, OR para el símbolo +)
         games = games.filter(game => {
             return searchCriteria.every(criteria => {
                 const { prop, term } = criteria;
@@ -1887,30 +1887,34 @@ function applyAllFilters() {
 
                 const val = (game[prop] || '').toString();
 
-                // --- LÓGICA DE RANGOS (Añadido 'estado') ---
-                const isNumericProp = ['value', 'cost', 'estado'].includes(prop);
-                if (isNumericProp && term.includes('-')) {
-                    const [minStr, maxStr] = term.split('-');
-                    const min = parseFloat(minStr) || 0;
-                    const max = (maxStr === undefined || maxStr.trim() === "") ? Infinity : parseFloat(maxStr);
-                    
-                    // Limpiamos el valor por si tiene comas o símbolos
-                    const gameNum = parseFloat(val.replace(',', '.')) || 0;
-                    return gameNum >= min && gameNum <= max;
-                }
+                // --- CAMBIO AQUÍ: Separamos por "+" y usamos .some() ---
+                const subTerms = term.split('+').map(t => t.trim()).filter(t => t !== "");
+                
+                return subTerms.some(subTerm => {
+                    // --- LÓGICA DE RANGOS ---
+                    const isNumericProp = ['value', 'cost', 'estado'].includes(prop);
+                    if (isNumericProp && subTerm.includes('-')) {
+                        const [minStr, maxStr] = subTerm.split('-');
+                        const min = parseFloat(minStr) || 0;
+                        const max = (maxStr === undefined || maxStr.trim() === "") ? Infinity : parseFloat(maxStr);
+                        
+                        const gameNum = parseFloat(val.replace(',', '.')) || 0;
+                        return gameNum >= min && gameNum <= max;
+                    }
 
-                // LÓGICA DE PALABRA EXACTA (con comillas)
-                const isExact = term.startsWith('"') && term.endsWith('"');
-                const cleanTerm = isExact ? term.slice(1, -1) : term;
+                    // --- LÓGICA DE PALABRA EXACTA (con comillas) ---
+                    const isExact = subTerm.startsWith('"') && subTerm.endsWith('"');
+                    const cleanTerm = isExact ? subTerm.slice(1, -1) : subTerm;
 
-                if (isExact && cleanTerm !== "") {
-                    const escapedTerm = cleanTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    const regex = new RegExp(`(^|\\s|[.,;])${escapedTerm}($|\\s|[.,;])`, 'i');
-                    return regex.test(val);
-                }
+                    if (isExact && cleanTerm !== "") {
+                        const escapedTerm = cleanTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const regex = new RegExp(`(^|\\s|[.,;])${escapedTerm}($|\\s|[.,;])`, 'i');
+                        return regex.test(val);
+                    }
 
-                // BÚSQUEDA NORMAL (parcial)
-                return val.toLowerCase().includes(cleanTerm.toLowerCase());
+                    // --- BÚSQUEDA NORMAL ---
+                    return val.toLowerCase().includes(cleanTerm.toLowerCase());
+                });
             });
         });
     }
