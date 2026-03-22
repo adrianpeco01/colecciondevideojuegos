@@ -846,6 +846,7 @@ html {
     }
 }
 
+
 /* Transiciones suaves para el cambio de color */
 .transitions-enabled, .transitions-enabled * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
@@ -1023,7 +1024,6 @@ html.dark #games-container div[style*="background-color"]:hover {
   background-color: hsl(var(--background)); /* Mantener el mismo color o un tono ligeramente diferente */
 }
 
-
 </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=block" rel="stylesheet">
 </head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block orbitron-font __className_9fd9c5" href="https://adricollantex.notion.site/Notion-de-Adri-n-bf7221cee04e4d4a96cb0e1ce95d92e7">Mi colección de videojuegos</a>
@@ -1042,9 +1042,7 @@ html.dark #games-container div[style*="background-color"]:hover {
     <g transform="translate(0,208) scale(0.1,-0.1)" stroke="none">
       <path d="M1012 1580 c-12 -5 -27 -21 -32 -35 -6 -15 -10 -118 -10 -231 l0 -204 -209 0 c-115 0 -217 -3 -226 -6 -16 -6 -45 -54 -45 -74 0 -6 11 -22 25 -35 24 -25 24 -25 239 -25 l215 0 3 -221 c3 -218 3 -221 27 -240 30 -24 52 -24 85 2 l26 20 0 220 0 219 218 0 c215 0 219 0 240 23 29 30 28 62 -3 92 -24 25 -24 25 -240 25 l-215 0 0 219 0 220 -26 20 c-29 23 -38 24 -72 11z"/>
     </g>
-  </svg><span class="sr-only">Añadir</span></button>
-
-</div>
+  </svg><span class="sr-only">Añadir</span></button></div>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -1801,6 +1799,7 @@ document.getElementById('summary-diff').textContent = isEmpty ? formatMoney(0) :
 document.getElementById('summary-count').textContent = count;
 
 }
+
 
 
 
@@ -2907,18 +2906,6 @@ if (gameId) {
   }
 });
 
-const btn = document.getElementById("themeToggleBtn");
-
-btn.addEventListener("click", () => {
-    // Alternar clase dark en el HTML
-    const isDark = document.documentElement.classList.toggle("dark");
-    
-    // Guardar preferencia
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    
-    // Actualizar color scheme del navegador
-    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-});
 
 document.getElementById('deleteBtn').addEventListener('click', () => {
   const modal = document.getElementById("modal");
