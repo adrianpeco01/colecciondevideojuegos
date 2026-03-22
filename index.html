@@ -20,6 +20,35 @@
   font-weight: 700 !important; 
 }
 
+header {
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Encima de juegos y inputs, pero debajo del overlay (999) y modal (1000) */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: hsla(var(--background), 0.5); /* Fondo semitransparente */
+    border-bottom: 1px solid hsl(var(--border));
+    isolation: isolate;
+}
+
+#games-container input,
+#games-container a {
+    position: relative;
+    z-index: 1; /* Debajo del header que tiene z-index 900 */
+}
+
+body.modal-open #games-container input,
+body.modal-open #games-container a {
+    z-index: 1 !important;
+}
+
+#loginModal,
+#modalOverlay,
+#modal {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 #modal, #modal * {
   font-family: 'Inter', sans-serif;
 }
@@ -1026,7 +1055,8 @@ html.dark #games-container div[style*="background-color"]:hover {
 
 </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=block" rel="stylesheet">
-</head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-14 w-full border-b backdrop-blur"><div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block orbitron-font __className_9fd9c5" href="https://adricollantex.notion.site/Notion-de-Adri-n-bf7221cee04e4d4a96cb0e1ce95d92e7">Mi colección de videojuegos</a>
+</head><body><div class="relative flex min-h-svh flex-col"><header class="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-[900] h-14 w-full border-b backdrop-blur" style="transform: translateZ(0);">
+    <div class="container flex h-14 items-center justify-between"><div class="flex items-center"><a class="ml-2 mr-4 hidden font-bold sm:block orbitron-font __className_9fd9c5" href="https://adricollantex.notion.site/Notion-de-Adri-n-bf7221cee04e4d4a96cb0e1ce95d92e7">Mi colección de videojuegos</a>
 <a class="ml-2 mr-4 font-bold sm:hidden orbitron-font __className_9fd9c5" href="https://adricollantex.notion.site/Notion-de-Adri-n-bf7221cee04e4d4a96cb0e1ce95d92e7">Mi colección</a>
 </div><div class="flex items-center gap-3 relative ml-4">
   <button id="toggleForm"
