@@ -42,6 +42,10 @@ body.modal-open #games-container a {
     z-index: 1 !important;
 }
 
+#games-container img {
+  transform: translateZ(0);
+}
+
 #loginModal,
 #modalOverlay,
 #modal {
@@ -2589,7 +2593,7 @@ function renderFilteredGames(filteredGames) {
           <div class="flex flex-col">
             <div class="grid h-[158px]">
               <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                <img alt="${game.title}" loading="lazy" decoding="async"
+                <img alt="${game.title}" loading="lazy" decoding="sync"
                   height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
                   style="${imgStyle}">
               </div>
