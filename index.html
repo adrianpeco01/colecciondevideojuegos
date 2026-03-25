@@ -2589,7 +2589,7 @@ function renderFilteredGames(filteredGames) {
           <div class="flex flex-col">
             <div class="grid h-[158px]">
               <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                <img alt="${game.title}" loading="eager" decoding="sync"
+                <img alt="${game.title}" loading="lazy" decoding="sync"
                   height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
                   style="${imgStyle}">
               </div>
@@ -2613,15 +2613,6 @@ function renderFilteredGames(filteredGames) {
         </div>
       </div>
     `;
-
-const img = card.querySelector("img");
-
-img.addEventListener("load", () => {
-  img.style.opacity = "0.99";
-  requestAnimationFrame(() => {
-    img.style.opacity = "1";
-  });
-});
 
     card.addEventListener("click", (e) => {
       e.preventDefault();
@@ -2674,7 +2665,7 @@ function renderGamesPage(page) {
           <div class="flex flex-col">
             <div class="grid h-[158px]">
               <div class="col-start-1 row-start-1 w-full flex justify-center items-center" style="height: 154px;">
-                <img alt="${game.title}" loading="eager" decoding="sync"
+                <img alt="${game.title}" loading="lazy" decoding="sync"
                   height="${imageHeight}" src="${game.image}" class="rounded-sm text-center bg-primary/10"
                   style="${imgStyle}">
               </div>
@@ -2698,15 +2689,6 @@ function renderGamesPage(page) {
         </div>
       </div>
     `;
-
-const img = card.querySelector("img");
-
-img.addEventListener("load", () => {
-  img.style.opacity = "0.99";
-  requestAnimationFrame(() => {
-    img.style.opacity = "1";
-  });
-});
 
     const globalIndex = startIndex + index;
     card.addEventListener("click", (e) => {
