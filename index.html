@@ -2614,6 +2614,15 @@ function renderFilteredGames(filteredGames) {
       </div>
     `;
 
+const img = card.querySelector("img");
+
+img.addEventListener("load", () => {
+  img.style.opacity = "0.99";
+  requestAnimationFrame(() => {
+    img.style.opacity = "1";
+  });
+});
+
     card.addEventListener("click", (e) => {
       e.preventDefault();
       openModal(games.indexOf(game)); // Abrir modal con índice real
@@ -2689,6 +2698,15 @@ function renderGamesPage(page) {
         </div>
       </div>
     `;
+
+const img = card.querySelector("img");
+
+img.addEventListener("load", () => {
+  img.style.opacity = "0.99";
+  requestAnimationFrame(() => {
+    img.style.opacity = "1";
+  });
+});
 
     const globalIndex = startIndex + index;
     card.addEventListener("click", (e) => {
