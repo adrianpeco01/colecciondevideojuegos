@@ -1210,7 +1210,9 @@ html.dark #games-container div[style*="background-color"]:hover {
       <div class="form-emoji">🎮</div>
       <select id="platform" class="form-input" required>
         <option value="" disabled selected>Plataforma*</option>
+        <option value="Dreamcast">Dreamcast</option>
         <option value="Game Boy Advance">Game Boy Advance</option>
+        <option value="Neo Geo AES">Neo Geo AES</option>
         <option value="Nintendo 3DS">Nintendo 3DS</option>
         <option value="Nintendo 64">Nintendo 64</option>
         <option value="Nintendo DS">Nintendo DS</option>
@@ -1222,7 +1224,9 @@ html.dark #games-container div[style*="background-color"]:hover {
         <option value="PlayStation 3">PlayStation 3</option>
         <option value="PlayStation 4">PlayStation 4</option>
         <option value="PlayStation 5">PlayStation 5</option>
+        <option value="Xbox">Xbox</option>
         <option value="Xbox 360">Xbox 360</option>
+        <option value="Windows PC">Windows PC</option>
       </select>
     </div>
     <div class="form-item">
@@ -1493,7 +1497,9 @@ html.dark #games-container div[style*="background-color"]:hover {
   <div id="platform-menu" class="hidden absolute right-0 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200" style="background-color: white !important; width: 11rem !important;">
     <div class="py-1">
       <div id="platform-option-all" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Todo</div>
+      <div id="platform-option-dc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Dreamcast</div>
       <div id="platform-option-gba" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Game Boy Advance</div>
+      <div id="platform-option-neogeo" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Neo Geo AES</div>
       <div id="platform-option-3ds" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo 3DS</div>
       <div id="platform-option-ds" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo DS</div>
       <div id="platform-option-n64" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo 64</div>
@@ -1505,7 +1511,9 @@ html.dark #games-container div[style*="background-color"]:hover {
       <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 3</div>
       <div id="platform-option-ps4" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 4</div>
       <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 5</div>
+      <div id="platform-option-xbox" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox</div>
       <div id="platform-option-x360" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox 360</div>
+      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Windows PC</div>
     </div>
   </div>
 </div>
@@ -1556,7 +1564,9 @@ let selectedEditionType = 'all'; // Inicialmente, "Todo" está seleccionado
 
   // Referencias a todas las opciones del menú de plataforma
   const platformOptionAll = document.getElementById('platform-option-all');
+  const platformOptionDC = document.getElementById('platform-option-dc');
   const platformOptionGBA = document.getElementById('platform-option-gba');
+  const platformOptionNEOGEO = document.getElementById('platform-option-neogeo');
   const platformOption3DS = document.getElementById('platform-option-3ds');
   const platformOptionDS = document.getElementById('platform-option-ds');
   const platformOptionN64 = document.getElementById('platform-option-n64');
@@ -1568,7 +1578,9 @@ let selectedEditionType = 'all'; // Inicialmente, "Todo" está seleccionado
   const platformOptionPS3 = document.getElementById('platform-option-ps3');
   const platformOptionPS4 = document.getElementById('platform-option-ps4');
   const platformOptionPS5 = document.getElementById('platform-option-ps5');
+  const platformOptionXBOX = document.getElementById('platform-option-xbox');
   const platformOptionX360 = document.getElementById('platform-option-x360');
+  const platformOptionPC = document.getElementById('platform-option-pc');
 
 editBtn.addEventListener("click", () => {
   const modal = document.getElementById("modal");
@@ -1735,7 +1747,9 @@ function updatePlatformButtonLabel() {
 
     // Define las abreviaturas o nombres personalizados para cada plataforma
     const platformLabels = {
+        'Dreamcast': 'DC',
         'Game Boy Advance': 'GBA',
+        'Neo Geo AES': 'Neo Geo',
         'Nintendo 3DS': '3DS',
         'Nintendo DS': 'DS',
         'Nintendo 64': 'N64',
@@ -1747,12 +1761,16 @@ function updatePlatformButtonLabel() {
         'PlayStation 3': 'PS3',
         'PlayStation 4': 'PS4',
         'PlayStation 5': 'PS5',
-        'Xbox 360': 'X360'
+        'Xbox': 'Xbox',
+        'Xbox 360': 'X360',
+        'Windows PC': 'PC'
     };
 
 // Define el orden fijo en que quieres mostrar las plataformas
     const platformOrder = [
+        'Dreamcast',
         'Game Boy Advance',
+        'Neo Geo AES',
         'Nintendo 3DS',
         'Nintendo DS',
         'Nintendo 64',
@@ -1764,7 +1782,9 @@ function updatePlatformButtonLabel() {
         'PlayStation 3',
         'PlayStation 4',
         'PlayStation 5',
-        'Xbox 360'
+        'Xbox',
+        'Xbox 360',
+        'Windows PC'
     ];
 
     // Número máximo de plataformas a mostrar antes de poner "..."
@@ -2352,7 +2372,9 @@ window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
         applyAllFilters();
     });
 
+    platformOptionDC.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-dc', 'Dreamcast'); applyAllFilters(); });
     platformOptionGBA.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-gba', 'Game Boy Advance'); applyAllFilters(); });
+    platformOptionNEOGEO.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-neogeo', 'Neo Geo AES'); applyAllFilters(); });
     platformOption3DS.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-3ds', 'Nintendo 3DS'); applyAllFilters(); });
     platformOptionDS.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ds', 'Nintendo DS'); applyAllFilters(); });
     platformOptionN64.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-n64', 'Nintendo 64'); applyAllFilters(); });
@@ -2364,7 +2386,9 @@ window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
     platformOptionPS3.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps3', 'PlayStation 3'); applyAllFilters(); });
     platformOptionPS4.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps4', 'PlayStation 4'); applyAllFilters(); });
     platformOptionPS5.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps5', 'PlayStation 5'); applyAllFilters(); });
+    platformOptionXBOX.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-xbox', 'Xbox'); applyAllFilters(); });
     platformOptionX360.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-x360', 'Xbox 360'); applyAllFilters(); });
+    platformOptionPC.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-pc', 'Windows PC'); applyAllFilters(); });
 
 let games = [];
 let currentPage = 1; // <-- UNA sola declaración
@@ -2570,7 +2594,7 @@ function renderFilteredGames(filteredGames) {
       "Bonus Demo 8 (You) + Network Access Disc": 130,
     };
 
-    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
+    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance", "Dreamcast"];
 
     if (specialTitleHeights[game.title]) {
       imageHeight = specialTitleHeights[game.title];
@@ -2643,10 +2667,13 @@ function renderGamesPage(page) {
     const specialTitleHeights = {
       "Little Nightmares II [Edición TV]": 110,
       "Bonus Demo 8 (You) + Network Access Disc": 130,
+      "HITM3": 140,
+      "Who's Lila?": 140,
+      "An Outcry": 140,
     };
 
     // Plataformas con altura especial
-    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance"];
+    const specialPlatformHeights = ["Nintendo DS", "Nintendo 3DS", "PlayStation", "Game Boy Advance", "Dreamcast"];
 
     if (specialTitleHeights[game.title]) {
       imageHeight = specialTitleHeights[game.title];
@@ -3017,9 +3044,13 @@ if (game.title === "Little Nightmares II [Edición TV]") {
   imageHeightModal = 330; // Altura específica para Little Nightmares II
 } else if (
   game.title === "Bonus Demo 8 (You) + Network Access Disc" ||
+  game.title === "HITM3" ||
+  game.title === "Who's Lila?" ||
+  game.title === "An Outcry" ||
   game.platform === "Nintendo DS" ||
   game.platform === "Nintendo 3DS" ||
   game.platform === "PlayStation" ||
+  game.platform === "Dreamcast" ||
   game.platform === "Game Boy Advance"
 ) {
   imageHeightModal = 330; // Altura para Bonus Demo 8 y otras plataformas específicas
