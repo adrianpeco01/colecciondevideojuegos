@@ -1219,6 +1219,7 @@ html.dark #games-container div[style*="background-color"]:hover {
         <option value="Nintendo Switch">Nintendo Switch</option>
         <option value="Nintendo Wii">Nintendo Wii</option>
         <option value="Nintendo Wii U">Nintendo Wii U</option>
+        <option value="PC-ROM">PC-ROM</option>
         <option value="PlayStation">PlayStation</option>
         <option value="PlayStation 2">PlayStation 2</option>
         <option value="PlayStation 3">PlayStation 3</option>
@@ -1226,7 +1227,6 @@ html.dark #games-container div[style*="background-color"]:hover {
         <option value="PlayStation 5">PlayStation 5</option>
         <option value="Xbox">Xbox</option>
         <option value="Xbox 360">Xbox 360</option>
-        <option value="Windows PC">Windows PC</option>
       </select>
     </div>
     <div class="form-item">
@@ -1506,6 +1506,7 @@ html.dark #games-container div[style*="background-color"]:hover {
       <div id="platform-option-switch" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Switch</div>
       <div id="platform-option-wii" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Wii</div>
       <div id="platform-option-wiiu" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Nintendo Wii U</div>
+      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PC-ROM</div>
       <div id="platform-option-ps" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation</div>
       <div id="platform-option-ps2" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 2</div>
       <div id="platform-option-ps3" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 3</div>
@@ -1513,7 +1514,6 @@ html.dark #games-container div[style*="background-color"]:hover {
       <div id="platform-option-ps5" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">PlayStation 5</div>
       <div id="platform-option-xbox" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox</div>
       <div id="platform-option-x360" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Xbox 360</div>
-      <div id="platform-option-pc" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100">Windows PC</div>
     </div>
   </div>
 </div>
@@ -1763,7 +1763,7 @@ function updatePlatformButtonLabel() {
         'PlayStation 5': 'PS5',
         'Xbox': 'Xbox',
         'Xbox 360': 'X360',
-        'Windows PC': 'PC'
+        'PC-ROM': 'PC'
     };
 
 // Define el orden fijo en que quieres mostrar las plataformas
@@ -1777,14 +1777,14 @@ function updatePlatformButtonLabel() {
         'Nintendo Switch',
         'Nintendo Wii',
         'Nintendo Wii U',
+        'PC-ROM',
         'PlayStation',
         'PlayStation 2',
         'PlayStation 3',
         'PlayStation 4',
         'PlayStation 5',
         'Xbox',
-        'Xbox 360',
-        'Windows PC'
+        'Xbox 360'
     ];
 
     // Número máximo de plataformas a mostrar antes de poner "..."
@@ -2388,7 +2388,7 @@ window.location.hash = 'page=1'; // <-- AÑADE ESTA LÍNEA
     platformOptionPS5.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-ps5', 'PlayStation 5'); applyAllFilters(); });
     platformOptionXBOX.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-xbox', 'Xbox'); applyAllFilters(); });
     platformOptionX360.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-x360', 'Xbox 360'); applyAllFilters(); });
-    platformOptionPC.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-pc', 'Windows PC'); applyAllFilters(); });
+    platformOptionPC.addEventListener('click', (e) => { e.stopPropagation(); togglePlatformOption('platform-option-pc', 'PC-ROM'); applyAllFilters(); });
 
 let games = [];
 let currentPage = 1; // <-- UNA sola declaración
