@@ -1903,6 +1903,8 @@ function applyAllFilters() {
             '🗃️': 'edition',
             '📄': 'details',
             '🗒️': 'details',
+            '📋': 'details',
+            '📝': 'details',
             '⭐': 'estado',
             '💰': 'value',
             '💸': 'cost',
@@ -1910,7 +1912,7 @@ function applyAllFilters() {
         };
 
         // 1. Regex corregida para emojis compuestos (🛡️, 🗃️)
-        const emojiRegex = /(🎮|📂|📦|🛡️|🏠|🛒|🆕|📍|🌍|🌎|🌏|🎁|🗃️|📄|🗒️|⭐|💰|💸|🔠)/gu;
+        const emojiRegex = /(🎮|📂|📦|🛡️|🏠|🛒|🆕|📍|🌍|🌎|🌏|🎁|🗃️|📄|🗒️|📋|📝|⭐|💰|💸|🔠)/gu;
         const parts = rawSearch.split(emojiRegex).map(p => p.trim()).filter(p => p !== "");
 
         let searchCriteria = [];
