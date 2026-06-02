@@ -2787,6 +2787,13 @@ document.querySelectorAll('#pagination a').forEach(a => {
     e.preventDefault();
     const selectedPage = parseInt(a.dataset.page, 10);
     if (!isNaN(selectedPage) && selectedPage !== currentPage) {
+      
+      // Hace que la página suba con una animación suave
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
       // Cambiamos solo el hash; esto genera evento 'hashchange' que hará render + guardado
       window.location.hash = `page=${selectedPage}`;
     }
