@@ -1851,7 +1851,12 @@ document.getElementById('summary-count').textContent = count;
 }
 
 
-
+function normalizeText(text) {
+    return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
 
 // Función central para aplicar todos los filtros activos (ordenación, edición, plataforma)
 function applyAllFilters() {
@@ -1885,7 +1890,7 @@ function applyAllFilters() {
     }
 
 // 3.5 Aplicar filtros múltiples (Emojis, Rangos, Comillas y Título)
-    const rawSearch = searchInput.value.trim();
+    const rawSearch = normalizeText(searchInput.value.trim());
     if (rawSearch !== "") {
         const emojiMap = {
             '🎮': 'platform',
@@ -1939,7 +1944,7 @@ function applyAllFilters() {
                 const { prop, term } = criteria;
                 if (term === "") return true;
 
-                const val = (game[prop] || '').toString();
+                const val = normalizeText((game[prop] || '').toString());
 
                 // --- CAMBIO AQUÍ: Separamos por "+" y usamos .some() ---
                 const subTerms = term.split('+').map(t => t.trim()).filter(t => t !== "");
@@ -1967,7 +1972,7 @@ function applyAllFilters() {
                     }
 
                     // --- BÚSQUEDA NORMAL ---
-                    return val.toLowerCase().includes(cleanTerm.toLowerCase());
+                    return val.includes(normalizeText(cleanTerm));
                 });
             });
         });
