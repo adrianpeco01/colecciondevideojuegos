@@ -2661,6 +2661,15 @@ function renderFilteredGames(filteredGames) {
       </div>
     `;
 
+
+const thumbnail = card.querySelector("img");
+
+if (["Game Boy", "Game Boy Color", "Game Boy Advance"].includes(game.platform)) {
+  thumbnail.decode().then(() => {
+    thumbnail.style.transform = "translateZ(0)";
+  }).catch(() => {});
+}
+
     card.addEventListener("click", (e) => {
       e.preventDefault();
       openModal(games.indexOf(game)); // Abrir modal con índice real
@@ -2740,6 +2749,16 @@ function renderGamesPage(page) {
         </div>
       </div>
     `;
+
+
+const thumbnail = card.querySelector("img");
+
+if (["Game Boy", "Game Boy Color", "Game Boy Advance"].includes(game.platform)) {
+  thumbnail.decode().then(() => {
+    thumbnail.style.transform = "translateZ(0)";
+  }).catch(() => {});
+}
+
 
     const globalIndex = startIndex + index;
     card.addEventListener("click", (e) => {
