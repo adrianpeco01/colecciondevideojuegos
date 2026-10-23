@@ -1507,7 +1507,21 @@ html.dark #games-container a > div[style*="background-color"].hover-reset {
     background-color: rgb(21, 27, 40) !important;
 }
 
+/* Ocultar el tooltip por defecto */
+#dynamicTooltipWrapper {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  max-width: calc(100vw - 16px); /* Asegura que no se salga */
+  min-width: max-content;
+  overflow: visible;
+  pointer-events: none; /* Opcional: evita clics no deseados */
+}
 
+#dynamicTooltipContent {
+  word-break: break-word;
+  white-space: normal;
+}
 
 </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=block" rel="stylesheet">
