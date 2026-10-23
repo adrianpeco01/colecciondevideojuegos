@@ -1507,20 +1507,28 @@ html.dark #games-container a > div[style*="background-color"].hover-reset {
     background-color: rgb(21, 27, 40) !important;
 }
 
-/* Ocultar el tooltip por defecto */
+/* Contenedor del tooltip: nunca sale de la pantalla */
 #dynamicTooltipWrapper {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  max-width: calc(100vw - 16px); /* Asegura que no se salga */
-  min-width: max-content;
-  overflow: visible;
-  pointer-events: none; /* Opcional: evita clics no deseados */
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    width: max-content;
+    min-width: 0;
+    max-width: calc(100vw - 16px);
+    box-sizing: border-box;
+    overflow: visible;
+    pointer-events: none;
 }
 
+/* Contenido: ajusta el texto al ancho disponible */
 #dynamicTooltipContent {
-  word-break: break-word;
-  white-space: normal;
+    width: max-content;
+    min-width: 0;
+    max-width: calc(100vw - 16px);
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
 }
 
 </style>
@@ -4800,16 +4808,32 @@ if (isSearchTooltip) {
     }
 }
 
-            // 🔧 Ajuste horizontal para evitar corte en el borde
-            if (leftPos < 8) {
-    leftPos = 8;
-    dynamicTooltipContent.setAttribute('data-align', 'start');
-} else if (leftPos + tooltipContentRect.width > window.innerWidth - 8) {
-    leftPos = window.innerWidth - tooltipContentRect.width - 8;
-    dynamicTooltipContent.setAttribute('data-align', 'end');
-} else {
-    dynamicTooltipContent.setAttribute('data-align', 'center');
-}
+// Ajustar el ancho y la posición para que quepa en pantalla
+const viewportWidth = document.documentElement.clientWidth;
+const margin = 8;
+const maxTooltipWidth = viewportWidth - margin * 2;
+
+dynamicTooltipWrapper.style.maxWidth = `${maxTooltipWidth}px`;
+dynamicTooltipContent.style.maxWidth = `${maxTooltipWidth}px`;
+
+// Volver a medir después de aplicar el ancho máximo
+const finalTooltipRect = dynamicTooltipContent.getBoundingClientRect();
+
+leftPos = Math.max(
+    margin,
+    Math.min(
+        leftPos,
+        viewportWidth - finalTooltipRect.width - margin
+    )
+);
+
+dynamicTooltipContent.setAttribute(
+    'data-align',
+    leftPos === margin ? 'start' :
+    leftPos + finalTooltipRect.width >= viewportWidth - margin
+        ? 'end'
+        : 'center'
+);
 
 
             dynamicTooltipWrapper.style.top = `${topPos}px`;
