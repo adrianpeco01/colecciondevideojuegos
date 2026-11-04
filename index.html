@@ -1926,6 +1926,8 @@ html.dark #games-container a > div[style*="background-color"].hover-reset {
 '⭐' Estado (Nº máx. 5)
 '🛡️' Protección
 '🏠' Ubicación
+'💰' Valor en €
+'💸' Coste en €
 '🛒' Fecha de compra
 '🆕' Fecha de lanzamiento
 '📍' Lugar de compra
@@ -4922,24 +4924,26 @@ if ('serviceWorker' in navigator) {
 
 <script>
 (function () {
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-
-    if (!metaTheme) return;
-
     function updateSystemThemeColor() {
         const dark = document.documentElement.classList.contains('dark');
         const color = dark ? '#080b12' : '#ffffff';
 
-        metaTheme.setAttribute('content', color);
+        let meta = document.querySelector('meta[name="theme-color"]');
 
-        // Intenta actualizar también el color usado por la PWA.
+        if (meta) {
+            meta.remove();
+        }
+
+        meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = color;
+        document.head.appendChild(meta);
+
         document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
     }
 
-    // Color inicial al abrir la aplicación.
     updateSystemThemeColor();
 
-    // Detecta cuando tu web cambia entre modo claro y oscuro.
     const observer = new MutationObserver(updateSystemThemeColor);
 
     observer.observe(document.documentElement, {
